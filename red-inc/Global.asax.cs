@@ -6,6 +6,7 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using core;
 
 namespace red_inc
 {
@@ -23,6 +24,9 @@ namespace red_inc
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AuthConfig.RegisterAuth();
+
+            // Initialize our persistent static Core instance
+            GlobalStaticVars.StaticCore = new Core();
         }
     }
 }
