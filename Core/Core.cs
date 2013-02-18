@@ -14,7 +14,12 @@ namespace core
         /// </summary>
         public Core()
         {
-            
+            Console.WriteLine("Hello, World!");
+        }
+
+        public static void Main()
+        {
+            new Core();
         }
     }
 }
