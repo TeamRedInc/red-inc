@@ -2,10 +2,10 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using core;
 
-namespace UnitTestProject1
+namespace core.Tests
 {
     [TestClass]
-    public class UnitTest1
+    public class DaoTest
     {
         [TestMethod]
         public void TestMethod1()
