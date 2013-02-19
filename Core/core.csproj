@@ -41,14 +41,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core.cs" />
+    <Compile Include="Modules\Class\ClassData.cs" />
+    <Compile Include="Modules\DataObject.cs" />
+    <Compile Include="Modules\ProblemSet\ProblemSetData.cs" />
+    <Compile Include="Modules\User\UserData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Modules\Class\" />
-    <Folder Include="Modules\ProblemSet\" />
     <Folder Include="Modules\Problem\" />
     <Folder Include="Modules\PyInterpret\" />
-    <Folder Include="Modules\User\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
