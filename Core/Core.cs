@@ -17,47 +17,56 @@ namespace core
         /// </summary>
         public Core()
         {
-            SqlConnectionStringBuilder csBuilder = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["AzureConnection"].ConnectionString);
-
-            using (SqlConnection conn = new SqlConnection(csBuilder.ToString()))
+            try // Catching everything so we can continue work while disregarding SQL connectivity issues
             {
-                SqlCommand cmd = conn.CreateCommand();
-                cmd.CommandText = "Insert into dbo.[User] (Email, PasswordHash) values (@email, @pwd)";
+                SqlConnectionStringBuilder csBuilder =
+                    new SqlConnectionStringBuilder(
+                        ConfigurationManager.ConnectionStrings["AzureConnection"].ConnectionString);
 
-                cmd.Parameters.Add("@email", SqlDbType.NVarChar);
-                cmd.Parameters.Add("@pwd", SqlDbType.NVarChar);
-
-                cmd.Parameters["@email"].Value = "jwien3@mail.gatech.edu";
-                cmd.Parameters["@pwd"].Value = "pass123";
-
-                conn.Open();
-                cmd.ExecuteNonQuery();
-            }
-
-            using (SqlConnection conn = new SqlConnection(csBuilder.ToString()))
-            {
-                SqlCommand cmd = conn.CreateCommand();
-                cmd.CommandText = "Select * from dbo.[User]";
-
-                conn.Open();
-
-                SqlDataReader reader = cmd.ExecuteReader();
-
-                if (reader.HasRows)
+                using (SqlConnection conn = new SqlConnection(csBuilder.ToString()))
                 {
-                    while (reader.Read())
+                    SqlCommand cmd = conn.CreateCommand();
+                    cmd.CommandText = "Insert into dbo.[User] (Email, PasswordHash) values (@email, @pwd)";
+
+                    cmd.Parameters.Add("@email", SqlDbType.NVarChar);
+                    cmd.Parameters.Add("@pwd", SqlDbType.NVarChar);
+
+                    cmd.Parameters["@email"].Value = "jwien3@mail.gatech.edu";
+                    cmd.Parameters["@pwd"].Value = "pass123";
+
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+
+                using (SqlConnection conn = new SqlConnection(csBuilder.ToString()))
+                {
+                    SqlCommand cmd = conn.CreateCommand();
+                    cmd.CommandText = "Select * from dbo.[User]";
+
+                    conn.Open();
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    if (reader.HasRows)
                     {
-                        int id = (int)reader["Id"];
-                        String Email = (String)reader["Email"];
-                        bool isAdmin = (bool)reader["IsAdmin"];
-                        Console.WriteLine("{0}: {1} {2}", id, Email, isAdmin);
+                        while (reader.Read())
+                        {
+                            int id = (int) reader["Id"];
+                            String Email = (String) reader["Email"];
+                            bool isAdmin = (bool) reader["IsAdmin"];
+                            Console.WriteLine("{0}: {1} {2}", id, Email, isAdmin);
+                        }
                     }
+                    else
+                    {
+                        Console.WriteLine("No rows found.");
+                    }
+                    reader.Close();
                 }
-                else
-                {
-                    Console.WriteLine("No rows found.");
-                }
-                reader.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
             }
         }
     }
