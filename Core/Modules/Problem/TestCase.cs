@@ -12,6 +12,8 @@ namespace core.Modules.Problem
         private string output;
         private bool isSample;
 
+        public TestCase(int id) : base(id) { }
+
         public string Input
         {
             get { return input; }

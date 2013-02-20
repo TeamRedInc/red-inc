@@ -12,6 +12,8 @@ namespace core.Modules.Problem
         private string description;
         private List<TestCase> testCases;
 
+        public ProblemData(int id) : base(id) { }
+
         public string Name
         {
             get
