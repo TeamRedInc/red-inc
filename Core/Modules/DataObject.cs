@@ -10,6 +10,11 @@ namespace core.Modules
     {
         private int id;
 
+        public DataObject(int id)
+        {
+            this.id = id;
+        }
+
         public int Id
         {
             get { return id; }

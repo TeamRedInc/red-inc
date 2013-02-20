@@ -12,6 +12,8 @@ namespace core.Modules.ProblemSet
         private string name;
         private ClassData _class;
 
+        public ProblemSetData(int id) : base(id) { }
+
         public string Name
         {
             get 
