@@ -88,7 +88,7 @@ namespace core.Modules.User
         /// <param name="user">The UserData object with login credentials</param>
         /// <returns>
         /// true if the user is in the database and the password hashes match, false otherwise</returns>
-        public bool login(UserData user)
+        public bool Login(UserData user)
         {
             using (SqlConnection conn = new SqlConnection(csBuilder.ToString()))
             {
