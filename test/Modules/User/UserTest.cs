@@ -46,7 +46,11 @@ namespace core.Tests.Modules.User
         [TestMethod]
         public void TestGet()
         {
-            UserData user = userDao.GetById(1);
+            UserData user = userDao.GetById(0);
+
+            Assert.IsNull(user);
+
+            user = userDao.GetById(1);
 
             Assert.AreEqual(user.Email, "jwien3@mail.gatech.edu");
 

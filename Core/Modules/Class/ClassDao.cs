@@ -10,14 +10,9 @@ using System.Threading.Tasks;
 
 namespace core.Modules.Class
 {
-    public class ClassDao
+    public class ClassDao : DataAccessObject<ClassData>
     {
-        private SqlConnectionStringBuilder csBuilder;
-
-        public ClassDao()
-        {
-            csBuilder = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["AzureConnection"].ConnectionString);
-        }
+        public ClassDao() : base("Class") { }
 
         /// <summary>
         /// Add a new class to the database.</summary>
@@ -26,19 +21,29 @@ namespace core.Modules.Class
         /// true if the add was successful, false otherwise</returns>
         public bool Add(ClassData cls)
         {
-            using (SqlConnection conn = new SqlConnection(csBuilder.ToString()))
+            using (SqlConnection conn = new SqlConnection(connStr))
             {
+                string cmdStr = "Insert into dbo.[" + tableName + "] (";
+                string paramList = ") values (";
+
                 SqlCommand cmd = conn.CreateCommand();
 
-                cmd.CommandText = "Insert into dbo.[Class] (Name, InstructorId) values (@name, @instrId);";
-
                 //Name
-                cmd.Parameters.Add("@name", SqlDbType.NVarChar);
-                cmd.Parameters["@name"].Value = cls.Name;
+                if (!String.IsNullOrWhiteSpace(cls.Name))
+                {
+                    cmdStr += "Name";
+                    paramList += "@name";
+                    cmd.Parameters.Add("@name", SqlDbType.NVarChar);
+                    cmd.Parameters["@name"].Value = cls.Name;
+                }
 
-                //Password hash
+                //Instructor
+                cmdStr += ", InstructorId";
+                paramList += ", @instrId";
                 cmd.Parameters.Add("@instrId", SqlDbType.Int);
                 cmd.Parameters["@instrId"].Value = cls.Instructor.Id;
+
+                cmd.CommandText = cmdStr + paramList + ");";
 
                 try
                 {
@@ -62,7 +67,7 @@ namespace core.Modules.Class
         /// true if the add was successful, false otherwise</returns>
         public bool AddStudent(UserData student, ClassData cls)
         {
-            using (SqlConnection conn = new SqlConnection(csBuilder.ToString()))
+            using (SqlConnection conn = new SqlConnection(connStr))
             {
                 SqlCommand cmd = conn.CreateCommand();
 
@@ -91,91 +96,11 @@ namespace core.Modules.Class
         }
 
         /// <summary>
-        /// Gets the class with the specified id.</summary>
-        /// <param name="id">The id of the class to get</param>
-        /// <returns>
-        /// A ClassData object representing the class if found, null otherwise</returns>
-        public ClassData GetById(int id)
-        {
-            using (SqlConnection conn = new SqlConnection(csBuilder.ToString()))
-            {
-                SqlCommand cmd = conn.CreateCommand();
-
-                cmd.CommandText = "Select * from dbo.[Class] where Id = @id;";
-
-                //Id
-                cmd.Parameters.Add("@id", SqlDbType.Int);
-                cmd.Parameters["@id"].Value = id;
-
-                SqlDataReader reader = null;
-                try
-                {
-                    conn.Open();
-                    reader = cmd.ExecuteReader();
-
-                    if (reader.HasRows)
-                    {
-                        reader.Read();
-                        return createFromReader(reader);
-                    }
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                }
-                finally
-                {
-                    if (reader != null)
-                        reader.Close();
-                }
-
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Gets all classes in the database.</summary>
-        /// <returns>
-        /// A non-null, possibly empty list of ClassData objects</returns>
-        public List<ClassData> GetAll()
-        {
-            using (SqlConnection conn = new SqlConnection(csBuilder.ToString()))
-            {
-                List<ClassData> classes = new List<ClassData>();
-                SqlCommand cmd = conn.CreateCommand();
-
-                cmd.CommandText = "Select * from dbo.[Class];";
-                
-                SqlDataReader reader = null;
-                try
-                {
-                    conn.Open();
-                    reader = cmd.ExecuteReader();
-
-                    if (reader.HasRows)
-                        while (reader.Read())
-                            classes.Add(createFromReader(reader));
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                }
-                finally
-                {
-                    if (reader != null)
-                        reader.Close();
-                }
-
-                return classes;
-            }
-        }
-
-        /// <summary>
         /// Creates a class from a SqlDataReader.</summary>
         /// <param name="reader">The SqlDataReader to get class data from</param>
         /// <returns>
         /// A ClassData object</returns>
-        public ClassData createFromReader(SqlDataReader reader)
+        public override ClassData createFromReader(SqlDataReader reader)
         {
             ClassData cls = new ClassData((int)reader["Id"]);
             cls.Name = reader["Name"] as string;

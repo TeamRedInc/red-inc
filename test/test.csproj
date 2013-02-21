@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="DaoTest.cs" />
     <Compile Include="Modules\Class\ClassTest.cs" />
+    <Compile Include="Modules\Problem\ProblemTest.cs" />
     <Compile Include="Modules\PyInterpret\PyInterpretUtilityTest.cs" />
     <Compile Include="Modules\User\UserTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -64,7 +65,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Modules\ProblemSet\" />
-    <Folder Include="Modules\Problem\" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

@@ -35,7 +35,11 @@ namespace core.Tests.Modules.Class
         [TestMethod]
         public void TestGet()
         {
-            ClassData cls = classDao.GetById(1);
+            ClassData cls = classDao.GetById(0);
+
+            Assert.IsNull(cls);
+
+            cls = classDao.GetById(1);
 
             Assert.AreEqual(cls.Name, "CS 4911 Design Capstone Project");
 
