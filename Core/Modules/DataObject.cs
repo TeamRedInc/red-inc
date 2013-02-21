@@ -30,5 +30,10 @@ namespace core.Modules
         {
             return !(lhs == rhs);
         }
+
+        public override bool Equals(object obj)
+        {
+            return this == (DataObject)obj;
+        }
     }
 }

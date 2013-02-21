@@ -51,7 +51,10 @@
   </Choose>
   <ItemGroup>
     <Compile Include="DaoTest.cs" />
+    <Compile Include="Modules\Class\ClassTest.cs" />
+    <Compile Include="Modules\Problem\ProblemTest.cs" />
     <Compile Include="Modules\PyInterpret\PyInterpretUtilityTest.cs" />
+    <Compile Include="Modules\User\UserTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -59,6 +62,9 @@
       <Project>{2f427821-0c46-4ecb-b3f3-924e64bac1ae}</Project>
       <Name>core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Modules\ProblemSet\" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
