@@ -1,4 +1,5 @@
-﻿using System;
+﻿using core.Modules.User;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -11,63 +12,36 @@ namespace core
 {
     public class Core
     {
+        private UserDao userDao;
+
         /// <summary>
         /// Primary thread of execution
         /// All logic starts here!
         /// </summary>
         public Core()
         {
-            try // Catching everything so we can continue work while disregarding SQL connectivity issues
-            {
-                SqlConnectionStringBuilder csBuilder =
-                    new SqlConnectionStringBuilder(
-                        ConfigurationManager.ConnectionStrings["AzureConnection"].ConnectionString);
+            userDao = new UserDao();
+        }
 
-                using (SqlConnection conn = new SqlConnection(csBuilder.ToString()))
-                {
-                    SqlCommand cmd = conn.CreateCommand();
-                    cmd.CommandText = "Insert into dbo.[User] (Email, PasswordHash) values (@email, @pwd)";
+        public bool AddUser(string email, string passwordHash, string firstName, string lastName, bool isAdmin)
+        {
+            UserData user = new UserData(0);
+            user.Email = email;
+            user.PasswordHash = passwordHash;
+            user.FirstName = firstName;
+            user.LastName = lastName;
+            user.IsAdmin = isAdmin;
 
-                    cmd.Parameters.Add("@email", SqlDbType.NVarChar);
-                    cmd.Parameters.Add("@pwd", SqlDbType.NVarChar);
+            return userDao.AddUser(user);
+        }
 
-                    cmd.Parameters["@email"].Value = "jwien3@mail.gatech.edu";
-                    cmd.Parameters["@pwd"].Value = "pass123";
+        public bool Login(string email, string passwordHash)
+        {
+            UserData user = new UserData(0);
+            user.Email = email;
+            user.PasswordHash = passwordHash;
 
-                    conn.Open();
-                    cmd.ExecuteNonQuery();
-                }
-
-                using (SqlConnection conn = new SqlConnection(csBuilder.ToString()))
-                {
-                    SqlCommand cmd = conn.CreateCommand();
-                    cmd.CommandText = "Select * from dbo.[User]";
-
-                    conn.Open();
-
-                    SqlDataReader reader = cmd.ExecuteReader();
-
-                    if (reader.HasRows)
-                    {
-                        while (reader.Read())
-                        {
-                            int id = (int) reader["Id"];
-                            String Email = (String) reader["Email"];
-                            bool isAdmin = (bool) reader["IsAdmin"];
-                            Console.WriteLine("{0}: {1} {2}", id, Email, isAdmin);
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("No rows found.");
-                    }
-                    reader.Close();
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
+            return userDao.Login(user);
         }
     }
 }
