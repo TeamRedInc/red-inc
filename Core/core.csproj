@@ -65,7 +65,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core.cs" />
+    <Compile Include="Modules\Class\ClassDao.cs" />
+    <Compile Include="Modules\Problem\ProblemData.cs" />
+    <Compile Include="Modules\Problem\TestCase.cs" />
     <Compile Include="Modules\PyInterpret\PyInterpretUtility.cs" />
+    <Compile Include="Modules\User\UserDao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -74,10 +78,7 @@
     <Compile Include="Modules\ProblemSet\ProblemSetData.cs" />
     <Compile Include="Modules\User\UserData.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Modules\Problem\" />
-    <Folder Include="Modules\Role\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="App.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

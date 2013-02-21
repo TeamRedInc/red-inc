@@ -1,4 +1,5 @@
-﻿using System;
+﻿using core.Modules.Problem;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -117,6 +118,185 @@ namespace core.Modules.User
                     return false;
                 }
             }
+        }
+
+        /// <summary>
+        /// Record a user's first attempt at a problem.</summary>
+        /// <param name="user">The UserData object with the user's information</param>
+        /// <param name="problem">The ProblemData object with the problem's id</param>
+        /// <param name="correct">Whether or not the solution is correct</param>
+        /// <returns>
+        /// true if the operation was successful, false otherwise</returns>
+        public bool AddSolution(UserData user, ProblemData problem, bool correct)
+        {
+            using (SqlConnection conn = new SqlConnection(csBuilder.ToString()))
+            {
+                SqlCommand cmd = conn.CreateCommand();
+
+                cmd.CommandText = "Insert into dbo.[Solution] (UserId, ProblemId, IsCorrect) values (@userId, @problemId, @correct);";
+
+                //User
+                cmd.Parameters.Add("@userId", SqlDbType.Int);
+                cmd.Parameters["@userId"].Value = user.Id;
+
+                //Problem
+                cmd.Parameters.Add("@problemId", SqlDbType.Int);
+                cmd.Parameters["@problemId"].Value = problem.Id;
+
+                //Correct
+                cmd.Parameters.Add("@correct", SqlDbType.Bit);
+                cmd.Parameters["@correct"].Value = correct;
+
+                try
+                {
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Record a user's attempt at a problem that they previously attempted.</summary>
+        /// <param name="user">The UserData object with the user's information</param>
+        /// <param name="problem">The ProblemData object with the problem's id</param>
+        /// <param name="correct">Whether or not the solution is correct</param>
+        /// <returns>
+        /// true if the operation was successful, false otherwise</returns>
+        public bool UpdateSolution(UserData user, ProblemData problem, bool correct)
+        {
+            using (SqlConnection conn = new SqlConnection(csBuilder.ToString()))
+            {
+                SqlCommand cmd = conn.CreateCommand();
+
+                cmd.CommandText = "Update dbo.[Solution] Set NumAttempts = NumAttempts + 1, IsCorrect = @correct"
+                    + " Where UserId = @userId and ProblemId = @problemId;";
+
+                //User
+                cmd.Parameters.Add("@userId", SqlDbType.Int);
+                cmd.Parameters["@userId"].Value = user.Id;
+
+                //Problem
+                cmd.Parameters.Add("@problemId", SqlDbType.Int);
+                cmd.Parameters["@problemId"].Value = problem.Id;
+
+                //Correct
+                cmd.Parameters.Add("@correct", SqlDbType.Bit);
+                cmd.Parameters["@correct"].Value = correct;
+
+                try
+                {
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Gets the user with the specified id.</summary>
+        /// <param name="id">The id of the user to get</param>
+        /// <returns>
+        /// A UserData object representing the user if found, null otherwise</returns>
+        public UserData GetById(int id)
+        {
+            using (SqlConnection conn = new SqlConnection(csBuilder.ToString()))
+            {
+                SqlCommand cmd = conn.CreateCommand();
+
+                cmd.CommandText = "Select * from dbo.[User] where Id = @id;";
+
+                //Id
+                cmd.Parameters.Add("@id", SqlDbType.Int);
+                cmd.Parameters["@id"].Value = id;
+
+                SqlDataReader reader = null;
+                try
+                {
+                    conn.Open();
+                    reader = cmd.ExecuteReader();
+
+                    if (reader.HasRows)
+                    {
+                        reader.Read();
+                        return createFromReader(reader);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                finally
+                {
+                    if (reader != null)
+                        reader.Close();
+                }
+
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Gets all users in the database.</summary>
+        /// <returns>
+        /// A non-null, possibly empty list of UserData objects</returns>
+        public List<UserData> GetAll()
+        {
+            using (SqlConnection conn = new SqlConnection(csBuilder.ToString()))
+            {
+                List<UserData> users = new List<UserData>();
+                SqlCommand cmd = conn.CreateCommand();
+
+                cmd.CommandText = "Select * from dbo.[User];";
+
+                SqlDataReader reader = null;
+                try
+                {
+                    conn.Open();
+                    reader = cmd.ExecuteReader();
+
+                    if (reader.HasRows)
+                        while (reader.Read())
+                            users.Add(createFromReader(reader));
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                finally
+                {
+                    if (reader != null)
+                        reader.Close();
+                }
+
+                return users;
+            }
+        }
+
+        /// <summary>
+        /// Creates a user from a SqlDataReader.</summary>
+        /// <param name="reader">The SqlDataReader to get user data from</param>
+        /// <returns>
+        /// A UserData object</returns>
+        public UserData createFromReader(SqlDataReader reader)
+        {
+            UserData user = new UserData((int)reader["Id"]);
+            user.Email = (string)reader["Email"];
+            user.PasswordHash = (string)reader["PasswordHash"];
+            user.FirstName = (string)reader["FirstName"];
+            user.LastName = (string)reader["LastName"];
+            user.IsAdmin = (bool)reader["IsAdmin"];
+            return user;
         }
     }
 }
