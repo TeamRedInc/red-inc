@@ -103,6 +103,10 @@ namespace core.Modules.Class
 
                 cmd.CommandText = "Select * from dbo.[Class] where Id = @id;";
 
+                //Id
+                cmd.Parameters.Add("@id", SqlDbType.Int);
+                cmd.Parameters["@id"].Value = id;
+
                 SqlDataReader reader = null;
                 try
                 {
