@@ -66,6 +66,8 @@
   <ItemGroup>
     <Compile Include="Core.cs" />
     <Compile Include="Modules\Class\ClassDao.cs" />
+    <Compile Include="Modules\ProblemSet\ProblemSetDao.cs" />
+    <Compile Include="Modules\Problem\ProblemDao.cs" />
     <Compile Include="Modules\Problem\ProblemData.cs" />
     <Compile Include="Modules\Problem\TestCase.cs" />
     <Compile Include="Modules\PyInterpret\PyInterpretUtility.cs" />

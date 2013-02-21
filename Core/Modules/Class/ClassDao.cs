@@ -24,7 +24,7 @@ namespace core.Modules.Class
         /// <param name="cls">The ClassData object with the class's information</param>
         /// <returns>
         /// true if the add was successful, false otherwise</returns>
-        public bool AddClass(ClassData cls)
+        public bool Add(ClassData cls)
         {
             using (SqlConnection conn = new SqlConnection(csBuilder.ToString()))
             {
@@ -47,7 +47,7 @@ namespace core.Modules.Class
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.Message);
+                    Console.WriteLine(e);
                     return false;
                 }
             }
@@ -60,7 +60,7 @@ namespace core.Modules.Class
         /// <param name="cls">The ClassData object with the class's id</param>
         /// <returns>
         /// true if the add was successful, false otherwise</returns>
-        public bool AddStudentToClass(UserData student, ClassData cls)
+        public bool AddStudent(UserData student, ClassData cls)
         {
             using (SqlConnection conn = new SqlConnection(csBuilder.ToString()))
             {
@@ -83,7 +83,7 @@ namespace core.Modules.Class
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.Message);
+                    Console.WriteLine(e);
                     return false;
                 }
             }
@@ -121,7 +121,7 @@ namespace core.Modules.Class
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.Message);
+                    Console.WriteLine(e);
                 }
                 finally
                 {
@@ -158,7 +158,7 @@ namespace core.Modules.Class
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.Message);
+                    Console.WriteLine(e);
                 }
                 finally
                 {
@@ -178,7 +178,7 @@ namespace core.Modules.Class
         public ClassData createFromReader(SqlDataReader reader)
         {
             ClassData cls = new ClassData((int)reader["Id"]);
-            cls.Name = (string)reader["Name"];
+            cls.Name = reader["Name"] as string;
             cls.Instructor = new UserData((int)reader["InstructorId"]);
             return cls;
         }

@@ -24,7 +24,7 @@ namespace core.Modules.User
         /// <param name="user">The UserData object with the user's information</param>
         /// <returns>
         /// true if the add was successful, false otherwise</returns>
-        public bool AddUser(UserData user)
+        public bool Add(UserData user)
         {
             using (SqlConnection conn = new SqlConnection(csBuilder.ToString()))
             {
@@ -77,7 +77,7 @@ namespace core.Modules.User
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.Message);
+                    Console.WriteLine(e);
                     return false;
                 }
             }
@@ -114,7 +114,7 @@ namespace core.Modules.User
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.Message);
+                    Console.WriteLine(e);
                     return false;
                 }
             }
@@ -154,7 +154,7 @@ namespace core.Modules.User
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.Message);
+                    Console.WriteLine(e);
                     return false;
                 }
             }
@@ -196,7 +196,7 @@ namespace core.Modules.User
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.Message);
+                    Console.WriteLine(e);
                     return false;
                 }
             }
@@ -234,7 +234,7 @@ namespace core.Modules.User
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.Message);
+                    Console.WriteLine(e);
                 }
                 finally
                 {
@@ -271,7 +271,7 @@ namespace core.Modules.User
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.Message);
+                    Console.WriteLine(e);
                 }
                 finally
                 {
@@ -293,8 +293,8 @@ namespace core.Modules.User
             UserData user = new UserData((int)reader["Id"]);
             user.Email = (string)reader["Email"];
             user.PasswordHash = (string)reader["PasswordHash"];
-            user.FirstName = (string)reader["FirstName"];
-            user.LastName = (string)reader["LastName"];
+            user.FirstName = reader["FirstName"] as string;
+            user.LastName = reader["LastName"] as string;
             user.IsAdmin = (bool)reader["IsAdmin"];
             return user;
         }

@@ -32,7 +32,7 @@ namespace core
             user.LastName = lastName;
             user.IsAdmin = isAdmin;
 
-            return userDao.AddUser(user);
+            return userDao.Add(user);
         }
 
         public bool Login(string email, string passwordHash)
