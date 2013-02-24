@@ -247,6 +247,84 @@
     <Content Include="Scripts\knockout-2.1.0.debug.js" />
     <Content Include="Scripts\knockout-2.1.0.js" />
     <Content Include="Scripts\modernizr-2.5.3.js" />
+    <Content Include="Views\bootstrap\assets\css\bootstrap-responsive.css" />
+    <Content Include="Views\bootstrap\assets\css\bootstrap-responsive.min.css" />
+    <Content Include="Views\bootstrap\assets\css\bootstrap.css" />
+    <Content Include="Views\bootstrap\assets\css\bootstrap.min.css" />
+    <Content Include="Views\bootstrap\assets\img\glyphicons-halflings-white.png" />
+    <Content Include="Views\bootstrap\assets\img\glyphicons-halflings.png" />
+    <Content Include="Views\bootstrap\assets\js\bootstrap.js" />
+    <Content Include="Views\bootstrap\assets\js\bootstrap.min.js" />
+    <Content Include="Views\bootstrap\pages\intro.html" />
+    <Content Include="Views\bootstrap\pages\problem-create.html" />
+    <Content Include="Views\bootstrap\pages\problem-do.html" />
+    <Content Include="Views\bootstrap\pages\problemsets.html" />
+    <Content Include="Views\bootstrap\pages\problemset_create.html" />
+    <Content Include="Views\bootstrap\pages\signin.html" />
+    <Content Include="Views\bootstrap\prettify\CHANGES.html" />
+    <Content Include="Views\bootstrap\prettify\closure-compiler\console-externs.js" />
+    <Content Include="Views\bootstrap\prettify\distrib\google-code-prettify\lang-apollo.js" />
+    <Content Include="Views\bootstrap\prettify\distrib\google-code-prettify\lang-clj.js" />
+    <Content Include="Views\bootstrap\prettify\distrib\google-code-prettify\lang-css.js" />
+    <Content Include="Views\bootstrap\prettify\distrib\google-code-prettify\lang-go.js" />
+    <Content Include="Views\bootstrap\prettify\distrib\google-code-prettify\lang-hs.js" />
+    <Content Include="Views\bootstrap\prettify\distrib\google-code-prettify\lang-lisp.js" />
+    <Content Include="Views\bootstrap\prettify\distrib\google-code-prettify\lang-lua.js" />
+    <Content Include="Views\bootstrap\prettify\distrib\google-code-prettify\lang-ml.js" />
+    <Content Include="Views\bootstrap\prettify\distrib\google-code-prettify\lang-n.js" />
+    <Content Include="Views\bootstrap\prettify\distrib\google-code-prettify\lang-proto.js" />
+    <Content Include="Views\bootstrap\prettify\distrib\google-code-prettify\lang-scala.js" />
+    <Content Include="Views\bootstrap\prettify\distrib\google-code-prettify\lang-sql.js" />
+    <Content Include="Views\bootstrap\prettify\distrib\google-code-prettify\lang-tex.js" />
+    <Content Include="Views\bootstrap\prettify\distrib\google-code-prettify\lang-vb.js" />
+    <Content Include="Views\bootstrap\prettify\distrib\google-code-prettify\lang-vhdl.js" />
+    <Content Include="Views\bootstrap\prettify\distrib\google-code-prettify\lang-wiki.js" />
+    <Content Include="Views\bootstrap\prettify\distrib\google-code-prettify\lang-xq.js" />
+    <Content Include="Views\bootstrap\prettify\distrib\google-code-prettify\lang-yaml.js" />
+    <Content Include="Views\bootstrap\prettify\distrib\google-code-prettify\prettify.css" />
+    <Content Include="Views\bootstrap\prettify\distrib\google-code-prettify\prettify.js" />
+    <Content Include="Views\bootstrap\prettify\js-modules\combinePrefixPatterns.js" />
+    <Content Include="Views\bootstrap\prettify\js-modules\externs.js" />
+    <Content Include="Views\bootstrap\prettify\js-modules\extractSourceSpans.js" />
+    <Content Include="Views\bootstrap\prettify\js-modules\extractSourceSpans_test.html" />
+    <Content Include="Views\bootstrap\prettify\js-modules\numberLines.js" />
+    <Content Include="Views\bootstrap\prettify\js-modules\numberLines_test.html" />
+    <Content Include="Views\bootstrap\prettify\js-modules\prettify.js" />
+    <Content Include="Views\bootstrap\prettify\js-modules\recombineTagsAndDecorations.js" />
+    <Content Include="Views\bootstrap\prettify\js-modules\recombineTagsAndDecorations_test.html" />
+    <Content Include="Views\bootstrap\prettify\README-zh-Hans.html" />
+    <Content Include="Views\bootstrap\prettify\README.html" />
+    <Content Include="Views\bootstrap\prettify\src\lang-apollo.js" />
+    <Content Include="Views\bootstrap\prettify\src\lang-clj.js" />
+    <Content Include="Views\bootstrap\prettify\src\lang-css.js" />
+    <Content Include="Views\bootstrap\prettify\src\lang-go.js" />
+    <Content Include="Views\bootstrap\prettify\src\lang-hs.js" />
+    <Content Include="Views\bootstrap\prettify\src\lang-lisp.js" />
+    <Content Include="Views\bootstrap\prettify\src\lang-lua.js" />
+    <Content Include="Views\bootstrap\prettify\src\lang-ml.js" />
+    <Content Include="Views\bootstrap\prettify\src\lang-n.js" />
+    <Content Include="Views\bootstrap\prettify\src\lang-proto.js" />
+    <Content Include="Views\bootstrap\prettify\src\lang-scala.js" />
+    <Content Include="Views\bootstrap\prettify\src\lang-sql.js" />
+    <Content Include="Views\bootstrap\prettify\src\lang-tex.js" />
+    <Content Include="Views\bootstrap\prettify\src\lang-vb.js" />
+    <Content Include="Views\bootstrap\prettify\src\lang-vhdl.js" />
+    <Content Include="Views\bootstrap\prettify\src\lang-wiki.js" />
+    <Content Include="Views\bootstrap\prettify\src\lang-xq.js" />
+    <Content Include="Views\bootstrap\prettify\src\lang-yaml.js" />
+    <Content Include="Views\bootstrap\prettify\src\prettify.css" />
+    <Content Include="Views\bootstrap\prettify\src\prettify.js" />
+    <Content Include="Views\bootstrap\prettify\styles\demo.html" />
+    <Content Include="Views\bootstrap\prettify\styles\desert.css" />
+    <Content Include="Views\bootstrap\prettify\styles\index.html" />
+    <Content Include="Views\bootstrap\prettify\styles\sunburst.css" />
+    <Content Include="Views\bootstrap\prettify\tests\ie-newline-copy-paste.html" />
+    <Content Include="Views\bootstrap\prettify\tests\large_input_test.html" />
+    <Content Include="Views\bootstrap\prettify\tests\prettify_test.html" />
+    <Content Include="Views\bootstrap\prettify\tests\prettify_test_2.html" />
+    <Content Include="Views\bootstrap\prettify\tests\test_base.js" />
+    <Content Include="Views\bootstrap\prettify\tests\test_styles.css" />
+    <Content Include="Views\bootstrap\prettify\yui-compressor\LICENSE.TXT" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -286,14 +364,18 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
+    <Content Include="Views\bootstrap\prettify\closure-compiler\COPYING" />
+    <Content Include="Views\bootstrap\prettify\closure-compiler\README" />
+    <Content Include="Views\bootstrap\prettify\COPYING" />
+    <Content Include="Views\bootstrap\prettify\js-modules\regexpPrecederPatterns.pl" />
+    <Content Include="Views\bootstrap\prettify\Makefile" />
+    <Content Include="Views\bootstrap\prettify\yui-compressor\README" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>

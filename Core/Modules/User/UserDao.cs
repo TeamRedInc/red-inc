@@ -10,25 +10,20 @@ using System.Threading.Tasks;
 
 namespace core.Modules.User
 {
-    public class UserDao
+    public class UserDao : DataAccessObject<UserData>
     {
-        private SqlConnectionStringBuilder csBuilder;
-
-        public UserDao()
-        {
-            csBuilder = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["AzureConnection"].ConnectionString);
-        }
+        public UserDao() : base("User") { }
 
         /// <summary>
         /// Add a new user to the database.</summary>
         /// <param name="user">The UserData object with the user's information</param>
         /// <returns>
         /// true if the add was successful, false otherwise</returns>
-        public bool AddUser(UserData user)
+        public bool Add(UserData user)
         {
-            using (SqlConnection conn = new SqlConnection(csBuilder.ToString()))
+            using (SqlConnection conn = new SqlConnection(connStr))
             {
-                string cmdStr = "Insert into dbo.[User] (Email, PasswordHash";
+                string cmdStr = "Insert into dbo.[" + tableName + "] (Email, PasswordHash";
                 string paramList = ") values (@email, @pwd";
 
                 SqlCommand cmd = conn.CreateCommand();
@@ -42,7 +37,7 @@ namespace core.Modules.User
                 cmd.Parameters["@pwd"].Value = user.PasswordHash;
 
                 //First name
-                if (!String.IsNullOrEmpty(user.FirstName)) 
+                if (!String.IsNullOrWhiteSpace(user.FirstName)) 
                 {
                     cmdStr += ", FirstName";
                     paramList += ", @fname";
@@ -51,7 +46,7 @@ namespace core.Modules.User
                 }
 
                 //Last name
-                if (!String.IsNullOrEmpty(user.LastName))
+                if (!String.IsNullOrWhiteSpace(user.LastName))
                 {                    
                     cmdStr += ", LastName";
                     paramList += ", @lname";
@@ -77,7 +72,7 @@ namespace core.Modules.User
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.Message);
+                    Console.WriteLine(e);
                     return false;
                 }
             }
@@ -91,11 +86,11 @@ namespace core.Modules.User
         /// true if the user is in the database and the password hashes match, false otherwise</returns>
         public bool Login(UserData user)
         {
-            using (SqlConnection conn = new SqlConnection(csBuilder.ToString()))
+            using (SqlConnection conn = new SqlConnection(connStr))
             {
                 SqlCommand cmd = conn.CreateCommand();
 
-                cmd.CommandText = "Select count(*) from dbo.[User] where Email = @email and PasswordHash = @pwd";
+                cmd.CommandText = "Select count(*) from dbo.[" + tableName + "] where Email = @email and PasswordHash = @pwd";
 
                 //Email
                 cmd.Parameters.Add("@email", SqlDbType.NVarChar);
@@ -114,7 +109,7 @@ namespace core.Modules.User
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.Message);
+                    Console.WriteLine(e);
                     return false;
                 }
             }
@@ -129,7 +124,7 @@ namespace core.Modules.User
         /// true if the operation was successful, false otherwise</returns>
         public bool AddSolution(UserData user, ProblemData problem, bool correct)
         {
-            using (SqlConnection conn = new SqlConnection(csBuilder.ToString()))
+            using (SqlConnection conn = new SqlConnection(connStr))
             {
                 SqlCommand cmd = conn.CreateCommand();
 
@@ -154,7 +149,7 @@ namespace core.Modules.User
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.Message);
+                    Console.WriteLine(e);
                     return false;
                 }
             }
@@ -170,7 +165,7 @@ namespace core.Modules.User
         /// true if the operation was successful, false otherwise</returns>
         public bool UpdateSolution(UserData user, ProblemData problem, bool correct)
         {
-            using (SqlConnection conn = new SqlConnection(csBuilder.ToString()))
+            using (SqlConnection conn = new SqlConnection(connStr))
             {
                 SqlCommand cmd = conn.CreateCommand();
 
@@ -196,7 +191,7 @@ namespace core.Modules.User
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.Message);
+                    Console.WriteLine(e);
                     return false;
                 }
             }
@@ -204,83 +199,12 @@ namespace core.Modules.User
         }
 
         /// <summary>
-        /// Gets the user with the specified id.</summary>
-        /// <param name="id">The id of the user to get</param>
-        /// <returns>
-        /// A UserData object representing the user if found, null otherwise</returns>
-        public UserData GetById(int id)
+        /// This method only exists so the superclass DataAccessObject can polymorphically call createFromReader.
+        /// Use of the static createFromReader(SqlDataReader) method is preferred.
+        /// </summary>
+        public override UserData createObjectFromReader(SqlDataReader reader)
         {
-            using (SqlConnection conn = new SqlConnection(csBuilder.ToString()))
-            {
-                SqlCommand cmd = conn.CreateCommand();
-
-                cmd.CommandText = "Select * from dbo.[User] where Id = @id;";
-
-                //Id
-                cmd.Parameters.Add("@id", SqlDbType.Int);
-                cmd.Parameters["@id"].Value = id;
-
-                SqlDataReader reader = null;
-                try
-                {
-                    conn.Open();
-                    reader = cmd.ExecuteReader();
-
-                    if (reader.HasRows)
-                    {
-                        reader.Read();
-                        return createFromReader(reader);
-                    }
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                }
-                finally
-                {
-                    if (reader != null)
-                        reader.Close();
-                }
-
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Gets all users in the database.</summary>
-        /// <returns>
-        /// A non-null, possibly empty list of UserData objects</returns>
-        public List<UserData> GetAll()
-        {
-            using (SqlConnection conn = new SqlConnection(csBuilder.ToString()))
-            {
-                List<UserData> users = new List<UserData>();
-                SqlCommand cmd = conn.CreateCommand();
-
-                cmd.CommandText = "Select * from dbo.[User];";
-
-                SqlDataReader reader = null;
-                try
-                {
-                    conn.Open();
-                    reader = cmd.ExecuteReader();
-
-                    if (reader.HasRows)
-                        while (reader.Read())
-                            users.Add(createFromReader(reader));
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                }
-                finally
-                {
-                    if (reader != null)
-                        reader.Close();
-                }
-
-                return users;
-            }
+            return UserDao.createFromReader(reader);
         }
 
         /// <summary>
@@ -288,13 +212,13 @@ namespace core.Modules.User
         /// <param name="reader">The SqlDataReader to get user data from</param>
         /// <returns>
         /// A UserData object</returns>
-        public UserData createFromReader(SqlDataReader reader)
+        public static UserData createFromReader(SqlDataReader reader)
         {
             UserData user = new UserData((int)reader["Id"]);
             user.Email = (string)reader["Email"];
             user.PasswordHash = (string)reader["PasswordHash"];
-            user.FirstName = (string)reader["FirstName"];
-            user.LastName = (string)reader["LastName"];
+            user.FirstName = reader["FirstName"] as string;
+            user.LastName = reader["LastName"] as string;
             user.IsAdmin = (bool)reader["IsAdmin"];
             return user;
         }
