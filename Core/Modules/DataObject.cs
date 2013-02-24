@@ -10,6 +10,11 @@ namespace core.Modules
     {
         private int id;
 
+        public DataObject(int id)
+        {
+            this.id = id;
+        }
+
         public int Id
         {
             get { return id; }
@@ -24,6 +29,11 @@ namespace core.Modules
         public static bool operator !=(DataObject lhs, DataObject rhs)
         {
             return !(lhs == rhs);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return this == (DataObject)obj;
         }
     }
 }

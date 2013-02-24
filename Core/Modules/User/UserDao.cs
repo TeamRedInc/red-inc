@@ -1,4 +1,5 @@
-﻿using System;
+﻿using core.Modules.Problem;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -9,25 +10,20 @@ using System.Threading.Tasks;
 
 namespace core.Modules.User
 {
-    public class UserDao
+    public class UserDao : DataAccessObject<UserData>
     {
-        private SqlConnectionStringBuilder csBuilder;
-
-        public UserDao()
-        {
-            csBuilder = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["AzureConnection"].ConnectionString);
-        }
+        public UserDao() : base("User") { }
 
         /// <summary>
         /// Add a new user to the database.</summary>
         /// <param name="user">The UserData object with the user's information</param>
         /// <returns>
         /// true if the add was successful, false otherwise</returns>
-        public bool AddUser(UserData user)
+        public bool Add(UserData user)
         {
-            using (SqlConnection conn = new SqlConnection(csBuilder.ToString()))
+            using (SqlConnection conn = new SqlConnection(connStr))
             {
-                string cmdStr = "Insert into dbo.[User] (Email, PasswordHash";
+                string cmdStr = "Insert into dbo.[" + tableName + "] (Email, PasswordHash";
                 string paramList = ") values (@email, @pwd";
 
                 SqlCommand cmd = conn.CreateCommand();
@@ -41,7 +37,7 @@ namespace core.Modules.User
                 cmd.Parameters["@pwd"].Value = user.PasswordHash;
 
                 //First name
-                if (!String.IsNullOrEmpty(user.FirstName)) 
+                if (!String.IsNullOrWhiteSpace(user.FirstName)) 
                 {
                     cmdStr += ", FirstName";
                     paramList += ", @fname";
@@ -50,7 +46,7 @@ namespace core.Modules.User
                 }
 
                 //Last name
-                if (!String.IsNullOrEmpty(user.LastName))
+                if (!String.IsNullOrWhiteSpace(user.LastName))
                 {                    
                     cmdStr += ", LastName";
                     paramList += ", @lname";
@@ -76,7 +72,7 @@ namespace core.Modules.User
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.Message);
+                    Console.WriteLine(e);
                     return false;
                 }
             }
@@ -90,11 +86,11 @@ namespace core.Modules.User
         /// true if the user is in the database and the password hashes match, false otherwise</returns>
         public bool Login(UserData user)
         {
-            using (SqlConnection conn = new SqlConnection(csBuilder.ToString()))
+            using (SqlConnection conn = new SqlConnection(connStr))
             {
                 SqlCommand cmd = conn.CreateCommand();
 
-                cmd.CommandText = "Select count(*) from dbo.[User] where Email = @email and PasswordHash = @pwd";
+                cmd.CommandText = "Select count(*) from dbo.[" + tableName + "] where Email = @email and PasswordHash = @pwd";
 
                 //Email
                 cmd.Parameters.Add("@email", SqlDbType.NVarChar);
@@ -113,10 +109,109 @@ namespace core.Modules.User
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.Message);
+                    Console.WriteLine(e);
                     return false;
                 }
             }
+        }
+
+        /// <summary>
+        /// Record a user's first attempt at a problem.</summary>
+        /// <param name="user">The UserData object with the user's information</param>
+        /// <param name="problem">The ProblemData object with the problem's id</param>
+        /// <param name="correct">Whether or not the solution is correct</param>
+        /// <returns>
+        /// true if the operation was successful, false otherwise</returns>
+        public bool AddSolution(UserData user, ProblemData problem, bool correct)
+        {
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                SqlCommand cmd = conn.CreateCommand();
+
+                cmd.CommandText = "Insert into dbo.[Solution] (UserId, ProblemId, IsCorrect) values (@userId, @problemId, @correct);";
+
+                //User
+                cmd.Parameters.Add("@userId", SqlDbType.Int);
+                cmd.Parameters["@userId"].Value = user.Id;
+
+                //Problem
+                cmd.Parameters.Add("@problemId", SqlDbType.Int);
+                cmd.Parameters["@problemId"].Value = problem.Id;
+
+                //Correct
+                cmd.Parameters.Add("@correct", SqlDbType.Bit);
+                cmd.Parameters["@correct"].Value = correct;
+
+                try
+                {
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Record a user's attempt at a problem that they previously attempted.</summary>
+        /// <param name="user">The UserData object with the user's information</param>
+        /// <param name="problem">The ProblemData object with the problem's id</param>
+        /// <param name="correct">Whether or not the solution is correct</param>
+        /// <returns>
+        /// true if the operation was successful, false otherwise</returns>
+        public bool UpdateSolution(UserData user, ProblemData problem, bool correct)
+        {
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                SqlCommand cmd = conn.CreateCommand();
+
+                cmd.CommandText = "Update dbo.[Solution] Set NumAttempts = NumAttempts + 1, IsCorrect = @correct"
+                    + " Where UserId = @userId and ProblemId = @problemId;";
+
+                //User
+                cmd.Parameters.Add("@userId", SqlDbType.Int);
+                cmd.Parameters["@userId"].Value = user.Id;
+
+                //Problem
+                cmd.Parameters.Add("@problemId", SqlDbType.Int);
+                cmd.Parameters["@problemId"].Value = problem.Id;
+
+                //Correct
+                cmd.Parameters.Add("@correct", SqlDbType.Bit);
+                cmd.Parameters["@correct"].Value = correct;
+
+                try
+                {
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Creates a user from a SqlDataReader.</summary>
+        /// <param name="reader">The SqlDataReader to get user data from</param>
+        /// <returns>
+        /// A UserData object</returns>
+        public override UserData createFromReader(SqlDataReader reader)
+        {
+            UserData user = new UserData((int)reader["Id"]);
+            user.Email = (string)reader["Email"];
+            user.PasswordHash = (string)reader["PasswordHash"];
+            user.FirstName = reader["FirstName"] as string;
+            user.LastName = reader["LastName"] as string;
+            user.IsAdmin = (bool)reader["IsAdmin"];
+            return user;
         }
     }
 }
