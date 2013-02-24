@@ -1,7 +1,6 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using core.Modules.Class;
+﻿using core.Modules.Class;
 using core.Modules.User;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 
 namespace core.Tests.Modules.Class
@@ -23,16 +22,6 @@ namespace core.Tests.Modules.Class
         }
 
         [TestMethod]
-        public void TestAddStudent()
-        {
-            ClassData cls = new ClassData(1);
-            UserData user = new UserData(7);
-
-            //This user should already be a student in the class
-            Assert.IsFalse(classDao.AddStudent(user, cls));
-        }
-
-        [TestMethod]
         public void TestGet()
         {
             ClassData cls = classDao.GetById(0);
@@ -48,6 +37,23 @@ namespace core.Tests.Modules.Class
             cls = classDao.GetById(classes[0].Id);
 
             Assert.AreEqual(classes[0], cls);
+        }
+
+        [TestMethod]
+        public void TestGetForUser()
+        {
+            ClassData cls1 = classDao.GetById(1);
+            ClassData cls2 = classDao.GetById(2);
+
+            List<ClassData> classes = classDao.GetStudentClasses(new UserData(1));
+
+            Assert.IsFalse(classes.Contains(cls1));
+            Assert.IsTrue(classes.Contains(cls2));
+
+            classes = classDao.GetInstructorClasses(new UserData(1));
+
+            Assert.IsTrue(classes.Contains(cls1));
+            Assert.IsFalse(classes.Contains(cls2));
         }
     }
 }

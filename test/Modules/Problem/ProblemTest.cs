@@ -1,6 +1,5 @@
-﻿using System;
+﻿using core.Modules.Problem;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using core.Modules.Problem;
 using System.Collections.Generic;
 
 namespace core.Tests.Modules.Problem
@@ -29,7 +28,7 @@ namespace core.Tests.Modules.Problem
 
             Assert.IsNull(problem);
 
-            problem = problemDao.GetById(3);
+            problem = problemDao.GetById(1);
 
             Assert.AreEqual("Hello, World!", problem.Name);
             Assert.IsNull(problem.Description);

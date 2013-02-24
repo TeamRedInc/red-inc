@@ -1,12 +1,8 @@
 ﻿using core.Modules.User;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace core.Modules.Class
 {
@@ -59,40 +55,80 @@ namespace core.Modules.Class
             return true;
         }
 
-        /// <summary>
-        /// Adds a user to a class as a student.</summary>
-        /// <param name="student">The UserData object with the student user's id</param>
-        /// <param name="cls">The ClassData object with the class's id</param>
-        /// <returns>
-        /// true if the add was successful, false otherwise</returns>
-        public bool AddStudent(UserData student, ClassData cls)
+        public List<ClassData> GetStudentClasses(UserData user)
         {
             using (SqlConnection conn = new SqlConnection(connStr))
             {
+                List<ClassData> classes = new List<ClassData>();
                 SqlCommand cmd = conn.CreateCommand();
 
-                cmd.CommandText = "Insert into dbo.[Student] values (@studentId, @clsId);";
+                cmd.CommandText = "Select * from dbo.[Student] s"
+                    + " Join dbo.[Class] c on c.Id = s.ClassId"
+                    + " Where UserId = @userId;";
 
-                //Student
-                cmd.Parameters.Add("@studentId", SqlDbType.Int);
-                cmd.Parameters["@studentId"].Value = student.Id;
+                //User
+                cmd.Parameters.Add("@userId", SqlDbType.Int);
+                cmd.Parameters["@userId"].Value = user.Id;
 
-                //Class
-                cmd.Parameters.Add("@clsId", SqlDbType.Int);
-                cmd.Parameters["@clsId"].Value = cls.Id;
-
+                SqlDataReader reader = null;
                 try
                 {
                     conn.Open();
-                    cmd.ExecuteNonQuery();
+                    reader = cmd.ExecuteReader();
+
+                    if (reader.HasRows)
+                        while (reader.Read())
+                            classes.Add(createFromReader(reader));
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine(e);
-                    return false;
                 }
+                finally
+                {
+                    if (reader != null)
+                        reader.Close();
+                }
+
+                return classes;
             }
-            return true;
+        }
+
+        public List<ClassData> GetInstructorClasses(UserData user)
+        {
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                List<ClassData> classes = new List<ClassData>();
+                SqlCommand cmd = conn.CreateCommand();
+
+                cmd.CommandText = "Select * from dbo.[" + tableName + "] Where InstructorId = @instrId;";
+
+                //User
+                cmd.Parameters.Add("@instrId", SqlDbType.Int);
+                cmd.Parameters["@instrId"].Value = user.Id;
+
+                SqlDataReader reader = null;
+                try
+                {
+                    conn.Open();
+                    reader = cmd.ExecuteReader();
+
+                    if (reader.HasRows)
+                        while (reader.Read())
+                            classes.Add(createFromReader(reader));
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+                finally
+                {
+                    if (reader != null)
+                        reader.Close();
+                }
+
+                return classes;
+            }
         }
 
         /// <summary>
