@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -75,74 +75,80 @@
 	
 <header class="jumbotron subhead" id="overview">
   <div class="container">
-    <h1>CS 1301 Problem Sets</h1>
-    <p class="lead">Click on one of the problem sets below to start practicing!</p>
+    <h1>CS 1301 Create/Edit Problem Set</h1>
+    <p class="lead"></p>
   </div>
 </header>
 
-<div style="padding:0px 90px">
-	<div class="pagination pagination-right">
-	  <ul>
-		<li><a href="#">Prev</a></li>
-		<li><a href="#">1</a></li>
-		<li><a href="#">2</a></li>
-		<li><a href="#">3</a></li>
-		<li><a href="#">...</a></li>
-		<li><a href="#">10</a></li>
-		<li><a href="#">Next</a></li>
-	  </ul>
-	</div>
-</div>
+
 
     <div class="container">
-		<div class="well">
-			<button class="btn btn-large btn-inverse btn-block" type="button">
-				<div style="float:left; padding:0px 10px;">Fun With Loops</div>
-				<br/>
-				<div style="float:left; padding:0px 10px;">
-					<div class="badge">For Loops</div><div class="badge">While Loops</div>
-				</div>
-			</button>
-			<button class="btn btn-large btn-inverse btn-block" type="button">
-				<div style="float:left; padding:0px 10px;">String Formatting</div>
-				<br/>
-				<div style="float:left; padding:0px 10px;">
-					<div class="badge">Strings</div><div class="badge">Formatting</div><div class="badge">Display</div>
-				</div>
-			</button>
-			<button class="btn btn-large btn-block disabled" type="button">
-				<div style="float:left; padding:0px 10px;">Problem Set 3</div>
-				<div style="padding:0px 10px;">
-					<div class="progress progress-success" style="width: 25%; float: right;"><div class="bar" style="width: 5%;"></div></div>
-				</div>
-				<br/>
-				<div style="float:left; padding:0px 10px;">
-					<div class="badge">For Loops</div><div class="badge">While Loops</div><div class="badge">Recursion</div>
-				</div>
-			</button>
-			<button class="btn btn-large btn-block disabled" type="button">
-				<div style="float:left; padding:0px 10px;">Problem Set 4</div>
-				<div style="padding:0px 10px;">
-					<div class="progress progress-success" style="width: 25%; float: right;"><div class="bar" style="width: 75%;"></div></div>
-				</div>
-				<br/>
-				<div style="float:left; padding:0px 10px;">
-					<div class="badge">For Loops</div><div class="badge">While Loops</div>
-				</div>
-			</button>
-			<button class="btn btn-large btn-block disabled" type="button">
-				<div style="float:left; padding:0px 10px;">Problem Set 5</div>
-				<div style="padding:0px 10px;">
-					<div class="progress progress-success" style="width: 25%; float: right;"><div class="bar" style="width: 0%;"></div></div>
-				</div>
-				<br/>
-				<div style="float:left; padding:0px 10px;">
-					<div class="badge">For Loops</div><div class="badge">While Loops</div>
-				</div>
-			</button>
-		</div>
-    </div> <!-- /container -->
+		<h4>Name</h4>
+		<input type="text" placeholder="Problem Set 1">
+		<br/><br/>
 
+		<br/>
+		
+		<h3>Unlock Prerequisites</h3>
+		<hr style="background:#74CC31; border:0; height:7px; width: 800px" />
+		
+		<table class="table table-striped" style="width:800px;">
+			<tr>
+				<th> Problem Type </th>
+				<th> Number of Problems Required </th>
+				<th></th>
+			</tr>
+			<tr>
+				<td> Loops </td>
+				<td>
+					<select>
+						<option>1</option>
+						<option>2</option>
+						<option>3</option>
+						<option>4</option>
+						<option>5</option>
+					</select>
+				</td>
+				<td><i class="icon-pencil"></i><button class="close">&times;</button> </td>
+			</tr>
+			<tr>
+				<td> Variable Assignment </td>
+				<td>
+					<select>
+						<option>1</option>
+						<option>2</option>
+						<option>3</option>
+						<option>4</option>
+						<option>5</option>
+					</select>
+				</td>
+				<td><i class="icon-pencil"></i><button class="close">&times;</button> </td>
+			</tr>
+			
+		</table>
+		
+		<br/>
+		<h3>Add Problems (optional)</h3>
+		<hr style="background:#74CC31; border:0; height:7px; width: 800px" />
+		
+		<div style="width:800px;">
+			<table class="table table-striped">
+				<tr><td><input type="checkbox"> Problem 102 <button class="close">&times;</button> </td></tr>
+				<tr><td><p><input type="checkbox"> Problem 267 <button class="close">&times;</button> </td></tr>
+				<tr><td><input type="checkbox"> <input class="input-xxlarge" type="text" placeholder="Type to Search"> <button class="close">&times;</button> </td></tr>
+			</table>
+			
+		</div>
+		<button class="btn" type="button">Add</button>
+		<button class="btn" type="button">Remove</button>
+		<button class="btn" type="button">Move</button>
+		<button class="btn" type="button">Select All</button>
+	
+	<br/><br/><br/>
+	<button class="btn btn-large btn-success" type="button">Save</button>
+	<button class="btn btn-large" type="button">Return to Class Without Saving</button>
+    </div> <!-- /container -->
+<br/><br/><br/><br/><br/><br/><br/>
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->

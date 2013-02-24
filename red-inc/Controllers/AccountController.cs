@@ -33,9 +33,9 @@ namespace red_inc.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(string email, string password, bool rememberMe, string returnUrl)
+        public ActionResult Login(LoginModel model, string returnUrl)
         {
-            if (WebSecurity.Login(email, password, persistCookie: rememberMe))
+            if (WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
             {
                 return RedirectToLocal(returnUrl);
             }

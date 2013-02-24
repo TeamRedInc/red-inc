@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -9,6 +9,7 @@
 
     <!-- Le styles -->
     <link href="../assets/css/bootstrap.css" rel="stylesheet">
+	<link href="../prettify/distrib/google-code-prettify/prettify.css" type="text/css" rel="stylesheet" />
     <style>
       body {
         padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
@@ -75,80 +76,82 @@
 	
 <header class="jumbotron subhead" id="overview">
   <div class="container">
-    <h1>CS 1301 Create/Edit Problem Set</h1>
-    <p class="lead"></p>
+    <h1>Problem 159</h1>
+    <p class="lead">Problem Set 1</p>
   </div>
 </header>
 
 
 
-    <div class="container">
-		<h4>Name</h4>
-		<input type="text" placeholder="Problem Set 1">
-		<br/><br/>
-
-		<br/>
+<!-- Body -->
+<div class="container">
+	<div style="float:left; width:12%; padding: 5px;">
+		<p><button class="btn btn-block" type="button"><i class="icon-comment"></i> Share</button></p>
+		<p><button class="btn btn-block" type="button"><i class="icon-envelope"></i> Email Instructor</button></p>
+		<p><button class="btn btn-block" type="button"><i class="icon-warning-sign"></i> Report</button></p>
+	</div>
+	<div class="well" style="float:left; width:83%">
+		<p>
+			Write a function <code>foo(bar)</code> that does something completely random.  Use the following as an example.
+		</p>
+		<pre class="prettyprint linenums">
+function foo(bar):
+	#
+	return other
+		</pre>
 		
-		<h3>Unlock Prerequisites</h3>
-		<hr style="background:#74CC31; border:0; height:7px; width: 800px" />
-		
-		<table class="table table-striped" style="width:800px;">
-			<tr>
-				<th> Problem Type </th>
-				<th> Number of Problems Required </th>
-				<th></th>
-			</tr>
-			<tr>
-				<td> Loops </td>
-				<td>
-					<select>
-						<option>1</option>
-						<option>2</option>
-						<option>3</option>
-						<option>4</option>
-						<option>5</option>
-					</select>
-				</td>
-				<td><i class="icon-pencil"></i><button class="close">&times;</button> </td>
-			</tr>
-			<tr>
-				<td> Variable Assignment </td>
-				<td>
-					<select>
-						<option>1</option>
-						<option>2</option>
-						<option>3</option>
-						<option>4</option>
-						<option>5</option>
-					</select>
-				</td>
-				<td><i class="icon-pencil"></i><button class="close">&times;</button> </td>
-			</tr>
-			
-		</table>
-		
-		<br/>
-		<h3>Add Problems (optional)</h3>
-		<hr style="background:#74CC31; border:0; height:7px; width: 800px" />
-		
-		<div style="width:800px;">
-			<table class="table table-striped">
-				<tr><td><input type="checkbox"> Problem 102 <button class="close">&times;</button> </td></tr>
-				<tr><td><p><input type="checkbox"> Problem 267 <button class="close">&times;</button> </td></tr>
-				<tr><td><input type="checkbox"> <input class="input-xxlarge" type="text" placeholder="Type to Search"> <button class="close">&times;</button> </td></tr>
-			</table>
-			
-		</div>
-		<button class="btn" type="button">Add</button>
-		<button class="btn" type="button">Remove</button>
-		<button class="btn" type="button">Move</button>
-		<button class="btn" type="button">Select All</button>
+	</div>
 	
-	<br/><br/><br/>
-	<button class="btn btn-large btn-success" type="button">Save</button>
-	<button class="btn btn-large" type="button">Return to Class Without Saving</button>
-    </div> <!-- /container -->
-<br/><br/><br/><br/><br/><br/><br/>
+</div>
+<div class="container">
+	<div style="float:left; width:12%; padding: 5px;">
+		<br/><br/><br/><br/><br/>
+		<p><button class="btn btn-block btn-success" type="button"><i class="icon-play"></i> Run</button></p>
+		<br/>
+		<p><button class="btn btn-block" type="button"><i class="icon-refresh"></i> Restart</button></p>
+		<p><button class="btn btn-block" type="button"><i class="icon-file"></i> Ctrl-C</button></p>
+		<p><button class="btn btn-block" type="button"><i class="icon-folder-open"></i> Filesystem</button></p>
+	</div>
+	<div style="float:left; width:86%">
+		<hr style="background:#74CC31; border:0; height:7px" />
+		<h3>Your Code Here</h3>
+		<textarea rows=12 style="width:99%;font-family:'Courier New', monospace;"></textarea>
+		<div style="float:left; width:43%;padding:10px;">
+		<h4>Test Output Area</h4>
+		<pre class="prettyprint linenums">
+foo(7)
+12
+foo(49)
+54
+foo(-5)
+0
+		</pre>
+		</div>
+		<div style="float:left; width:43%; padding:10px">
+		<h4>Sample Output</h4>
+		<pre class="prettyprint linenums">
+foo(7)
+14
+foo(49)
+98
+foo(-5)
+-10
+		</pre>
+		</div>
+	</div>
+</div>
+
+<div class="container">
+	<br/>
+	<div style="float:right;">
+	<button class="btn btn-primary btn-large" type="button">Submit</button>
+	</div>
+	<br/><br/>
+	Footer<br/>
+</div>
+
+<!-- /Body -->
+
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
@@ -165,6 +168,10 @@
     <script src="../assets/js/bootstrap-collapse.js"></script>
     <script src="../assets/js/bootstrap-carousel.js"></script>
     <script src="../assets/js/bootstrap-typeahead.js"></script>
-
+	
+	<script type="text/javascript" src="../prettify/distrib/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../prettify/js-modules/numberLines.js"></script>
+	
+	
   </body>
 </html>

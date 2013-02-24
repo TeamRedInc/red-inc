@@ -1,3 +1,4 @@
+﻿@model red_inc.Models.LoginRegisterModel.LoginModel
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -107,18 +108,30 @@
 
 
     <div class="container">
-
-      <form class="form-signin">
-        <h2 class="form-signin-heading">Please sign in</h2>
-        <input type="text" class="input-block-level" id="email" placeholder="Email address">
-        <input type="password" class="input-block-level" id="pwd" placeholder="Password">
-        <label class="checkbox">
-          <input type="checkbox" value="remember-me" id="remember"> Remember me
-        </label>
-        <button class="btn btn-large btn-primary" type="submit" id="signin">Sign in</button>
-      </form>
-
+    @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl })) {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        <fieldset>
+            <legend>Log in Form</legend>
+            <ol>
+                <li>
+                    @Html.LabelFor(m => m.Email)
+                    @Html.TextBoxFor(m => m.Email)
+                    @Html.ValidationMessageFor(m => m.Email)
+                </li>
+                <li>
+                    @Html.LabelFor(m => m.Password)
+                    @Html.PasswordFor(m => m.Password)
+                    @Html.ValidationMessageFor(m => m.Password)
+                </li>
+            </ol>
+            <button class="btn btn-large btn-primary" type="submit" id="signin">Sign in</button>
+        </fieldset>
+    }
     </div> <!-- /container -->
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }
 
     <!-- Le javascript
     ================================================== -->
@@ -136,13 +149,14 @@
     <script src="../assets/js/bootstrap-collapse.js"></script>
     <script src="../assets/js/bootstrap-carousel.js"></script>
     <script src="../assets/js/bootstrap-typeahead.js"></script>
+    <!--
     <script type="text/javascript">
-        $("#signin").click( function() {
+        $("#signin").click(function () {
             $.ajax({
                 type: "POST",
                 url: "../../Controllers/AccountController/Login",
-                data: { selectedValue: "#email", selectedValue: "#pwd", selectedValue: "#remember"},
-                success: function( html ) {
+                data: { selectedValue: "#email", selectedValue: "#pwd", selectedValue: "#remember" },
+                success: function (html) {
                     alert("Login Status: " + html);
                 },
                 error: function (jqXHR, exception) {
@@ -165,6 +179,6 @@
             });
         });
     </script>
-
+    -->
   </body>
 </html>

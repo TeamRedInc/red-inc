@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -9,7 +9,6 @@
 
     <!-- Le styles -->
     <link href="../assets/css/bootstrap.css" rel="stylesheet">
-	<link href="../prettify/distrib/google-code-prettify/prettify.css" type="text/css" rel="stylesheet" />
     <style>
       body {
         padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
@@ -76,81 +75,73 @@
 	
 <header class="jumbotron subhead" id="overview">
   <div class="container">
-    <h1>Problem 159</h1>
-    <p class="lead">Problem Set 1</p>
+    <h1>CS 1301 Problem Sets</h1>
+    <p class="lead">Click on one of the problem sets below to start practicing!</p>
   </div>
 </header>
 
-
-
-<!-- Body -->
-<div class="container">
-	<div style="float:left; width:12%; padding: 5px;">
-		<p><button class="btn btn-block" type="button"><i class="icon-comment"></i> Share</button></p>
-		<p><button class="btn btn-block" type="button"><i class="icon-envelope"></i> Email Instructor</button></p>
-		<p><button class="btn btn-block" type="button"><i class="icon-warning-sign"></i> Report</button></p>
+<div style="padding:0px 90px">
+	<div class="pagination pagination-right">
+	  <ul>
+		<li><a href="#">Prev</a></li>
+		<li><a href="#">1</a></li>
+		<li><a href="#">2</a></li>
+		<li><a href="#">3</a></li>
+		<li><a href="#">...</a></li>
+		<li><a href="#">10</a></li>
+		<li><a href="#">Next</a></li>
+	  </ul>
 	</div>
-	<div class="well" style="float:left; width:83%">
-		<p>
-			Write a function <code>foo(bar)</code> that does something completely random.  Use the following as an example.
-		</p>
-		<pre class="prettyprint linenums">
-function foo(bar):
-	#
-	return other
-		</pre>
-		
-	</div>
-	
 </div>
-<div class="container">
-	<div style="float:left; width:12%; padding: 5px;">
-		<br/><br/><br/><br/><br/>
-		<p><button class="btn btn-block btn-success" type="button"><i class="icon-play"></i> Run</button></p>
-		<br/>
-		<p><button class="btn btn-block" type="button"><i class="icon-refresh"></i> Restart</button></p>
-		<p><button class="btn btn-block" type="button"><i class="icon-file"></i> Ctrl-C</button></p>
-		<p><button class="btn btn-block" type="button"><i class="icon-folder-open"></i> Filesystem</button></p>
-	</div>
-	<div style="float:left; width:86%">
-		<hr style="background:#74CC31; border:0; height:7px" />
-		<h3>Your Code Here</h3>
-		<textarea rows=12 style="width:99%;font-family:'Courier New', monospace;"></textarea>
-		<div style="float:left; width:43%;padding:10px;">
-		<h4>Test Output Area</h4>
-		<pre class="prettyprint linenums">
-foo(7)
-12
-foo(49)
-54
-foo(-5)
-0
-		</pre>
+
+    <div class="container">
+		<div class="well">
+			<button class="btn btn-large btn-inverse btn-block" type="button">
+				<div style="float:left; padding:0px 10px;">Fun With Loops</div>
+				<br/>
+				<div style="float:left; padding:0px 10px;">
+					<div class="badge">For Loops</div><div class="badge">While Loops</div>
+				</div>
+			</button>
+			<button class="btn btn-large btn-inverse btn-block" type="button">
+				<div style="float:left; padding:0px 10px;">String Formatting</div>
+				<br/>
+				<div style="float:left; padding:0px 10px;">
+					<div class="badge">Strings</div><div class="badge">Formatting</div><div class="badge">Display</div>
+				</div>
+			</button>
+			<button class="btn btn-large btn-block disabled" type="button">
+				<div style="float:left; padding:0px 10px;">Problem Set 3</div>
+				<div style="padding:0px 10px;">
+					<div class="progress progress-success" style="width: 25%; float: right;"><div class="bar" style="width: 5%;"></div></div>
+				</div>
+				<br/>
+				<div style="float:left; padding:0px 10px;">
+					<div class="badge">For Loops</div><div class="badge">While Loops</div><div class="badge">Recursion</div>
+				</div>
+			</button>
+			<button class="btn btn-large btn-block disabled" type="button">
+				<div style="float:left; padding:0px 10px;">Problem Set 4</div>
+				<div style="padding:0px 10px;">
+					<div class="progress progress-success" style="width: 25%; float: right;"><div class="bar" style="width: 75%;"></div></div>
+				</div>
+				<br/>
+				<div style="float:left; padding:0px 10px;">
+					<div class="badge">For Loops</div><div class="badge">While Loops</div>
+				</div>
+			</button>
+			<button class="btn btn-large btn-block disabled" type="button">
+				<div style="float:left; padding:0px 10px;">Problem Set 5</div>
+				<div style="padding:0px 10px;">
+					<div class="progress progress-success" style="width: 25%; float: right;"><div class="bar" style="width: 0%;"></div></div>
+				</div>
+				<br/>
+				<div style="float:left; padding:0px 10px;">
+					<div class="badge">For Loops</div><div class="badge">While Loops</div>
+				</div>
+			</button>
 		</div>
-		<div style="float:left; width:43%; padding:10px">
-		<h4>Sample Output</h4>
-		<pre class="prettyprint linenums">
-foo(7)
-14
-foo(49)
-98
-foo(-5)
--10
-		</pre>
-		</div>
-	</div>
-</div>
-
-<div class="container">
-	<br/>
-	<div style="float:right;">
-	<button class="btn btn-primary btn-large" type="button">Submit</button>
-	</div>
-	<br/><br/>
-	Footer<br/>
-</div>
-
-<!-- /Body -->
+    </div> <!-- /container -->
 
     <!-- Le javascript
     ================================================== -->
@@ -168,10 +159,6 @@ foo(-5)
     <script src="../assets/js/bootstrap-collapse.js"></script>
     <script src="../assets/js/bootstrap-carousel.js"></script>
     <script src="../assets/js/bootstrap-typeahead.js"></script>
-	
-	<script type="text/javascript" src="../prettify/distrib/google-code-prettify/prettify.js"></script>
-	<script type="text/javascript" src="../prettify/js-modules/numberLines.js"></script>
-	
-	
+
   </body>
 </html>
