@@ -1,0 +1,3 @@
+Id	Email	PasswordHash	FirstName	LastName	IsAdmin
+1	jwien3@mail.gatech.edu	pass123	Josh	Wien	1
+2	rlobo3@gatech.edu	pass123	Rochelle	Lobo	0

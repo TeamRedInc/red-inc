@@ -96,11 +96,20 @@ namespace core.Modules.Class
         }
 
         /// <summary>
+        /// This method only exists so the superclass DataAccessObject can polymorphically call createFromReader.
+        /// Use of the static createFromReader(SqlDataReader) method is preferred.
+        /// </summary>
+        public override ClassData createObjectFromReader(SqlDataReader reader)
+        {
+            return ClassDao.createFromReader(reader);
+        }
+
+        /// <summary>
         /// Creates a class from a SqlDataReader.</summary>
         /// <param name="reader">The SqlDataReader to get class data from</param>
         /// <returns>
         /// A ClassData object</returns>
-        public override ClassData createFromReader(SqlDataReader reader)
+        public static ClassData createFromReader(SqlDataReader reader)
         {
             ClassData cls = new ClassData((int)reader["Id"]);
             cls.Name = reader["Name"] as string;

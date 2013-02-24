@@ -25,7 +25,6 @@ namespace core.Tests.Modules.Problem
         [TestMethod]
         public void TestGet()
         {
-            Console.WriteLine("Here");
             ProblemData problem = problemDao.GetById(0);
 
             Assert.IsNull(problem);

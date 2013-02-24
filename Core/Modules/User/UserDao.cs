@@ -199,11 +199,20 @@ namespace core.Modules.User
         }
 
         /// <summary>
+        /// This method only exists so the superclass DataAccessObject can polymorphically call createFromReader.
+        /// Use of the static createFromReader(SqlDataReader) method is preferred.
+        /// </summary>
+        public override UserData createObjectFromReader(SqlDataReader reader)
+        {
+            return UserDao.createFromReader(reader);
+        }
+
+        /// <summary>
         /// Creates a user from a SqlDataReader.</summary>
         /// <param name="reader">The SqlDataReader to get user data from</param>
         /// <returns>
         /// A UserData object</returns>
-        public override UserData createFromReader(SqlDataReader reader)
+        public static UserData createFromReader(SqlDataReader reader)
         {
             UserData user = new UserData((int)reader["Id"]);
             user.Email = (string)reader["Email"];
