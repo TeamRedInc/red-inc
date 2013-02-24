@@ -69,11 +69,20 @@ namespace core.Modules.Problem
         }
 
         /// <summary>
+        /// This method only exists so the superclass DataAccessObject can polymorphically call createFromReader.
+        /// Use of the static createFromReader(SqlDataReader) method is preferred.
+        /// </summary>
+        public override ProblemData createObjectFromReader(SqlDataReader reader)
+        {
+            return ProblemDao.createFromReader(reader);
+        }
+
+        /// <summary>
         /// Creates a problem from a SqlDataReader.</summary>
         /// <param name="reader">The SqlDataReader to get problem data from</param>
         /// <returns>
         /// A ProblemData object</returns>
-        public override ProblemData createFromReader(SqlDataReader reader)
+        public static ProblemData createFromReader(SqlDataReader reader)
         {
             ProblemData problem = new ProblemData((int)reader["Id"]);
             problem.Name = reader["Name"] as string;

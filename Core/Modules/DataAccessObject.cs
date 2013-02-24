@@ -46,7 +46,7 @@ namespace core.Modules
                     if (reader.HasRows)
                     {
                         reader.Read();
-                        return createFromReader(reader);
+                        return createObjectFromReader(reader);
                     }
                 }
                 catch (Exception e)
@@ -84,7 +84,7 @@ namespace core.Modules
 
                     if (reader.HasRows)
                         while (reader.Read())
-                            classes.Add(createFromReader(reader));
+                            classes.Add(createObjectFromReader(reader));
                 }
                 catch (Exception e)
                 {
@@ -105,6 +105,6 @@ namespace core.Modules
         /// <param name="reader">The SqlDataReader to get object data from</param>
         /// <returns>
         /// A DataObject object</returns>
-        public abstract T createFromReader(SqlDataReader reader);
+        public abstract T createObjectFromReader(SqlDataReader reader);
     }
 }
