@@ -29,15 +29,13 @@ namespace core.Modules.Class
                 {
                     cmdStr += "Name";
                     paramList += "@name";
-                    cmd.Parameters.Add("@name", SqlDbType.NVarChar);
-                    cmd.Parameters["@name"].Value = cls.Name;
+                    cmd.Parameters.AddWithValue("@name", cls.Name);
                 }
 
                 //Instructor
                 cmdStr += ", InstructorId";
                 paramList += ", @instrId";
-                cmd.Parameters.Add("@instrId", SqlDbType.Int);
-                cmd.Parameters["@instrId"].Value = cls.Instructor.Id;
+                cmd.Parameters.AddWithValue("@instrId", cls.Instructor.Id);
 
                 cmd.CommandText = cmdStr + paramList + ");";
 
@@ -55,6 +53,11 @@ namespace core.Modules.Class
             return true;
         }
 
+        /// <summary>
+        /// Gets all classes the specified user is a student in.
+        /// </summary>
+        /// <param name="user">The UserData object with the student's id</param>
+        /// <returns>A non-null, possibly empty list of filled ClassData objects</returns>
         public List<ClassData> GetStudentClasses(UserData user)
         {
             using (SqlConnection conn = new SqlConnection(connStr))
@@ -63,12 +66,11 @@ namespace core.Modules.Class
                 SqlCommand cmd = conn.CreateCommand();
 
                 cmd.CommandText = "Select * from dbo.[Student] s"
-                    + " Join dbo.[Class] c on c.Id = s.ClassId"
+                    + " Join dbo.[" + tableName + "] c on c.Id = s.ClassId"
                     + " Where UserId = @userId;";
 
                 //User
-                cmd.Parameters.Add("@userId", SqlDbType.Int);
-                cmd.Parameters["@userId"].Value = user.Id;
+                cmd.Parameters.AddWithValue("@userId", user.Id);
 
                 SqlDataReader reader = null;
                 try
@@ -94,41 +96,14 @@ namespace core.Modules.Class
             }
         }
 
+        /// <summary>
+        /// Gets all classes the specified user is an instructor for.
+        /// </summary>
+        /// <param name="user">The UserData object with the instructor's id</param>
+        /// <returns>A non-null, possibly empty list of filled ClassData objects</returns>
         public List<ClassData> GetInstructorClasses(UserData user)
         {
-            using (SqlConnection conn = new SqlConnection(connStr))
-            {
-                List<ClassData> classes = new List<ClassData>();
-                SqlCommand cmd = conn.CreateCommand();
-
-                cmd.CommandText = "Select * from dbo.[" + tableName + "] Where InstructorId = @instrId;";
-
-                //User
-                cmd.Parameters.Add("@instrId", SqlDbType.Int);
-                cmd.Parameters["@instrId"].Value = user.Id;
-
-                SqlDataReader reader = null;
-                try
-                {
-                    conn.Open();
-                    reader = cmd.ExecuteReader();
-
-                    if (reader.HasRows)
-                        while (reader.Read())
-                            classes.Add(createFromReader(reader));
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                }
-                finally
-                {
-                    if (reader != null)
-                        reader.Close();
-                }
-
-                return classes;
-            }
+            return base.GetAll("InstructorId", user.Id);
         }
 
         /// <summary>

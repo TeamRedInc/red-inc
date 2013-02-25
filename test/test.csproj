@@ -50,7 +50,6 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="DaoTest.cs" />
     <Compile Include="Modules\Class\ClassTest.cs" />
     <Compile Include="Modules\ProblemSet\ProblemSetTest.cs" />
     <Compile Include="Modules\Problem\ProblemTest.cs" />

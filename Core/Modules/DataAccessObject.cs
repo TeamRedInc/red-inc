@@ -31,8 +31,7 @@ namespace core.Modules
                 cmd.CommandText = "Select * from dbo.[" + tableName + "] where Id = @id;";
 
                 //Id
-                cmd.Parameters.Add("@id", SqlDbType.Int);
-                cmd.Parameters["@id"].Value = id;
+                cmd.Parameters.AddWithValue("@id", id);
 
                 SqlDataReader reader = null;
                 try
@@ -72,6 +71,42 @@ namespace core.Modules
                 SqlCommand cmd = conn.CreateCommand();
 
                 cmd.CommandText = "Select * from dbo.[" + tableName + "];";
+
+                SqlDataReader reader = null;
+                try
+                {
+                    conn.Open();
+                    reader = cmd.ExecuteReader();
+
+                    if (reader.HasRows)
+                        while (reader.Read())
+                            objects.Add(createObjectFromReader(reader));
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+                finally
+                {
+                    if (reader != null)
+                        reader.Close();
+                }
+
+                return objects;
+            }
+        }
+
+        protected List<T> GetAll(string column, object value)
+        {
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                List<T> objects = new List<T>();
+                SqlCommand cmd = conn.CreateCommand();
+
+                cmd.CommandText = "Select * from dbo.[" + tableName + "] Where " + column + " = @value;";
+
+                //Value
+                cmd.Parameters.AddWithValue("@value", value);
 
                 SqlDataReader reader = null;
                 try
