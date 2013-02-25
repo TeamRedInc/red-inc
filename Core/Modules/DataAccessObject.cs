@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace core.Modules
 {
@@ -66,12 +63,12 @@ namespace core.Modules
         /// <summary>
         /// Gets all data objects in the database.</summary>
         /// <returns>
-        /// A non-null, possibly empty list of DataObject objects</returns>
+        /// A non-null, possibly empty list of filled DataObject objects</returns>
         public List<T> GetAll()
         {
             using (SqlConnection conn = new SqlConnection(connStr))
             {
-                List<T> classes = new List<T>();
+                List<T> objects = new List<T>();
                 SqlCommand cmd = conn.CreateCommand();
 
                 cmd.CommandText = "Select * from dbo.[" + tableName + "];";
@@ -84,7 +81,7 @@ namespace core.Modules
 
                     if (reader.HasRows)
                         while (reader.Read())
-                            classes.Add(createObjectFromReader(reader));
+                            objects.Add(createObjectFromReader(reader));
                 }
                 catch (Exception e)
                 {
@@ -96,7 +93,7 @@ namespace core.Modules
                         reader.Close();
                 }
 
-                return classes;
+                return objects;
             }
         }
 

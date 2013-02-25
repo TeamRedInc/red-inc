@@ -1,7 +1,6 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using core.Modules.Class;
 using core.Modules.ProblemSet;
-using core.Modules.Class;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 
 namespace core.Tests.Modules.ProblemSet
@@ -21,7 +20,7 @@ namespace core.Tests.Modules.ProblemSet
             //This test works as of 5:15pm on 2/22
             //Commenting it out to prevent cluttering the database
             //- Josh
-            Assert.IsTrue(setDao.Add(set));
+            //Assert.IsTrue(setDao.Add(set));
         }
 
         [TestMethod]
@@ -34,7 +33,7 @@ namespace core.Tests.Modules.ProblemSet
             set = setDao.GetById(1);
 
             Assert.AreEqual("Beginner Problems", set.Name);
-            Assert.AreEqual(1, set.Class.Id);
+            Assert.AreEqual(2, set.Class.Id);
 
             List<ProblemSetData> sets = setDao.GetAll();
 

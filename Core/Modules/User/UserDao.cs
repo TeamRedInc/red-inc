@@ -1,12 +1,8 @@
-﻿using core.Modules.Problem;
+﻿using core.Modules.Class;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace core.Modules.User
 {
@@ -90,7 +86,7 @@ namespace core.Modules.User
             {
                 SqlCommand cmd = conn.CreateCommand();
 
-                cmd.CommandText = "Select count(*) from dbo.[" + tableName + "] where Email = @email and PasswordHash = @pwd";
+                cmd.CommandText = "Select count(*) from dbo.[" + tableName + "] where Email = @email and PasswordHash = @pwd;";
 
                 //Email
                 cmd.Parameters.Add("@email", SqlDbType.NVarChar);
@@ -116,31 +112,26 @@ namespace core.Modules.User
         }
 
         /// <summary>
-        /// Record a user's first attempt at a problem.</summary>
-        /// <param name="user">The UserData object with the user's information</param>
-        /// <param name="problem">The ProblemData object with the problem's id</param>
-        /// <param name="correct">Whether or not the solution is correct</param>
+        /// Adds a user to a class as a student.</summary>
+        /// <param name="student">The UserData object with the student user's id</param>
+        /// <param name="cls">The ClassData object with the class's id</param>
         /// <returns>
-        /// true if the operation was successful, false otherwise</returns>
-        public bool AddSolution(UserData user, ProblemData problem, bool correct)
+        /// true if the add was successful, false otherwise</returns>
+        public bool AddStudent(UserData student, ClassData cls)
         {
             using (SqlConnection conn = new SqlConnection(connStr))
             {
                 SqlCommand cmd = conn.CreateCommand();
 
-                cmd.CommandText = "Insert into dbo.[Solution] (UserId, ProblemId, IsCorrect) values (@userId, @problemId, @correct);";
+                cmd.CommandText = "Insert into dbo.[Student] values (@studentId, @clsId);";
 
-                //User
-                cmd.Parameters.Add("@userId", SqlDbType.Int);
-                cmd.Parameters["@userId"].Value = user.Id;
+                //Student
+                cmd.Parameters.Add("@studentId", SqlDbType.Int);
+                cmd.Parameters["@studentId"].Value = student.Id;
 
-                //Problem
-                cmd.Parameters.Add("@problemId", SqlDbType.Int);
-                cmd.Parameters["@problemId"].Value = problem.Id;
-
-                //Correct
-                cmd.Parameters.Add("@correct", SqlDbType.Bit);
-                cmd.Parameters["@correct"].Value = correct;
+                //Class
+                cmd.Parameters.Add("@clsId", SqlDbType.Int);
+                cmd.Parameters["@clsId"].Value = cls.Id;
 
                 try
                 {
@@ -157,45 +148,47 @@ namespace core.Modules.User
         }
 
         /// <summary>
-        /// Record a user's attempt at a problem that they previously attempted.</summary>
-        /// <param name="user">The UserData object with the user's information</param>
-        /// <param name="problem">The ProblemData object with the problem's id</param>
-        /// <param name="correct">Whether or not the solution is correct</param>
-        /// <returns>
-        /// true if the operation was successful, false otherwise</returns>
-        public bool UpdateSolution(UserData user, ProblemData problem, bool correct)
+        /// Gets all students in the specified class.
+        /// </summary>
+        /// <param name="cls">The class to get students for</param>
+        /// <returns>A non-null, possibly empty list of filled UserData objects</returns>
+        public List<UserData> GetStudents(ClassData cls)
         {
             using (SqlConnection conn = new SqlConnection(connStr))
             {
+                List<UserData> students = new List<UserData>();
                 SqlCommand cmd = conn.CreateCommand();
 
-                cmd.CommandText = "Update dbo.[Solution] Set NumAttempts = NumAttempts + 1, IsCorrect = @correct"
-                    + " Where UserId = @userId and ProblemId = @problemId;";
+                cmd.CommandText = "Select * from dbo.[Student] s"
+                    + " Join dbo.[User] u on u.Id = s.UserId"
+                    + " Where ClassId = @clsId;";
 
-                //User
-                cmd.Parameters.Add("@userId", SqlDbType.Int);
-                cmd.Parameters["@userId"].Value = user.Id;
+                //Class
+                cmd.Parameters.Add("@clsId", SqlDbType.Int);
+                cmd.Parameters["@clsId"].Value = cls.Id;
 
-                //Problem
-                cmd.Parameters.Add("@problemId", SqlDbType.Int);
-                cmd.Parameters["@problemId"].Value = problem.Id;
-
-                //Correct
-                cmd.Parameters.Add("@correct", SqlDbType.Bit);
-                cmd.Parameters["@correct"].Value = correct;
-
+                SqlDataReader reader = null;
                 try
                 {
                     conn.Open();
-                    cmd.ExecuteNonQuery();
+                    reader = cmd.ExecuteReader();
+
+                    if (reader.HasRows)
+                        while (reader.Read())
+                            students.Add(createFromReader(reader));
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine(e);
-                    return false;
                 }
+                finally
+                {
+                    if (reader != null)
+                        reader.Close();
+                }
+
+                return students;
             }
-            return true;
         }
 
         /// <summary>

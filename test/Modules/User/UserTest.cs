@@ -1,6 +1,6 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using core.Modules.Class;
 using core.Modules.User;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 
 namespace core.Tests.Modules.User
@@ -62,9 +62,26 @@ namespace core.Tests.Modules.User
         }
 
         [TestMethod]
+        public void TestAddStudent()
+        {
+            ClassData cls = new ClassData(1);
+            UserData user = new UserData(7);
+
+            //This user should already be a student in the class
+            Assert.IsFalse(userDao.AddStudent(user, cls));
+        }
+
+        [TestMethod]
         public void TestGetStudents()
         {
+            List<UserData> students = userDao.GetStudents(new ClassData(1));
+            UserData student = userDao.GetById(2);
 
+            Assert.IsTrue(students.Contains(student));
+
+            student = userDao.GetById(1);
+
+            Assert.IsFalse(students.Contains(student));
         }
     }
 }
