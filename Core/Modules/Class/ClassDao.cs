@@ -1,12 +1,8 @@
 ﻿using core.Modules.User;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace core.Modules.Class
 {
@@ -33,15 +29,13 @@ namespace core.Modules.Class
                 {
                     cmdStr += "Name";
                     paramList += "@name";
-                    cmd.Parameters.Add("@name", SqlDbType.NVarChar);
-                    cmd.Parameters["@name"].Value = cls.Name;
+                    cmd.Parameters.AddWithValue("@name", cls.Name);
                 }
 
                 //Instructor
                 cmdStr += ", InstructorId";
                 paramList += ", @instrId";
-                cmd.Parameters.Add("@instrId", SqlDbType.Int);
-                cmd.Parameters["@instrId"].Value = cls.Instructor.Id;
+                cmd.Parameters.AddWithValue("@instrId", cls.Instructor.Id);
 
                 cmd.CommandText = cmdStr + paramList + ");";
 
@@ -60,39 +54,65 @@ namespace core.Modules.Class
         }
 
         /// <summary>
-        /// Adds a user to a class as a student.</summary>
-        /// <param name="student">The UserData object with the student user's id</param>
-        /// <param name="cls">The ClassData object with the class's id</param>
-        /// <returns>
-        /// true if the add was successful, false otherwise</returns>
-        public bool AddStudent(UserData student, ClassData cls)
+        /// Gets all classes the specified user is a student in.
+        /// </summary>
+        /// <param name="user">The UserData object with the student's id</param>
+        /// <returns>A non-null, possibly empty list of filled ClassData objects</returns>
+        public List<ClassData> GetStudentClasses(UserData user)
         {
             using (SqlConnection conn = new SqlConnection(connStr))
             {
+                List<ClassData> classes = new List<ClassData>();
                 SqlCommand cmd = conn.CreateCommand();
 
-                cmd.CommandText = "Insert into dbo.[Student] values (@studentId, @clsId);";
+                cmd.CommandText = "Select * from dbo.[Student] s"
+                    + " Join dbo.[" + tableName + "] c on c.Id = s.ClassId"
+                    + " Where UserId = @userId;";
 
-                //Student
-                cmd.Parameters.Add("@studentId", SqlDbType.Int);
-                cmd.Parameters["@studentId"].Value = student.Id;
+                //User
+                cmd.Parameters.AddWithValue("@userId", user.Id);
 
-                //Class
-                cmd.Parameters.Add("@clsId", SqlDbType.Int);
-                cmd.Parameters["@clsId"].Value = cls.Id;
-
+                SqlDataReader reader = null;
                 try
                 {
                     conn.Open();
-                    cmd.ExecuteNonQuery();
+                    reader = cmd.ExecuteReader();
+
+                    if (reader.HasRows)
+                        while (reader.Read())
+                            classes.Add(createFromReader(reader));
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine(e);
-                    return false;
                 }
+                finally
+                {
+                    if (reader != null)
+                        reader.Close();
+                }
+
+                return classes;
             }
-            return true;
+        }
+
+        /// <summary>
+        /// Gets all classes the specified user is an instructor for.
+        /// </summary>
+        /// <param name="user">The UserData object with the instructor's id</param>
+        /// <returns>A non-null, possibly empty list of filled ClassData objects</returns>
+        public List<ClassData> GetInstructorClasses(UserData user)
+        {
+            return base.GetAll("InstructorId", user.Id);
+        }
+
+        /// <summary>
+        /// This method only exists so the superclass DataAccessObject can polymorphically call createFromReader.
+        /// Use of the static createFromReader(SqlDataReader) method is preferred.
+        /// </summary>
+        public override ClassData createObjectFromReader(SqlDataReader reader)
+        {
+            return ClassDao.createFromReader(reader);
         }
 
         /// <summary>
@@ -100,7 +120,7 @@ namespace core.Modules.Class
         /// <param name="reader">The SqlDataReader to get class data from</param>
         /// <returns>
         /// A ClassData object</returns>
-        public override ClassData createFromReader(SqlDataReader reader)
+        public static ClassData createFromReader(SqlDataReader reader)
         {
             ClassData cls = new ClassData((int)reader["Id"]);
             cls.Name = reader["Name"] as string;

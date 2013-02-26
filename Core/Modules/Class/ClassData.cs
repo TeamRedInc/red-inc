@@ -18,7 +18,7 @@ namespace core.Modules.Class
         {
             get
             {
-                if (String.IsNullOrEmpty(name))
+                if (String.IsNullOrWhiteSpace(name))
                     return "Class " + Id;
                 return name;
             }

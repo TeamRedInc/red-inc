@@ -1,12 +1,8 @@
-﻿using core.Modules.Problem;
+﻿using core.Modules.Class;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace core.Modules.User
 {
@@ -29,20 +25,17 @@ namespace core.Modules.User
                 SqlCommand cmd = conn.CreateCommand();
 
                 //Email
-                cmd.Parameters.Add("@email", SqlDbType.NVarChar);
-                cmd.Parameters["@email"].Value = user.Email;
+                cmd.Parameters.AddWithValue("@email", user.Email);
 
                 //Password hash
-                cmd.Parameters.Add("@pwd", SqlDbType.NVarChar);
-                cmd.Parameters["@pwd"].Value = user.PasswordHash;
+                cmd.Parameters.AddWithValue("@pwd", user.PasswordHash);
 
                 //First name
                 if (!String.IsNullOrWhiteSpace(user.FirstName)) 
                 {
                     cmdStr += ", FirstName";
                     paramList += ", @fname";
-                    cmd.Parameters.Add("@fname", SqlDbType.NVarChar);
-                    cmd.Parameters["@fname"].Value = user.FirstName;
+                    cmd.Parameters.AddWithValue("@fname", user.FirstName);
                 }
 
                 //Last name
@@ -50,8 +43,7 @@ namespace core.Modules.User
                 {                    
                     cmdStr += ", LastName";
                     paramList += ", @lname";
-                    cmd.Parameters.Add("@lname", SqlDbType.NVarChar);
-                    cmd.Parameters["@lname"].Value = user.LastName;
+                    cmd.Parameters.AddWithValue("@lname", user.LastName);
                 }
 
                 //Admin?
@@ -59,8 +51,7 @@ namespace core.Modules.User
                 {                    
                     cmdStr += ", IsAdmin";
                     paramList += ", @isAdmin";
-                    cmd.Parameters.Add("@isAdmin", SqlDbType.Bit);
-                    cmd.Parameters["@isAdmin"].Value = user.IsAdmin;
+                    cmd.Parameters.AddWithValue("@isAdmin", user.IsAdmin);
                 }
 
                 cmd.CommandText = cmdStr + paramList + ");";
@@ -90,15 +81,13 @@ namespace core.Modules.User
             {
                 SqlCommand cmd = conn.CreateCommand();
 
-                cmd.CommandText = "Select count(*) from dbo.[" + tableName + "] where Email = @email and PasswordHash = @pwd";
+                cmd.CommandText = "Select count(*) from dbo.[" + tableName + "] where Email = @email and PasswordHash = @pwd;";
 
                 //Email
-                cmd.Parameters.Add("@email", SqlDbType.NVarChar);
-                cmd.Parameters["@email"].Value = user.Email;
+                cmd.Parameters.AddWithValue("@email", user.Email);
 
                 //Password hash
-                cmd.Parameters.Add("@pwd", SqlDbType.NVarChar);
-                cmd.Parameters["@pwd"].Value = user.PasswordHash;
+                cmd.Parameters.AddWithValue("@pwd", user.PasswordHash);
 
                 try
                 {
@@ -116,31 +105,24 @@ namespace core.Modules.User
         }
 
         /// <summary>
-        /// Record a user's first attempt at a problem.</summary>
-        /// <param name="user">The UserData object with the user's information</param>
-        /// <param name="problem">The ProblemData object with the problem's id</param>
-        /// <param name="correct">Whether or not the solution is correct</param>
+        /// Adds a user to a class as a student.</summary>
+        /// <param name="student">The UserData object with the student user's id</param>
+        /// <param name="cls">The ClassData object with the class's id</param>
         /// <returns>
-        /// true if the operation was successful, false otherwise</returns>
-        public bool AddSolution(UserData user, ProblemData problem, bool correct)
+        /// true if the add was successful, false otherwise</returns>
+        public bool AddStudent(UserData student, ClassData cls)
         {
             using (SqlConnection conn = new SqlConnection(connStr))
             {
                 SqlCommand cmd = conn.CreateCommand();
 
-                cmd.CommandText = "Insert into dbo.[Solution] (UserId, ProblemId, IsCorrect) values (@userId, @problemId, @correct);";
+                cmd.CommandText = "Insert into dbo.[Student] values (@studentId, @clsId);";
 
-                //User
-                cmd.Parameters.Add("@userId", SqlDbType.Int);
-                cmd.Parameters["@userId"].Value = user.Id;
+                //Student
+                cmd.Parameters.AddWithValue("@studentId", student.Id);
 
-                //Problem
-                cmd.Parameters.Add("@problemId", SqlDbType.Int);
-                cmd.Parameters["@problemId"].Value = problem.Id;
-
-                //Correct
-                cmd.Parameters.Add("@correct", SqlDbType.Bit);
-                cmd.Parameters["@correct"].Value = correct;
+                //Class
+                cmd.Parameters.AddWithValue("@clsId", cls.Id);
 
                 try
                 {
@@ -157,45 +139,55 @@ namespace core.Modules.User
         }
 
         /// <summary>
-        /// Record a user's attempt at a problem that they previously attempted.</summary>
-        /// <param name="user">The UserData object with the user's information</param>
-        /// <param name="problem">The ProblemData object with the problem's id</param>
-        /// <param name="correct">Whether or not the solution is correct</param>
-        /// <returns>
-        /// true if the operation was successful, false otherwise</returns>
-        public bool UpdateSolution(UserData user, ProblemData problem, bool correct)
+        /// Gets all students in the specified class.
+        /// </summary>
+        /// <param name="cls">The ClassData object with the class' id</param>
+        /// <returns>A non-null, possibly empty list of filled UserData objects</returns>
+        public List<UserData> GetStudents(ClassData cls)
         {
             using (SqlConnection conn = new SqlConnection(connStr))
             {
+                List<UserData> students = new List<UserData>();
                 SqlCommand cmd = conn.CreateCommand();
 
-                cmd.CommandText = "Update dbo.[Solution] Set NumAttempts = NumAttempts + 1, IsCorrect = @correct"
-                    + " Where UserId = @userId and ProblemId = @problemId;";
+                cmd.CommandText = "Select * from dbo.[Student] s"
+                    + " Join dbo.[" + tableName + "] u on u.Id = s.UserId"
+                    + " Where ClassId = @clsId;";
 
-                //User
-                cmd.Parameters.Add("@userId", SqlDbType.Int);
-                cmd.Parameters["@userId"].Value = user.Id;
+                //Class
+                cmd.Parameters.AddWithValue("@clsId", cls.Id);
 
-                //Problem
-                cmd.Parameters.Add("@problemId", SqlDbType.Int);
-                cmd.Parameters["@problemId"].Value = problem.Id;
-
-                //Correct
-                cmd.Parameters.Add("@correct", SqlDbType.Bit);
-                cmd.Parameters["@correct"].Value = correct;
-
+                SqlDataReader reader = null;
                 try
                 {
                     conn.Open();
-                    cmd.ExecuteNonQuery();
+                    reader = cmd.ExecuteReader();
+
+                    if (reader.HasRows)
+                        while (reader.Read())
+                            students.Add(createFromReader(reader));
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine(e);
-                    return false;
                 }
+                finally
+                {
+                    if (reader != null)
+                        reader.Close();
+                }
+
+                return students;
             }
-            return true;
+        }
+
+        /// <summary>
+        /// This method only exists so the superclass DataAccessObject can polymorphically call createFromReader.
+        /// Use of the static createFromReader(SqlDataReader) method is preferred.
+        /// </summary>
+        public override UserData createObjectFromReader(SqlDataReader reader)
+        {
+            return UserDao.createFromReader(reader);
         }
 
         /// <summary>
@@ -203,7 +195,7 @@ namespace core.Modules.User
         /// <param name="reader">The SqlDataReader to get user data from</param>
         /// <returns>
         /// A UserData object</returns>
-        public override UserData createFromReader(SqlDataReader reader)
+        public static UserData createFromReader(SqlDataReader reader)
         {
             UserData user = new UserData((int)reader["Id"]);
             user.Email = (string)reader["Email"];
