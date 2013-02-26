@@ -12,7 +12,7 @@ namespace red_inc.Controllers
         {
             ViewBag.Message = "Modify this template to jump-start your ASP.NET MVC application.";
 
-            return View();
+            return View("~/Views/bootstrap/pages/signin.cshtml");
         }
 
         public ActionResult About()
