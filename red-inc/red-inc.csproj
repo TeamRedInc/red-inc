@@ -253,6 +253,7 @@
     <Content Include="Views\bootstrap\assets\css\bootstrap.min.css" />
     <Content Include="Views\bootstrap\assets\img\glyphicons-halflings-white.png" />
     <Content Include="Views\bootstrap\assets\img\glyphicons-halflings.png" />
+    <Content Include="Views\bootstrap\assets\img\slide_01.jpg" />
     <Content Include="Views\bootstrap\assets\js\bootstrap.js" />
     <Content Include="Views\bootstrap\assets\js\bootstrap.min.js" />
     <Content Include="Views\bootstrap\pages\intro.html" />
