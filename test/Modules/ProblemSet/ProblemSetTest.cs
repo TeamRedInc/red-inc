@@ -67,28 +67,42 @@ namespace core.Tests.Modules.ProblemSet
         }
 
         [TestMethod]
-        public void TestAddPrereq()
+        public void TestPrereq()
         {
             ProblemSetData set1 = new ProblemSetData(2);
             ProblemSetData set2 = new ProblemSetData(1);
             set2.PrereqCount = 5;
 
-            //This prereq shoudl already exist in the database
+            //This prereq should already exist in the database
             Assert.IsFalse(setDao.AddPrereq(set1, set2));
-        }
 
-        [TestMethod]
-        public void TestGetPrereqs()
-        {
-            List<ProblemSetData> prereqs = setDao.GetPrereqs(new ProblemSetData(2));
-            ProblemSetData set = new ProblemSetData(1);
+            List<ProblemSetData> prereqs = setDao.GetPrereqs(set1);
 
-            Assert.IsTrue(prereqs.Contains(set));
+            //Assert prereq exists with a problem count of 5
+            Assert.IsTrue(prereqs.Contains(set2));
             Assert.AreEqual(5, prereqs.Find(ps => ps.Id == 1).PrereqCount);
+            Assert.IsFalse(prereqs.Contains(set1));
 
-            set = new ProblemSetData(2);
+            set2.PrereqCount = 10;
 
-            Assert.IsFalse(prereqs.Contains(set));
+            Assert.IsTrue(setDao.UpdatePrereq(set1, set2));
+
+            prereqs = setDao.GetPrereqs(set1);
+
+            //Assert update worked
+            Assert.AreEqual(10, prereqs.Find(ps => ps.Id == 1).PrereqCount);
+
+            Assert.IsTrue(setDao.RemovePrereq(set1, set2));
+
+            prereqs = setDao.GetPrereqs(set1);
+
+            //Assert remove worked
+            Assert.IsFalse(prereqs.Contains(set2));
+
+            set2.PrereqCount = 5;
+
+            //Add prereq back in
+            Assert.IsTrue(setDao.AddPrereq(set1, set2));
         }
     }
 }
