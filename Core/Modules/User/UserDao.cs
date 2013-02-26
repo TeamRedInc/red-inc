@@ -74,14 +74,14 @@ namespace core.Modules.User
         /// Verify a user's login information.</summary>
         /// <param name="user">The UserData object with login credentials</param>
         /// <returns>
-        /// true if the user is in the database and the password hashes match, false otherwise</returns>
-        public bool Login(UserData user)
+        /// The filled UserData object representing the logged in user, or null if login failed</returns>
+        public UserData Login(UserData user)
         {
             using (SqlConnection conn = new SqlConnection(connStr))
             {
                 SqlCommand cmd = conn.CreateCommand();
 
-                cmd.CommandText = "Select count(*) from dbo.[" + tableName + "] where Email = @email and PasswordHash = @pwd;";
+                cmd.CommandText = "Select * from dbo.[" + tableName + "] where Email = @email and PasswordHash = @pwd;";
 
                 //Email
                 cmd.Parameters.AddWithValue("@email", user.Email);
@@ -89,18 +89,32 @@ namespace core.Modules.User
                 //Password hash
                 cmd.Parameters.AddWithValue("@pwd", user.PasswordHash);
 
+                SqlDataReader reader = null;
                 try
                 {
                     conn.Open();
-                    int count = (int) cmd.ExecuteScalar();
+                    reader = cmd.ExecuteReader();
 
-                    return count == 1;
+                    if (reader.HasRows)
+                    {
+                        reader.Read();
+                        UserData u = createFromReader(reader);
+                        //Successfully return only if there is one matching row
+                        if (!reader.Read())
+                            return u;
+                    }
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine(e);
-                    return false;
                 }
+                finally
+                {
+                    if (reader != null)
+                        reader.Close();
+                }
+
+                return null;
             }
         }
 

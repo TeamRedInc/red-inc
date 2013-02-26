@@ -28,19 +28,21 @@ namespace core.Tests.Modules.User
             user.Email = "jwien3@mail.gatech.edu";
             user.PasswordHash = "pass123";
 
+            UserData expected = userDao.GetById(1);
+
             //Successful login
-            Assert.IsTrue(userDao.Login(user));
+            Assert.AreEqual(expected, userDao.Login(user));
 
             user.Email = "garbage@hotmail.com";
 
             //Bad email
-            Assert.IsFalse(userDao.Login(user));
+            Assert.IsNull(userDao.Login(user));
 
             user.Email = "jwien3@mail.gatech.edu";
             user.PasswordHash = "badpass";
 
             //Bad password
-            Assert.IsFalse(userDao.Login(user));
+            Assert.IsNull(userDao.Login(user));
         }
 
         [TestMethod]

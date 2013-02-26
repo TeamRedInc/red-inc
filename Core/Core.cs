@@ -35,7 +35,7 @@ namespace core
             return userDao.Add(user);
         }
 
-        public bool Login(string email, string passwordHash)
+        public UserData Login(string email, string passwordHash)
         {
             UserData user = new UserData(0);
             user.Email = email;
