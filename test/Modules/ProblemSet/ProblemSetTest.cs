@@ -73,7 +73,7 @@ namespace core.Tests.Modules.ProblemSet
             ProblemSetData set2 = new ProblemSetData(1);
             set2.PrereqCount = 5;
 
-            //This prereq shoudl already exist in the database
+            //This prereq should already exist in the database
             Assert.IsFalse(setDao.AddPrereq(set1, set2));
         }
 
