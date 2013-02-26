@@ -148,6 +148,78 @@ namespace core.Modules.ProblemSet
         }
 
         /// <summary>
+        /// Modify the number of required problems for a prerequisite.
+        /// </summary>
+        /// <param name="set">The ProblemSetData object with the parent set's id</param>
+        /// <param name="prereq">The ProblemSetData object with the prerequisite set's data</param>
+        /// <returns>true if the operation was successful, false otherwise</returns>
+        public bool UpdatePrereq(ProblemSetData set, ProblemSetData prereq)
+        {
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                SqlCommand cmd = conn.CreateCommand();
+
+                cmd.CommandText = "Update dbo.[Prereq] Set NumProblems = @numProbs"
+                    + " Where ProblemSetId = @setId and RequiredSetId = @prereqId;";
+
+                //Parent Set
+                cmd.Parameters.AddWithValue("@setId", set.Id);
+
+                //Prereq Set
+                cmd.Parameters.AddWithValue("@prereqId", prereq.Id);
+
+                //Number of problems
+                cmd.Parameters.AddWithValue("@numProbs", prereq.PrereqCount);
+
+                try
+                {
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Removes the specified prerequisite.
+        /// </summary>
+        /// <param name="set">The ProblemSetData object with the parent set's id</param>
+        /// <param name="prereq">The ProblemSetData object with the prerequisite set's data</param>
+        /// <returns>true if the remove was successful, false otherwise</returns>
+        public bool RemovePrereq(ProblemSetData set, ProblemSetData prereq)
+        {
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                SqlCommand cmd = conn.CreateCommand();
+
+                cmd.CommandText = "Delete from dbo.[Prereq] Where ProblemSetId = @setId and RequiredSetId = @prereqId;";
+
+                //Parent Set
+                cmd.Parameters.AddWithValue("@setId", set.Id);
+
+                //Prereq Set
+                cmd.Parameters.AddWithValue("@prereqId", prereq.Id);
+
+                try
+                {
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
         /// Gets all of the prerequisite sets for the specified set.
         /// </summary>
         /// <param name="set">The ProblemSetData object with the problem set's id</param>
