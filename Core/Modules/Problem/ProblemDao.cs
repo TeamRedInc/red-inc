@@ -30,8 +30,7 @@ namespace core.Modules.Problem
                     insertingName = true;
                     cmdStr += "Name";
                     paramList += "@name";
-                    cmd.Parameters.Add("@name", SqlDbType.NVarChar);
-                    cmd.Parameters["@name"].Value = problem.Name;
+                    cmd.Parameters.AddWithValue("@name", problem.Name);
                 }
 
                 //Description
@@ -44,8 +43,7 @@ namespace core.Modules.Problem
                     }
                     cmdStr += "Description";
                     paramList += "@description";
-                    cmd.Parameters.Add("@description", SqlDbType.NVarChar);
-                    cmd.Parameters["@description"].Value = problem.Description;
+                    cmd.Parameters.AddWithValue("@description", problem.Description);
                 }
 
                 cmd.CommandText = cmdStr + paramList + ");";
@@ -80,16 +78,13 @@ namespace core.Modules.Problem
                 cmd.CommandText = "Insert into dbo.[Solution] (UserId, ProblemId, IsCorrect) values (@userId, @problemId, @correct);";
 
                 //User
-                cmd.Parameters.Add("@userId", SqlDbType.Int);
-                cmd.Parameters["@userId"].Value = user.Id;
+                cmd.Parameters.AddWithValue("@userId", user.Id);
 
                 //Problem
-                cmd.Parameters.Add("@problemId", SqlDbType.Int);
-                cmd.Parameters["@problemId"].Value = problem.Id;
+                cmd.Parameters.AddWithValue("@problemId", problem.Id);
 
                 //Correct
-                cmd.Parameters.Add("@correct", SqlDbType.Bit);
-                cmd.Parameters["@correct"].Value = correct;
+                cmd.Parameters.AddWithValue("@correct", correct);
 
                 try
                 {
@@ -122,16 +117,13 @@ namespace core.Modules.Problem
                     + " Where UserId = @userId and ProblemId = @problemId;";
 
                 //User
-                cmd.Parameters.Add("@userId", SqlDbType.Int);
-                cmd.Parameters["@userId"].Value = user.Id;
+                cmd.Parameters.AddWithValue("@userId", user.Id);
 
                 //Problem
-                cmd.Parameters.Add("@problemId", SqlDbType.Int);
-                cmd.Parameters["@problemId"].Value = problem.Id;
+                cmd.Parameters.AddWithValue("@problemId", problem.Id);
 
                 //Correct
-                cmd.Parameters.Add("@correct", SqlDbType.Bit);
-                cmd.Parameters["@correct"].Value = correct;
+                cmd.Parameters.AddWithValue("@correct", correct);
 
                 try
                 {

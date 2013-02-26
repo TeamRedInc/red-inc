@@ -25,20 +25,17 @@ namespace core.Modules.User
                 SqlCommand cmd = conn.CreateCommand();
 
                 //Email
-                cmd.Parameters.Add("@email", SqlDbType.NVarChar);
-                cmd.Parameters["@email"].Value = user.Email;
+                cmd.Parameters.AddWithValue("@email", user.Email);
 
                 //Password hash
-                cmd.Parameters.Add("@pwd", SqlDbType.NVarChar);
-                cmd.Parameters["@pwd"].Value = user.PasswordHash;
+                cmd.Parameters.AddWithValue("@pwd", user.PasswordHash);
 
                 //First name
                 if (!String.IsNullOrWhiteSpace(user.FirstName)) 
                 {
                     cmdStr += ", FirstName";
                     paramList += ", @fname";
-                    cmd.Parameters.Add("@fname", SqlDbType.NVarChar);
-                    cmd.Parameters["@fname"].Value = user.FirstName;
+                    cmd.Parameters.AddWithValue("@fname", user.FirstName);
                 }
 
                 //Last name
@@ -46,8 +43,7 @@ namespace core.Modules.User
                 {                    
                     cmdStr += ", LastName";
                     paramList += ", @lname";
-                    cmd.Parameters.Add("@lname", SqlDbType.NVarChar);
-                    cmd.Parameters["@lname"].Value = user.LastName;
+                    cmd.Parameters.AddWithValue("@lname", user.LastName);
                 }
 
                 //Admin?
@@ -55,8 +51,7 @@ namespace core.Modules.User
                 {                    
                     cmdStr += ", IsAdmin";
                     paramList += ", @isAdmin";
-                    cmd.Parameters.Add("@isAdmin", SqlDbType.Bit);
-                    cmd.Parameters["@isAdmin"].Value = user.IsAdmin;
+                    cmd.Parameters.AddWithValue("@isAdmin", user.IsAdmin);
                 }
 
                 cmd.CommandText = cmdStr + paramList + ");";
@@ -89,12 +84,10 @@ namespace core.Modules.User
                 cmd.CommandText = "Select count(*) from dbo.[" + tableName + "] where Email = @email and PasswordHash = @pwd;";
 
                 //Email
-                cmd.Parameters.Add("@email", SqlDbType.NVarChar);
-                cmd.Parameters["@email"].Value = user.Email;
+                cmd.Parameters.AddWithValue("@email", user.Email);
 
                 //Password hash
-                cmd.Parameters.Add("@pwd", SqlDbType.NVarChar);
-                cmd.Parameters["@pwd"].Value = user.PasswordHash;
+                cmd.Parameters.AddWithValue("@pwd", user.PasswordHash);
 
                 try
                 {
@@ -126,12 +119,10 @@ namespace core.Modules.User
                 cmd.CommandText = "Insert into dbo.[Student] values (@studentId, @clsId);";
 
                 //Student
-                cmd.Parameters.Add("@studentId", SqlDbType.Int);
-                cmd.Parameters["@studentId"].Value = student.Id;
+                cmd.Parameters.AddWithValue("@studentId", student.Id);
 
                 //Class
-                cmd.Parameters.Add("@clsId", SqlDbType.Int);
-                cmd.Parameters["@clsId"].Value = cls.Id;
+                cmd.Parameters.AddWithValue("@clsId", cls.Id);
 
                 try
                 {
@@ -150,7 +141,7 @@ namespace core.Modules.User
         /// <summary>
         /// Gets all students in the specified class.
         /// </summary>
-        /// <param name="cls">The class to get students for</param>
+        /// <param name="cls">The ClassData object with the class' id</param>
         /// <returns>A non-null, possibly empty list of filled UserData objects</returns>
         public List<UserData> GetStudents(ClassData cls)
         {
@@ -160,12 +151,11 @@ namespace core.Modules.User
                 SqlCommand cmd = conn.CreateCommand();
 
                 cmd.CommandText = "Select * from dbo.[Student] s"
-                    + " Join dbo.[User] u on u.Id = s.UserId"
+                    + " Join dbo.[" + tableName + "] u on u.Id = s.UserId"
                     + " Where ClassId = @clsId;";
 
                 //Class
-                cmd.Parameters.Add("@clsId", SqlDbType.Int);
-                cmd.Parameters["@clsId"].Value = cls.Id;
+                cmd.Parameters.AddWithValue("@clsId", cls.Id);
 
                 SqlDataReader reader = null;
                 try
