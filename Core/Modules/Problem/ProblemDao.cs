@@ -7,7 +7,7 @@ using System.Data.SqlClient;
 
 namespace core.Modules.Problem
 {
-    public class ProblemDao : DataAccessObject<ProblemData>
+    public class ProblemDao : BaseDao<ProblemData>
     {
         public ProblemDao() : base("Problem") { }
 
@@ -253,7 +253,7 @@ namespace core.Modules.Problem
         }
 
         /// <summary>
-        /// This method only exists so the superclass DataAccessObject can polymorphically call createFromReader.
+        /// This method only exists so the superclass BaseDao can polymorphically call createFromReader.
         /// Use of the static createFromReader(SqlDataReader) method is preferred.
         /// </summary>
         public override ProblemData createObjectFromReader(SqlDataReader reader)

@@ -6,7 +6,7 @@ using System.Data.SqlClient;
 
 namespace core.Modules.Class
 {
-    public class ClassDao : DataAccessObject<ClassData>
+    public class ClassDao : BaseDao<ClassData>
     {
         public ClassDao() : base("Class") { }
 
@@ -107,7 +107,7 @@ namespace core.Modules.Class
         }
 
         /// <summary>
-        /// This method only exists so the superclass DataAccessObject can polymorphically call createFromReader.
+        /// This method only exists so the superclass BaseDao can polymorphically call createFromReader.
         /// Use of the static createFromReader(SqlDataReader) method is preferred.
         /// </summary>
         public override ClassData createObjectFromReader(SqlDataReader reader)

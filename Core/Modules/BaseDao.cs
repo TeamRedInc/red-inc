@@ -6,12 +6,12 @@ using System.Data.SqlClient;
 
 namespace core.Modules
 {
-    public abstract class DataAccessObject<T> where T : DataObject
+    public abstract class BaseDao<T> where T : DataObject
     {
         protected readonly string connStr;
         protected readonly string tableName;
 
-        public DataAccessObject(string tableName)
+        public BaseDao(string tableName)
         {
             connStr = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["AzureConnection"].ConnectionString).ToString();
             this.tableName = tableName;
