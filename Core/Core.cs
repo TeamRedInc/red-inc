@@ -1,4 +1,5 @@
-﻿using core.Modules.User;
+﻿using core.Modules;
+using core.Modules.User;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -12,7 +13,7 @@ namespace core
 {
     public class Core
     {
-        private UserDao userDao;
+        private readonly UserModel userModel;
 
         /// <summary>
         /// Primary thread of execution
@@ -20,7 +21,7 @@ namespace core
         /// </summary>
         public Core()
         {
-            userDao = new UserDao();
+            userModel = ModelFactory.UserModel;
         }
 
         public bool AddUser(string email, string passwordHash, string firstName, string lastName, bool isAdmin)
@@ -32,7 +33,7 @@ namespace core
             user.LastName = lastName;
             user.IsAdmin = isAdmin;
 
-            return userDao.Add(user);
+            return userModel.Add(user);
         }
 
         public UserData Login(string email, string passwordHash)
@@ -41,7 +42,7 @@ namespace core
             user.Email = email;
             user.PasswordHash = passwordHash;
 
-            return userDao.Login(user);
+            return userModel.Login(user);
         }
     }
 }

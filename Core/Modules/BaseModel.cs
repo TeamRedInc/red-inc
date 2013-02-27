@@ -10,6 +10,11 @@ namespace core.Modules
     {
         protected readonly BaseDao<T> dao;
 
+        public BaseModel(BaseDao<T> dao)
+        {
+            this.dao = dao;
+        }
+
         /// <summary>
         /// Gets the data object with the specified id.</summary>
         /// <param name="id">The id of the data object to get</param>
