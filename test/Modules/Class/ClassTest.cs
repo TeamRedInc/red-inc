@@ -40,9 +40,7 @@ namespace core.Tests.Modules.Class
 
             List<ClassData> classes = classModel.GetAll();
 
-            cls = classModel.GetById(classes[0].Id);
-
-            Assert.AreEqual(classes[0], cls);
+            Assert.IsTrue(classes.Contains(cls));
         }
 
         [TestMethod]

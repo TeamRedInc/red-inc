@@ -1,6 +1,7 @@
 ﻿using core.Modules.Class;
 using core.Modules.Problem;
 using core.Modules.ProblemSet;
+using core.Modules.User;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 
@@ -38,9 +39,7 @@ namespace core.Tests.Modules.ProblemSet
 
             List<ProblemSetData> sets = setModel.GetAll();
 
-            set = setModel.GetById(sets[0].Id);
-
-            Assert.AreEqual(sets[0], set);
+            Assert.IsTrue(sets.Contains(set));
         }
 
         [TestMethod]
@@ -49,21 +48,33 @@ namespace core.Tests.Modules.ProblemSet
             List<ProblemSetData> sets = setModel.GetForClass(new ClassData(1));
 
             Assert.IsNotNull(sets);
-            Assert.AreEqual(0, sets.Count);
+            Assert.AreEqual(1, sets.Count);
 
             sets = setModel.GetForClass(new ClassData(2));
+
+            Assert.IsTrue(sets.Contains(new ProblemSetData(1)));
+            Assert.IsTrue(sets.Contains(new ProblemSetData(2)));
+            Assert.IsFalse(sets.Contains(new ProblemSetData(4)));
+        }
+
+        [TestMethod]
+        public void TestGetForProblem()
+        {
+            List<ProblemSetData> sets = setModel.GetForProblem(new ProblemData(3));
 
             Assert.IsTrue(sets.Contains(new ProblemSetData(1)));
             Assert.IsTrue(sets.Contains(new ProblemSetData(2)));
         }
 
         [TestMethod]
-        public void TestGetForProblem()
+        public void TestGetForStudent()
         {
-            List<ProblemSetData> sets = setModel.GetForProblem(new ProblemData(2));
+            List<ProblemSetData> sets = setModel.GetForStudent(new UserData(1), new ClassData(2));
 
-            Assert.IsTrue(sets.Contains(new ProblemSetData(1)));
-            Assert.IsTrue(sets.Contains(new ProblemSetData(2)));
+            Assert.IsFalse(sets.Find(ps => ps.Id == 1).Locked);
+            Assert.IsTrue(sets.Find(ps => ps.Id == 2).Locked);
+            Assert.IsFalse(sets.Find(ps => ps.Id == 3).Locked);
+            Assert.IsFalse(sets.Contains(new ProblemSetData(4)));
         }
 
         [TestMethod]
@@ -71,16 +82,16 @@ namespace core.Tests.Modules.ProblemSet
         {
             ProblemSetData set1 = new ProblemSetData(2);
             ProblemSetData set2 = new ProblemSetData(1);
-            set2.PrereqCount = 5;
+            set2.PrereqCount = 3;
 
             //This prereq should already exist in the database
             Assert.IsFalse(setModel.AddPrereq(set1, set2));
 
             List<ProblemSetData> prereqs = setModel.GetPrereqs(set1);
 
-            //Assert prereq exists with a problem count of 5
+            //Assert prereq exists with a problem count of 3
             Assert.IsTrue(prereqs.Contains(set2));
-            Assert.AreEqual(5, prereqs.Find(ps => ps.Id == 1).PrereqCount);
+            Assert.AreEqual(3, prereqs.Find(ps => ps.Id == 1).PrereqCount);
             Assert.IsFalse(prereqs.Contains(set1));
 
             set2.PrereqCount = 10;
@@ -99,7 +110,7 @@ namespace core.Tests.Modules.ProblemSet
             //Assert remove worked
             Assert.IsFalse(prereqs.Contains(set2));
 
-            set2.PrereqCount = 5;
+            set2.PrereqCount = 3;
 
             //Add prereq back in
             Assert.IsTrue(setModel.AddPrereq(set1, set2));

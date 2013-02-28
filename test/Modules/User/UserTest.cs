@@ -58,9 +58,7 @@ namespace core.Tests.Modules.User
 
             List<UserData> users = userModel.GetAll();
 
-            user = userModel.GetById(users[0].Id);
-
-            Assert.AreEqual(users[0], user);
+            Assert.IsTrue(users.Contains(user));
         }
 
         [TestMethod]
