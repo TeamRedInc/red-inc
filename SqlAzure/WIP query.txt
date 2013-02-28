@@ -1,0 +1,26 @@
+With LockedSets(Id, Name, ClassId) as (
+Select Distinct ps.* from ProblemSet ps
+Join Prereq prereq
+on prereq.ProblemSetId = ps.Id
+Where ps.ClassId = @classId
+and prereq.NumProblems > (
+	Select count(*) from Solution s
+	Join Problem p
+	on p.Id = s.ProblemId
+	Join ProblemSetProblem psp
+	on psp.ProblemId = p.Id
+	Where psp.ProblemSetId = prereq.RequiredSetId
+	and s.UserId = @userId
+	and s.IsCorrect = 1
+)
+),
+UnlockedSets(Id, Name, ClassId) as (
+(Select * from ProblemSet ps
+Where ps.ClassId = @classId)
+Except
+(Select * from LockedSets)
+)
+(Select ls.*, 1 as 'Locked' from LockedSets ls)
+Union
+(Select us.*, 0 as 'Locked' from UnlockedSets us)
+Order by Locked, Id;

@@ -19,6 +19,12 @@ namespace core.Tests.Modules.Class
 
             //This class should already exist in the database
             Assert.IsFalse(classModel.Add(cls));
+
+            cls.Name = "Something new";
+            cls.Instructor = new UserData(0);
+
+            //This should fail because the Instructor Id is invalid
+            Assert.IsFalse(classModel.Add(cls));
         }
 
         [TestMethod]
