@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace core.Modules.ProblemSet
 {
-    public class ProblemSetDao : DataAccessObject<ProblemSetData>
+    public class ProblemSetDao : BaseDao<ProblemSetData>
     {
         public ProblemSetDao() : base("ProblemSet") { }
 
@@ -267,7 +267,7 @@ namespace core.Modules.ProblemSet
         }
 
         /// <summary>
-        /// This method only exists so the superclass DataAccessObject can polymorphically call createFromReader.
+        /// This method only exists so the superclass BaseDao can polymorphically call createFromReader.
         /// Use of the static createFromReader(SqlDataReader) method is preferred.
         /// </summary>
         public override ProblemSetData createObjectFromReader(SqlDataReader reader)
