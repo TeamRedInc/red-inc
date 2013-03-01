@@ -153,6 +153,41 @@ namespace core.Modules.User
         }
 
         /// <summary>
+        /// Checks if the specified user is a student in the specified class.
+        /// </summary>
+        /// <param name="user">The UserData object with the user's id</param>
+        /// <param name="cls">The ClassData object with the class's id</param>
+        /// <returns>true if user is a student in cls, false otherwise</returns>
+        public bool IsStudent(UserData user, ClassData cls)
+        {
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                SqlCommand cmd = conn.CreateCommand();
+
+                cmd.CommandText = "Select count(1) from dbo.[Student] Where UserId = @userId and ClassId = @clsId;";
+
+                //User
+                cmd.Parameters.AddWithValue("@userId", user.Id);
+
+                //Class
+                cmd.Parameters.AddWithValue("@clsId", cls.Id);
+
+                try
+                {
+                    conn.Open();
+                    int count = (int)cmd.ExecuteScalar();
+
+                    return count == 1;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
         /// Gets all students in the specified class.
         /// </summary>
         /// <param name="cls">The ClassData object with the class' id</param>

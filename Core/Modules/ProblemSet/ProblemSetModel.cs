@@ -1,5 +1,6 @@
 ﻿using core.Modules.Class;
 using core.Modules.Problem;
+using core.Modules.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,11 @@ namespace core.Modules.ProblemSet
         private ProblemSetDao setDao
         {
             get { return (ProblemSetDao)dao; }
+        }
+
+        private UserDao userDao
+        {
+            get { return DaoFactory.UserDao; }
         }
         
         /// <summary>
@@ -45,6 +51,21 @@ namespace core.Modules.ProblemSet
         public List<ProblemSetData> GetForProblem(ProblemData problem)
         {
             return setDao.GetForProblem(problem);
+        }
+        
+        /// <summary>
+        /// Gets all problem sets in the specified class. Each set is also determined to be
+        /// locked or unlocked based on the specified user's progress in the class.
+        /// </summary>
+        /// <param name="user">The UserData object with the user's id</param>
+        /// <param name="cls">The ClassData object with the class' id</param>
+        /// <returns>A non-null, possibly empty list of filled ProblemSetData objects with Locked properties set</returns>
+        public List<ProblemSetData> GetForStudent(UserData user, ClassData cls)
+        {
+            if (userDao.IsStudent(user, cls))
+                return setDao.GetForStudent(user, cls);
+            else
+                return new List<ProblemSetData>();
         }
 
         /// <summary>

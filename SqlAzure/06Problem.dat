@@ -1,4 +1,5 @@
 Id	Name	Description
-1	Hello, World!	
-2		
-4		A problem without a name
+1	Hello, World!	Everyone's first program.
+2	Printing practice	Learn how printing works.
+3	Program args	Print out the program arguments.
+4	Hello, World!	Everyone's first program.

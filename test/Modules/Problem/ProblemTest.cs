@@ -32,20 +32,17 @@ namespace core.Tests.Modules.Problem
             problem = problemModel.GetById(1);
 
             Assert.AreEqual("Hello, World!", problem.Name);
-            Assert.IsNull(problem.Description);
 
             List<ProblemData> problems = problemModel.GetAll();
 
-            problem = problemModel.GetById(problems[0].Id);
-
-            Assert.AreEqual(problems[0], problem);
+            Assert.IsTrue(problems.Contains(problem));
         }
 
         [TestMethod]
         public void TestAddToSet()
         {
-            ProblemData problem = new ProblemData(2);
-            ProblemSetData set = new ProblemSetData(2);
+            ProblemData problem = new ProblemData(1);
+            ProblemSetData set = new ProblemSetData(1);
 
             //This problem should already belong to this set
             Assert.IsFalse(problemModel.AddToSet(problem, set));
@@ -54,8 +51,8 @@ namespace core.Tests.Modules.Problem
         [TestMethod]
         public void TestRemoveFromSet()
         {
-            ProblemData problem = new ProblemData(2);
-            ProblemSetData set = new ProblemSetData(2);
+            ProblemData problem = new ProblemData(4);
+            ProblemSetData set = new ProblemSetData(4);
 
             Assert.IsTrue(problemModel.RemoveFromSet(problem, set));
 
@@ -69,6 +66,7 @@ namespace core.Tests.Modules.Problem
 
             Assert.IsTrue(problems.Contains(new ProblemData(1)));
             Assert.IsTrue(problems.Contains(new ProblemData(2)));
+            Assert.IsTrue(problems.Contains(new ProblemData(3)));
         }
     }
 }

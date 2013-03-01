@@ -1,4 +1,5 @@
 ﻿using core.Modules.Class;
+using core.Modules.User;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -95,6 +96,78 @@ namespace core.Modules.ProblemSet
                     if (reader.HasRows)
                         while (reader.Read())
                             sets.Add(createFromReader(reader));
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+                finally
+                {
+                    if (reader != null)
+                        reader.Close();
+                }
+
+                return sets;
+            }
+        }
+
+        /// <summary>
+        /// Gets all problem sets in the specified class. Each set is also determined to be
+        /// locked or unlocked based on the specified user's progress in the class.
+        /// </summary>
+        /// <param name="user">The UserData object with the user's id</param>
+        /// <param name="cls">The ClassData object with the class' id</param>
+        /// <returns>A non-null, possibly empty list of filled ProblemSetData objects with Locked properties set</returns>
+        public List<ProblemSetData> GetForStudent(UserData user, ClassData cls)
+        {
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                List<ProblemSetData> sets = new List<ProblemSetData>();
+                SqlCommand cmd = conn.CreateCommand();
+
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("With LockedSets(Id, Name, ClassId) as (");
+                query.AppendLine("  Select Distinct ps.* from dbo.[ProblemSet] ps");
+                query.AppendLine("  Join dbo.[Prereq] prereq on prereq.ProblemSetId = ps.Id");
+                query.AppendLine("  Where ps.ClassId = @classId");
+                query.AppendLine("  and prereq.NumProblems > (");
+                query.AppendLine("      Select count(*) from dbo.[Solution] s");
+                query.AppendLine("      Join dbo.[Problem] p on p.Id = s.ProblemId");
+                query.AppendLine("      Join dbo.[ProblemSetProblem] psp on psp.ProblemId = p.Id");
+                query.AppendLine("      Where psp.ProblemSetId = prereq.RequiredSetId");
+                query.AppendLine("      and s.UserId = @userId and s.IsCorrect = 1");
+                query.AppendLine("  )");
+                query.AppendLine("), UnlockedSets(Id, Name, ClassId) as (");
+                query.AppendLine("  ( Select * from ProblemSet ps Where ps.ClassId = @classId )");
+                query.AppendLine("  Except");
+                query.AppendLine("  ( Select * from LockedSets )");
+                query.AppendLine(")");
+                query.AppendLine("( Select ls.*, Cast(1 as Bit) as 'Locked' from LockedSets ls )");
+                query.AppendLine("Union");
+                query.AppendLine("( Select us.*, Cast(0 as Bit) as 'Locked' from UnlockedSets us )");
+                query.AppendLine("Order by Locked, Id;");
+
+                cmd.CommandText = query.ToString();
+
+                //User
+                cmd.Parameters.AddWithValue("@userId", user.Id);
+
+                //Class
+                cmd.Parameters.AddWithValue("@classId", cls.Id);
+
+                SqlDataReader reader = null;
+                try
+                {
+                    conn.Open();
+                    reader = cmd.ExecuteReader();
+
+                    if (reader.HasRows)
+                        while (reader.Read())
+                        {
+                            ProblemSetData s = createFromReader(reader);
+                            s.Locked = (bool)reader["Locked"];
+                            sets.Add(s);
+                        }
                 }
                 catch (Exception e)
                 {
