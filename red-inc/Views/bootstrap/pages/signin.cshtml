@@ -114,7 +114,8 @@
         <label class="checkbox">
           <input type="checkbox" value="remember-me"> Remember me
         </label>
-        <button class="btn btn-large btn-primary" type="submit">Sign in</button>
+        <button class="btn btn-large btn-primary" onclick="temp()">Sign in</button>
+        <!--Html.ActionLink("send to controller", "Ajax", "Home", null, new {id = "ajaxLink"}) ></%=>-->
       </form>
 
 
@@ -137,20 +138,24 @@
     <script src="../assets/js/bootstrap-carousel.js"></script>
     <script src="../assets/js/bootstrap-typeahead.js"></script>
     <script>
-		var xmlhttp;
+		/*var xmlhttp;
 		if (window.XMLHttpRequest) {
 			xmlhttp = new XMLHttpRequest();
 		}
 		else {
 			xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-		}
-		var email = $get("address").value;
-		var password = $get("pass").value;
-		
-		PageMethods.Login(email,password,goodLogin,badLogin);
+		}*/
+        function temp() {
+            var email = $("#address").val();//document.getElementById("address").value;
+            var password = $("#pass").val(); //document.getElementById("pass").value;
+
+            @Url.Action("Login", "LoginRegister");
+        }
+		//PageMethods.Login(email,password,goodLogin,badLogin);
 		
 		function goodLogin(result) {
-			window.location = result;
+		    //window.location = result;
+		    console.log("It worked~!");
 		}
 		function badLogin(result) {
 			alert("Bad Login");
