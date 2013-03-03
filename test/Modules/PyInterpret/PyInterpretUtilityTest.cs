@@ -7,6 +7,7 @@ namespace core.Tests.Modules.PyInterpret
     [TestClass]
     public class PyInterpretUtilityTest
     {
+        /*Test*/
         [TestMethod]
         public void PrintTest()
         {
