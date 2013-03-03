@@ -24,7 +24,6 @@ namespace red_inc.Controllers
 
         //
         // GET: /LoginRegister/
-
         public ActionResult Login(string email, string password, string returnUrl)
         {
             if (GlobalStaticVars.StaticCore.Login(email, password) != null)
