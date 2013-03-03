@@ -7,7 +7,17 @@ namespace core.Tests.Modules.PyInterpret
     [TestClass]
     public class PyInterpretUtilityTest
     {
-        /*Test*/
+     
+        [TestMethod]
+        public void FutureTest()
+        {
+            PyInterpretUtility util = new PyInterpretUtility();
+            var output = util.FutureInterpret(@"from __future__ import division
+x = 3/2
+print x");
+            Assert.AreEqual(output, "1.5\r\n");
+        }
+
         [TestMethod]
         public void PrintTest()
         {

@@ -37,5 +37,24 @@ namespace core.Modules.PyInterpret
             output = _encoding.GetString(_stdout.ToArray());
             return output;
         }
+
+        public string FutureInterpret(string code)
+        {
+            _scope = _engine.CreateScope();
+            string output = "";
+            //_scope.SetVariable("output",output);
+
+            var paths = _engine.GetSearchPaths();
+            string dir = System.IO.Path.GetFullPath("../../../Core/Lib");
+            // Use Server.MapPath("../../../Core/Lib") for Azure compatibility
+            paths.Add(dir);
+            _engine.SetSearchPaths(paths);
+
+            _engine.Execute(code, _scope);
+            //return _scope.GetVariable("output");
+            StreamReader reader = new StreamReader(_stdout);
+            output = _encoding.GetString(_stdout.ToArray());
+            return output;
+        }
     }
 }
