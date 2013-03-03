@@ -25,9 +25,9 @@ namespace red_inc.Controllers
         //
         // GET: /LoginRegister/
 
-        public ActionResult Login(LoginRegisterModel.LoginModel model, string returnUrl)
+        public ActionResult Login(string email, string password, string returnUrl)
         {
-            if (GlobalStaticVars.StaticCore.Login(model.Email, model.Password) != null)
+            if (GlobalStaticVars.StaticCore.Login(email, password) != null)
             {
                 return Redirect(returnUrl);
             }
