@@ -163,12 +163,14 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LoginRegisterController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="GlobalStaticVars.cs" />
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\LoginRegisterModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -255,12 +257,6 @@
     <Content Include="Views\bootstrap\assets\img\glyphicons-halflings.png" />
     <Content Include="Views\bootstrap\assets\js\bootstrap.js" />
     <Content Include="Views\bootstrap\assets\js\bootstrap.min.js" />
-    <Content Include="Views\bootstrap\pages\intro.html" />
-    <Content Include="Views\bootstrap\pages\problem-create.html" />
-    <Content Include="Views\bootstrap\pages\problem-do.html" />
-    <Content Include="Views\bootstrap\pages\problemsets.html" />
-    <Content Include="Views\bootstrap\pages\problemset_create.html" />
-    <Content Include="Views\bootstrap\pages\signin.html" />
     <Content Include="Views\bootstrap\prettify\CHANGES.html" />
     <Content Include="Views\bootstrap\prettify\closure-compiler\console-externs.js" />
     <Content Include="Views\bootstrap\prettify\distrib\google-code-prettify\lang-apollo.js" />
@@ -370,6 +366,12 @@
     <Content Include="Views\bootstrap\prettify\js-modules\regexpPrecederPatterns.pl" />
     <Content Include="Views\bootstrap\prettify\Makefile" />
     <Content Include="Views\bootstrap\prettify\yui-compressor\README" />
+    <Content Include="Views\bootstrap\pages\intro.cshtml" />
+    <Content Include="Views\bootstrap\pages\problem-create.cshtml" />
+    <Content Include="Views\bootstrap\pages\problem-do.cshtml" />
+    <Content Include="Views\bootstrap\pages\problemset_create.cshtml" />
+    <Content Include="Views\bootstrap\pages\problemsets.cshtml" />
+    <Content Include="Views\bootstrap\pages\signin.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -405,7 +407,7 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerPort>7854</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:50676/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

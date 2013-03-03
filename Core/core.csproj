@@ -65,14 +65,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core.cs" />
+    <Compile Include="Modules\BaseModel.cs" />
     <Compile Include="Modules\Class\ClassDao.cs" />
-    <Compile Include="Modules\DataAccessObject.cs" />
+    <Compile Include="Modules\BaseDao.cs" />
+    <Compile Include="Modules\Class\ClassModel.cs" />
+    <Compile Include="Modules\DaoFactory.cs" />
+    <Compile Include="Modules\ModelFactory.cs" />
     <Compile Include="Modules\ProblemSet\ProblemSetDao.cs" />
+    <Compile Include="Modules\ProblemSet\ProblemSetModel.cs" />
     <Compile Include="Modules\Problem\ProblemDao.cs" />
     <Compile Include="Modules\Problem\ProblemData.cs" />
+    <Compile Include="Modules\Problem\ProblemModel.cs" />
     <Compile Include="Modules\Problem\TestCase.cs" />
     <Compile Include="Modules\PyInterpret\PyInterpretUtility.cs" />
     <Compile Include="Modules\User\UserDao.cs" />
+    <Compile Include="Modules\User\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

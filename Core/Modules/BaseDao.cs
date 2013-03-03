@@ -3,18 +3,15 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace core.Modules
 {
-    public abstract class DataAccessObject<T> where T : DataObject
+    public abstract class BaseDao<T> where T : DataObject
     {
         protected readonly string connStr;
         protected readonly string tableName;
 
-        public DataAccessObject(string tableName)
+        public BaseDao(string tableName)
         {
             connStr = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["AzureConnection"].ConnectionString).ToString();
             this.tableName = tableName;
@@ -34,8 +31,7 @@ namespace core.Modules
                 cmd.CommandText = "Select * from dbo.[" + tableName + "] where Id = @id;";
 
                 //Id
-                cmd.Parameters.Add("@id", SqlDbType.Int);
-                cmd.Parameters["@id"].Value = id;
+                cmd.Parameters.AddWithValue("@id", id);
 
                 SqlDataReader reader = null;
                 try
@@ -66,12 +62,12 @@ namespace core.Modules
         /// <summary>
         /// Gets all data objects in the database.</summary>
         /// <returns>
-        /// A non-null, possibly empty list of DataObject objects</returns>
+        /// A non-null, possibly empty list of filled DataObject objects</returns>
         public List<T> GetAll()
         {
             using (SqlConnection conn = new SqlConnection(connStr))
             {
-                List<T> classes = new List<T>();
+                List<T> objects = new List<T>();
                 SqlCommand cmd = conn.CreateCommand();
 
                 cmd.CommandText = "Select * from dbo.[" + tableName + "];";
@@ -84,7 +80,7 @@ namespace core.Modules
 
                     if (reader.HasRows)
                         while (reader.Read())
-                            classes.Add(createObjectFromReader(reader));
+                            objects.Add(createObjectFromReader(reader));
                 }
                 catch (Exception e)
                 {
@@ -96,7 +92,43 @@ namespace core.Modules
                         reader.Close();
                 }
 
-                return classes;
+                return objects;
+            }
+        }
+
+        protected List<T> GetAll(string column, object value)
+        {
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                List<T> objects = new List<T>();
+                SqlCommand cmd = conn.CreateCommand();
+
+                cmd.CommandText = "Select * from dbo.[" + tableName + "] Where " + column + " = @value;";
+
+                //Value
+                cmd.Parameters.AddWithValue("@value", value);
+
+                SqlDataReader reader = null;
+                try
+                {
+                    conn.Open();
+                    reader = cmd.ExecuteReader();
+
+                    if (reader.HasRows)
+                        while (reader.Read())
+                            objects.Add(createObjectFromReader(reader));
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+                finally
+                {
+                    if (reader != null)
+                        reader.Close();
+                }
+
+                return objects;
             }
         }
 

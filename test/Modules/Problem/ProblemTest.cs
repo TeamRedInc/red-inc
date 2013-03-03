@@ -1,6 +1,6 @@
-﻿using System;
+﻿using core.Modules.Problem;
+using core.Modules.ProblemSet;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using core.Modules.Problem;
 using System.Collections.Generic;
 
 namespace core.Tests.Modules.Problem
@@ -8,7 +8,7 @@ namespace core.Tests.Modules.Problem
     [TestClass]
     public class ProblemTest
     {
-        private ProblemDao problemDao = new ProblemDao();
+        private ProblemModel problemModel = new ProblemModel();
 
         [TestMethod]
         public void TestAdd()
@@ -19,26 +19,54 @@ namespace core.Tests.Modules.Problem
             //This test works as of 10:30am on 2/21
             //Commenting it out to prevent cluttering the database
             //- Josh
-            //Assert.IsTrue(problemDao.Add(problem));
+            //Assert.IsTrue(problemModel.Add(problem));
         }
 
         [TestMethod]
         public void TestGet()
         {
-            ProblemData problem = problemDao.GetById(0);
+            ProblemData problem = problemModel.GetById(0);
 
             Assert.IsNull(problem);
 
-            problem = problemDao.GetById(3);
+            problem = problemModel.GetById(1);
 
             Assert.AreEqual("Hello, World!", problem.Name);
-            Assert.IsNull(problem.Description);
 
-            List<ProblemData> problems = problemDao.GetAll();
+            List<ProblemData> problems = problemModel.GetAll();
 
-            problem = problemDao.GetById(problems[0].Id);
+            Assert.IsTrue(problems.Contains(problem));
+        }
 
-            Assert.AreEqual(problems[0], problem);
+        [TestMethod]
+        public void TestAddToSet()
+        {
+            ProblemData problem = new ProblemData(1);
+            ProblemSetData set = new ProblemSetData(1);
+
+            //This problem should already belong to this set
+            Assert.IsFalse(problemModel.AddToSet(problem, set));
+        }
+
+        [TestMethod]
+        public void TestRemoveFromSet()
+        {
+            ProblemData problem = new ProblemData(4);
+            ProblemSetData set = new ProblemSetData(4);
+
+            Assert.IsTrue(problemModel.RemoveFromSet(problem, set));
+
+            Assert.IsTrue(problemModel.AddToSet(problem, set));
+        }
+
+        [TestMethod]
+        public void TestGetForSet()
+        {
+            List<ProblemData> problems = problemModel.GetForSet(new ProblemSetData(1));
+
+            Assert.IsTrue(problems.Contains(new ProblemData(1)));
+            Assert.IsTrue(problems.Contains(new ProblemData(2)));
+            Assert.IsTrue(problems.Contains(new ProblemData(3)));
         }
     }
 }

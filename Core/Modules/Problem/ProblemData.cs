@@ -18,7 +18,7 @@ namespace core.Modules.Problem
         {
             get
             {
-                if (String.IsNullOrEmpty(name))
+                if (String.IsNullOrWhiteSpace(name))
                     return "Problem " + Id;
                 return name;
             }
