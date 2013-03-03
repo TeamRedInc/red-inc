@@ -108,6 +108,17 @@
 
 
     <div class="container">
+	<!-- EDIT HERE -->
+	<form class="form-signin">
+        <h2 class="form-signin-heading">Please sign in</h2>
+        <input type="text" class="input-block-level" placeholder="Email address" id="address">
+        <input type="password" class="input-block-level" placeholder="Password" id="pass">
+        <label class="checkbox">
+        <input type="checkbox" value="remember-me"> Remember me
+        </label>
+        <button class="btn btn-large btn-primary" type="submit">Sign in</button>
+      </form>
+	<!--
     @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl })) {
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(true)
@@ -128,6 +139,8 @@
             <button class="btn btn-large btn-primary" type="submit" id="signin">Sign in</button>
         </fieldset>
     }
+	-->
+	<!-- STOP EDIT -->
     </div> <!-- /container -->
     @section Scripts {
         @Scripts.Render("~/bundles/jqueryval")
@@ -149,6 +162,26 @@
     <script src="../assets/js/bootstrap-collapse.js"></script>
     <script src="../assets/js/bootstrap-carousel.js"></script>
     <script src="../assets/js/bootstrap-typeahead.js"></script>
+	<script>
+		var xmlhttp;
+		if (window.XMLHttpRequest) {
+			xmlhttp = new XMLHttpRequest();
+		}
+		else {
+			xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		var email = $get("address").value;
+		var password = $get("pass").value;
+		
+		PageMethods.Login(email,password,goodLogin,badLogin);
+		
+		function goodLogin(result) {
+			window.location = result;
+		}
+		function badLogin(result) {
+			alert("Bad Login");
+		}
+	</script>
     <!--
     <script type="text/javascript">
         $("#signin").click(function () {

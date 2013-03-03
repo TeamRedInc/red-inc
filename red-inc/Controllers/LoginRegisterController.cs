@@ -25,6 +25,7 @@ namespace red_inc.Controllers
         //
         // GET: /LoginRegister/
 
+		//[WebMethod]
         public ActionResult Login(LoginRegisterModel.LoginModel model, string returnUrl)
         {
             if (GlobalStaticVars.StaticCore.Login(model.Email, model.Password))
