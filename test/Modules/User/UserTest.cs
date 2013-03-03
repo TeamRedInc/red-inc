@@ -8,7 +8,7 @@ namespace core.Tests.Modules.User
     [TestClass]
     public class UserTest
     {
-        private UserDao userDao = new UserDao();
+        private UserModel userModel = new UserModel();
 
         [TestMethod]
         public void TestAdd()
@@ -18,7 +18,7 @@ namespace core.Tests.Modules.User
             user.PasswordHash = "pass123";
 
             //This user should already exist in the database
-            Assert.IsFalse(userDao.Add(user));
+            Assert.IsFalse(userModel.Add(user));
         }
 
         [TestMethod]
@@ -28,37 +28,37 @@ namespace core.Tests.Modules.User
             user.Email = "jwien3@mail.gatech.edu";
             user.PasswordHash = "pass123";
 
+            UserData expected = userModel.GetById(1);
+
             //Successful login
-            Assert.IsTrue(userDao.Login(user));
+            Assert.AreEqual(expected, userModel.Login(user));
 
             user.Email = "garbage@hotmail.com";
 
             //Bad email
-            Assert.IsFalse(userDao.Login(user));
+            Assert.IsNull(userModel.Login(user));
 
             user.Email = "jwien3@mail.gatech.edu";
             user.PasswordHash = "badpass";
 
             //Bad password
-            Assert.IsFalse(userDao.Login(user));
+            Assert.IsNull(userModel.Login(user));
         }
 
         [TestMethod]
         public void TestGet()
         {
-            UserData user = userDao.GetById(0);
+            UserData user = userModel.GetById(0);
 
             Assert.IsNull(user);
 
-            user = userDao.GetById(1);
+            user = userModel.GetById(1);
 
             Assert.AreEqual(user.Email, "jwien3@mail.gatech.edu");
 
-            List<UserData> users = userDao.GetAll();
+            List<UserData> users = userModel.GetAll();
 
-            user = userDao.GetById(users[0].Id);
-
-            Assert.AreEqual(users[0], user);
+            Assert.IsTrue(users.Contains(user));
         }
 
         [TestMethod]
@@ -68,18 +68,18 @@ namespace core.Tests.Modules.User
             UserData user = new UserData(7);
 
             //This user should already be a student in the class
-            Assert.IsFalse(userDao.AddStudent(user, cls));
+            Assert.IsFalse(userModel.AddStudent(user, cls));
         }
 
         [TestMethod]
         public void TestGetStudents()
         {
-            List<UserData> students = userDao.GetStudents(new ClassData(1));
-            UserData student = userDao.GetById(2);
+            List<UserData> students = userModel.GetStudents(new ClassData(1));
+            UserData student = userModel.GetById(2);
 
             Assert.IsTrue(students.Contains(student));
 
-            student = userDao.GetById(1);
+            student = userModel.GetById(1);
 
             Assert.IsFalse(students.Contains(student));
         }

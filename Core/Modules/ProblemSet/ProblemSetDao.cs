@@ -1,4 +1,5 @@
 ﻿using core.Modules.Class;
+using core.Modules.User;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace core.Modules.ProblemSet
 {
-    public class ProblemSetDao : DataAccessObject<ProblemSetData>
+    public class ProblemSetDao : BaseDao<ProblemSetData>
     {
         public ProblemSetDao() : base("ProblemSet") { }
 
@@ -111,6 +112,78 @@ namespace core.Modules.ProblemSet
         }
 
         /// <summary>
+        /// Gets all problem sets in the specified class. Each set is also determined to be
+        /// locked or unlocked based on the specified user's progress in the class.
+        /// </summary>
+        /// <param name="user">The UserData object with the user's id</param>
+        /// <param name="cls">The ClassData object with the class' id</param>
+        /// <returns>A non-null, possibly empty list of filled ProblemSetData objects with Locked properties set</returns>
+        public List<ProblemSetData> GetForStudent(UserData user, ClassData cls)
+        {
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                List<ProblemSetData> sets = new List<ProblemSetData>();
+                SqlCommand cmd = conn.CreateCommand();
+
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("With LockedSets(Id, Name, ClassId) as (");
+                query.AppendLine("  Select Distinct ps.* from dbo.[ProblemSet] ps");
+                query.AppendLine("  Join dbo.[Prereq] prereq on prereq.ProblemSetId = ps.Id");
+                query.AppendLine("  Where ps.ClassId = @classId");
+                query.AppendLine("  and prereq.NumProblems > (");
+                query.AppendLine("      Select count(*) from dbo.[Solution] s");
+                query.AppendLine("      Join dbo.[Problem] p on p.Id = s.ProblemId");
+                query.AppendLine("      Join dbo.[ProblemSetProblem] psp on psp.ProblemId = p.Id");
+                query.AppendLine("      Where psp.ProblemSetId = prereq.RequiredSetId");
+                query.AppendLine("      and s.UserId = @userId and s.IsCorrect = 1");
+                query.AppendLine("  )");
+                query.AppendLine("), UnlockedSets(Id, Name, ClassId) as (");
+                query.AppendLine("  ( Select * from ProblemSet ps Where ps.ClassId = @classId )");
+                query.AppendLine("  Except");
+                query.AppendLine("  ( Select * from LockedSets )");
+                query.AppendLine(")");
+                query.AppendLine("( Select ls.*, Cast(1 as Bit) as 'Locked' from LockedSets ls )");
+                query.AppendLine("Union");
+                query.AppendLine("( Select us.*, Cast(0 as Bit) as 'Locked' from UnlockedSets us )");
+                query.AppendLine("Order by Locked, Id;");
+
+                cmd.CommandText = query.ToString();
+
+                //User
+                cmd.Parameters.AddWithValue("@userId", user.Id);
+
+                //Class
+                cmd.Parameters.AddWithValue("@classId", cls.Id);
+
+                SqlDataReader reader = null;
+                try
+                {
+                    conn.Open();
+                    reader = cmd.ExecuteReader();
+
+                    if (reader.HasRows)
+                        while (reader.Read())
+                        {
+                            ProblemSetData s = createFromReader(reader);
+                            s.Locked = (bool)reader["Locked"];
+                            sets.Add(s);
+                        }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+                finally
+                {
+                    if (reader != null)
+                        reader.Close();
+                }
+
+                return sets;
+            }
+        }
+
+        /// <summary>
         /// Add a new prerequisite to the database.
         /// </summary>
         /// <param name="set">The ProblemSetData object with the parent set's id</param>
@@ -132,6 +205,78 @@ namespace core.Modules.ProblemSet
 
                 //Number of problems
                 cmd.Parameters.AddWithValue("@numProbs", prereq.PrereqCount);
+
+                try
+                {
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Modify the number of required problems for a prerequisite.
+        /// </summary>
+        /// <param name="set">The ProblemSetData object with the parent set's id</param>
+        /// <param name="prereq">The ProblemSetData object with the prerequisite set's data</param>
+        /// <returns>true if the operation was successful, false otherwise</returns>
+        public bool UpdatePrereq(ProblemSetData set, ProblemSetData prereq)
+        {
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                SqlCommand cmd = conn.CreateCommand();
+
+                cmd.CommandText = "Update dbo.[Prereq] Set NumProblems = @numProbs"
+                    + " Where ProblemSetId = @setId and RequiredSetId = @prereqId;";
+
+                //Parent Set
+                cmd.Parameters.AddWithValue("@setId", set.Id);
+
+                //Prereq Set
+                cmd.Parameters.AddWithValue("@prereqId", prereq.Id);
+
+                //Number of problems
+                cmd.Parameters.AddWithValue("@numProbs", prereq.PrereqCount);
+
+                try
+                {
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Removes the specified prerequisite.
+        /// </summary>
+        /// <param name="set">The ProblemSetData object with the parent set's id</param>
+        /// <param name="prereq">The ProblemSetData object with the prerequisite set's data</param>
+        /// <returns>true if the remove was successful, false otherwise</returns>
+        public bool RemovePrereq(ProblemSetData set, ProblemSetData prereq)
+        {
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                SqlCommand cmd = conn.CreateCommand();
+
+                cmd.CommandText = "Delete from dbo.[Prereq] Where ProblemSetId = @setId and RequiredSetId = @prereqId;";
+
+                //Parent Set
+                cmd.Parameters.AddWithValue("@setId", set.Id);
+
+                //Prereq Set
+                cmd.Parameters.AddWithValue("@prereqId", prereq.Id);
 
                 try
                 {
@@ -195,7 +340,7 @@ namespace core.Modules.ProblemSet
         }
 
         /// <summary>
-        /// This method only exists so the superclass DataAccessObject can polymorphically call createFromReader.
+        /// This method only exists so the superclass BaseDao can polymorphically call createFromReader.
         /// Use of the static createFromReader(SqlDataReader) method is preferred.
         /// </summary>
         public override ProblemSetData createObjectFromReader(SqlDataReader reader)
