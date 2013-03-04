@@ -107,17 +107,15 @@
 
 
     <div class="container">
-      <form class="form-signin">
-        <h2 class="form-signin-heading">Please sign in</h2>
-        <input type="text" class="input-block-level" placeholder="Email address" id="address">
-        <input type="password" class="input-block-level" placeholder="Password"  id="pass">
-        <label class="checkbox">
-          <input type="checkbox" value="remember-me"> Remember me
-        </label>
-        <button class="btn btn-large btn-primary" onclick="temp()">Sign in</button>
-        <!--Html.ActionLink("send to controller", "Ajax", "Home", null, new {id = "ajaxLink"}) ></%=>-->
-      </form>
-
+        <form class="form-signin">
+            <h2 class="form-signin-heading">Please sign in</h2>
+            <input type="text" class="input-block-level" placeholder="Email address" id="address">
+            <input type="password" class="input-block-level" placeholder="Password"  id="pass">
+            <label class="checkbox">
+                <input type="checkbox" value="remember-me"> Remember me
+            </label>
+            <button class="btn btn-large btn-primary" type=button onclick="temp()">Sign in</button>
+        </form>
 
     </div> <!-- /container -->
 
@@ -150,6 +148,7 @@
             var password = $("#pass").val(); //document.getElementById("pass").value;
 
             @Url.Action("Login", "LoginRegister");
+            return false;
         }
 		//PageMethods.Login(email,password,goodLogin,badLogin);
 		
