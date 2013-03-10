@@ -1,0 +1,20 @@
+﻿@model redinc_reboot.Models.CodeModel
+@{
+    ViewBag.Title = "PythonTestPage";
+}
+
+<h2>PythonTestPage</h2>
+
+@using (Html.BeginForm())
+{
+    <fieldset>
+        <legend>Python Code Submission Form</legend>
+        <ol>
+            <li>
+                @Html.LabelFor(m => m.InputCode)
+                @Html.TextAreaFor(m => m.InputCode)
+            </li>
+        </ol>
+        <input type="submit" value="Submit Code" />
+    </fieldset>
+}

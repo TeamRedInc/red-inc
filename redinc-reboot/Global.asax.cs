@@ -26,7 +26,7 @@ namespace redinc_reboot
             AuthConfig.RegisterAuth();
 
             // Initialize our persistent static Core instance
-            GlobalStaticVars.StaticCore = new Core();
+            //GlobalStaticVars.StaticCore = new Core();
         }
     }
 }
