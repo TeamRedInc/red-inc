@@ -27,16 +27,6 @@ namespace core.Modules.User
         }
 
         /// <summary>
-        /// Verify a user's login information.</summary>
-        /// <param name="user">The UserData object with login credentials</param>
-        /// <returns>
-        /// The filled UserData object representing the logged in user, or null if login failed</returns>
-        public UserData Login(UserData user)
-        {
-            return userDao.Login(user);
-        }
-
-        /// <summary>
         /// Adds a user to a class as a student.</summary>
         /// <param name="student">The UserData object with the student user's id</param>
         /// <param name="cls">The ClassData object with the class's id</param>

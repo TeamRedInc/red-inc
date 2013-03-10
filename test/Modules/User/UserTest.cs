@@ -11,48 +11,13 @@ namespace core.Tests.Modules.User
         private UserModel userModel = new UserModel();
 
         [TestMethod]
-        public void TestAdd()
-        {
-            UserData user = new UserData(0);
-            user.Email = "jwien3@mail.gatech.edu";
-            user.PasswordHash = "pass123";
-
-            //This user should already exist in the database
-            Assert.IsFalse(userModel.Add(user));
-        }
-
-        [TestMethod]
-        public void TestLogin()
-        {
-            UserData user = new UserData(0);
-            user.Email = "jwien3@mail.gatech.edu";
-            user.PasswordHash = "pass123";
-
-            UserData expected = userModel.GetById(1);
-
-            //Successful login
-            Assert.AreEqual(expected, userModel.Login(user));
-
-            user.Email = "garbage@hotmail.com";
-
-            //Bad email
-            Assert.IsNull(userModel.Login(user));
-
-            user.Email = "jwien3@mail.gatech.edu";
-            user.PasswordHash = "badpass";
-
-            //Bad password
-            Assert.IsNull(userModel.Login(user));
-        }
-
-        [TestMethod]
         public void TestGet()
         {
             UserData user = userModel.GetById(0);
 
             Assert.IsNull(user);
 
-            user = userModel.GetById(1);
+            user = userModel.GetById(7);
 
             Assert.AreEqual(user.Email, "jwien3@mail.gatech.edu");
 
@@ -65,7 +30,7 @@ namespace core.Tests.Modules.User
         public void TestAddStudent()
         {
             ClassData cls = new ClassData(1);
-            UserData user = new UserData(7);
+            UserData user = new UserData(8);
 
             //This user should already be a student in the class
             Assert.IsFalse(userModel.AddStudent(user, cls));
@@ -75,11 +40,11 @@ namespace core.Tests.Modules.User
         public void TestGetStudents()
         {
             List<UserData> students = userModel.GetStudents(new ClassData(1));
-            UserData student = userModel.GetById(2);
+            UserData student = userModel.GetById(8);
 
             Assert.IsTrue(students.Contains(student));
 
-            student = userModel.GetById(1);
+            student = userModel.GetById(7);
 
             Assert.IsFalse(students.Contains(student));
         }

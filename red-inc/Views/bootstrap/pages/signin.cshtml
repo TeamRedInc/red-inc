@@ -158,21 +158,26 @@
     <script src="../assets/js/bootstrap-collapse.js"></script>
     <script src="../assets/js/bootstrap-carousel.js"></script>
     <script src="../assets/js/bootstrap-typeahead.js"></script>
-	<script>
-		var xmlhttp;
+    <script>
+		/*var xmlhttp;
 		if (window.XMLHttpRequest) {
 			xmlhttp = new XMLHttpRequest();
 		}
 		else {
 			xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-		}
-		var email = $get("address").value;
-		var password = $get("pass").value;
-		
-		PageMethods.Login(email,password,goodLogin,badLogin);
+		}*/
+        function temp() {
+            var email = $("#address").val();//document.getElementById("address").value;
+            var password = $("#pass").val(); //document.getElementById("pass").value;
+
+            @Url.Action("Login", "LoginRegister");
+            return false;
+        }
+		//PageMethods.Login(email,password,goodLogin,badLogin);
 		
 		function goodLogin(result) {
-			window.location = result;
+		    //window.location = result;
+		    console.log("It worked~!");
 		}
 		function badLogin(result) {
 			alert("Bad Login");
