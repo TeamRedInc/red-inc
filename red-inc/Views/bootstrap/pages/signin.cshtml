@@ -107,16 +107,15 @@
 
 
     <div class="container">
-      <form class="form-signin">
-        <h2 class="form-signin-heading">Please sign in</h2>
-        <input type="text" class="input-block-level" placeholder="Email address">
-        <input type="password" class="input-block-level" placeholder="Password">
-        <label class="checkbox">
-          <input type="checkbox" value="remember-me"> Remember me
-        </label>
-        <button class="btn btn-large btn-primary" type="submit">Sign in</button>
-      </form>
-
+        <form class="form-signin">
+            <h2 class="form-signin-heading">Please sign in</h2>
+            <input type="text" class="input-block-level" placeholder="Email address" id="address">
+            <input type="password" class="input-block-level" placeholder="Password"  id="pass">
+            <label class="checkbox">
+                <input type="checkbox" value="remember-me"> Remember me
+            </label>
+            <button class="btn btn-large btn-primary" type=button onclick="temp()">Sign in</button>
+        </form>
 
     </div> <!-- /container -->
 
@@ -136,36 +135,30 @@
     <script src="../assets/js/bootstrap-collapse.js"></script>
     <script src="../assets/js/bootstrap-carousel.js"></script>
     <script src="../assets/js/bootstrap-typeahead.js"></script>
-    <!--
-    <script type="text/javascript">
-        $("#signin").click(function () {
-            $.ajax({
-                type: "POST",
-                url: "../../Controllers/AccountController/Login",
-                data: { selectedValue: "#email", selectedValue: "#pwd", selectedValue: "#remember" },
-                success: function (html) {
-                    alert("Login Status: " + html);
-                },
-                error: function (jqXHR, exception) {
-                    if (jqXHR.status === 0) {
-                        alert('Not connect.\n Verify Network.');
-                    } else if (jqXHR.status == 404) {
-                        alert('Requested page not found. [404]');
-                    } else if (jqXHR.status == 500) {
-                        alert('Internal Server Error [500].');
-                    } else if (exception === 'parsererror') {
-                        alert('Requested JSON parse failed.');
-                    } else if (exception === 'timeout') {
-                        alert('Time out error.');
-                    } else if (exception === 'abort') {
-                        alert('Ajax request aborted.');
-                    } else {
-                        alert('Uncaught Error.\n' + jqXHR.responseText);
-                    }
-                }
-            });
-        });
-    </script>
-    -->
+    <script>
+		/*var xmlhttp;
+		if (window.XMLHttpRequest) {
+			xmlhttp = new XMLHttpRequest();
+		}
+		else {
+			xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+		}*/
+        function temp() {
+            var email = $("#address").val();//document.getElementById("address").value;
+            var password = $("#pass").val(); //document.getElementById("pass").value;
+
+            @Url.Action("Login", "LoginRegister");
+            return false;
+        }
+		//PageMethods.Login(email,password,goodLogin,badLogin);
+		
+		function goodLogin(result) {
+		    //window.location = result;
+		    console.log("It worked~!");
+		}
+		function badLogin(result) {
+			alert("Bad Login");
+		}
+	</script>
   </body>
 </html>
