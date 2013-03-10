@@ -24,25 +24,12 @@ namespace core
             userModel = ModelFactory.UserModel;
         }
 
-        public bool AddUser(string email, string passwordHash, string firstName, string lastName, bool isAdmin)
+        public bool AddUser(int id, string email)
         {
-            UserData user = new UserData(0);
+            UserData user = new UserData(id);
             user.Email = email;
-            user.PasswordHash = passwordHash;
-            user.FirstName = firstName;
-            user.LastName = lastName;
-            user.IsAdmin = isAdmin;
 
             return userModel.Add(user);
-        }
-
-        public UserData Login(string email, string passwordHash)
-        {
-            UserData user = new UserData(0);
-            user.Email = email;
-            user.PasswordHash = passwordHash;
-
-            return userModel.Login(user);
         }
     }
 }

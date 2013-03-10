@@ -28,10 +28,6 @@ namespace red_inc.Controllers
         [WebMethod]
         public ActionResult Login(string email, string password)
         {
-            if (GlobalStaticVars.StaticCore.Login(email, password) != null)
-            {
-                return View("~/Views/bootstrap/pages/intro.cshtml");
-            }
             return View();
         }
 

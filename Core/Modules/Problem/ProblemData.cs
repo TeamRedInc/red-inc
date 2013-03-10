@@ -10,7 +10,7 @@ namespace core.Modules.Problem
     {
         private string name;
         private string description;
-        private List<TestCase> testCases;
+        private string solutionCode;
 
         public ProblemData(int id) : base(id) { }
 
@@ -31,15 +31,10 @@ namespace core.Modules.Problem
             set { description = value; }
         }
 
-        public List<TestCase> TestCases
+        public string SolutionCode
         {
-            get
-            {
-                if (testCases == null)
-                    testCases = new List<TestCase>();
-                return testCases; 
-            }
-            set { testCases = value; }
+            get { return solutionCode; }
+            set { solutionCode = value; }
         }
 
         public override string ToString()

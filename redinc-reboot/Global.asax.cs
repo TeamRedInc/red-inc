@@ -1,4 +1,5 @@
-﻿using System;
+﻿using core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -23,6 +24,9 @@ namespace redinc_reboot
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AuthConfig.RegisterAuth();
+
+            // Initialize our persistent static Core instance
+            GlobalStaticVars.StaticCore = new Core();
         }
     }
 }
