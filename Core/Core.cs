@@ -21,7 +21,7 @@ namespace core
         /// </summary>
         public Core()
         {
-            userModel = ModelFactory.UserModel;
+            //userModel = ModelFactory.UserModel;
         }
 
         public bool AddUser(int id, string email)
@@ -30,6 +30,12 @@ namespace core
             user.Email = email;
 
             return userModel.Add(user);
+        }
+
+        public string ExecutePythonCode(string code)
+        {
+            var py = new Modules.PyInterpret.PyInterpretUtility();
+            return py.FutureInterpret(code);
         }
     }
 }
