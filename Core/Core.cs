@@ -1,4 +1,6 @@
 ﻿using core.Modules;
+using core.Modules.Class;
+using core.Modules.ProblemSet;
 using core.Modules.User;
 using System;
 using System.Collections.Generic;
@@ -14,6 +16,7 @@ namespace core
     public class Core
     {
         private readonly UserModel userModel;
+        private readonly ProblemSetModel setModel;
 
         /// <summary>
         /// Primary thread of execution
@@ -22,6 +25,7 @@ namespace core
         public Core()
         {
             //userModel = ModelFactory.UserModel;
+            setModel = ModelFactory.ProblemSetModel;
         }
 
         public bool AddUser(int id, string email)
@@ -30,6 +34,11 @@ namespace core
             user.Email = email;
 
             return userModel.Add(user);
+        }
+
+        public List<ProblemSetData> GetSetsForStudent(int studentId, int classId)
+        {
+            return setModel.GetForStudent(new UserData(studentId), new ClassData(classId));
         }
 
         public string ExecutePythonCode(string code)
