@@ -107,16 +107,39 @@
 
 
     <div class="container">
-        <form class="form-signin">
-            <h2 class="form-signin-heading">Please sign in</h2>
-            <input type="text" class="input-block-level" placeholder="Email address" id="address">
-            <input type="password" class="input-block-level" placeholder="Password"  id="pass">
-            <label class="checkbox">
-                <input type="checkbox" value="remember-me"> Remember me
-            </label>
-            <button class="btn btn-large btn-primary" type=button onclick="temp()">Sign in</button>
-        </form>
-
+	<!-- EDIT HERE -->
+	<form class="form-signin">
+        <h2 class="form-signin-heading">Please sign in</h2>
+        <input type="text" class="input-block-level" placeholder="Email address" id="address">
+        <input type="password" class="input-block-level" placeholder="Password" id="pass">
+        <label class="checkbox">
+        <input type="checkbox" value="remember-me"> Remember me
+        </label>
+        <button class="btn btn-large btn-primary" type="submit">Sign in</button>
+      </form>
+	<!--
+    @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl })) {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        <fieldset>
+            <legend>Log in Form</legend>
+            <ol>
+                <li>
+                    @Html.LabelFor(m => m.Email)
+                    @Html.TextBoxFor(m => m.Email)
+                    @Html.ValidationMessageFor(m => m.Email)
+                </li>
+                <li>
+                    @Html.LabelFor(m => m.Password)
+                    @Html.PasswordFor(m => m.Password)
+                    @Html.ValidationMessageFor(m => m.Password)
+                </li>
+            </ol>
+            <button class="btn btn-large btn-primary" type="submit" id="signin">Sign in</button>
+        </fieldset>
+    }
+	-->
+	<!-- STOP EDIT -->
     </div> <!-- /container -->
 
     <!-- Le javascript
@@ -160,5 +183,36 @@
 			alert("Bad Login");
 		}
 	</script>
+    <!--
+    <script type="text/javascript">
+        $("#signin").click(function () {
+            $.ajax({
+                type: "POST",
+                url: "../../Controllers/AccountController/Login",
+                data: { selectedValue: "#email", selectedValue: "#pwd", selectedValue: "#remember" },
+                success: function (html) {
+                    alert("Login Status: " + html);
+                },
+                error: function (jqXHR, exception) {
+                    if (jqXHR.status === 0) {
+                        alert('Not connect.\n Verify Network.');
+                    } else if (jqXHR.status == 404) {
+                        alert('Requested page not found. [404]');
+                    } else if (jqXHR.status == 500) {
+                        alert('Internal Server Error [500].');
+                    } else if (exception === 'parsererror') {
+                        alert('Requested JSON parse failed.');
+                    } else if (exception === 'timeout') {
+                        alert('Time out error.');
+                    } else if (exception === 'abort') {
+                        alert('Ajax request aborted.');
+                    } else {
+                        alert('Uncaught Error.\n' + jqXHR.responseText);
+                    }
+                }
+            });
+        });
+    </script>
+    -->
   </body>
 </html>
