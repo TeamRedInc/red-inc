@@ -47,20 +47,10 @@ namespace redinc_reboot.Controllers
             if (ModelState.IsValid)
             {
                 // Attempt to execute code
-                try
-                {
-                    WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
-                    GlobalStaticVars.StaticCore.AddUser(WebSecurity.GetUserId(model.UserName), model.UserName);
-                    WebSecurity.Login(model.UserName, model.Password);
-                    return RedirectToAction("Index", "Home");
-                }
-                catch (MembershipCreateUserException e)
-                {
-                    ModelState.AddModelError("", ErrorCodeToString(e.StatusCode));
-                }
+                model.OutputCode = GlobalStaticVars.StaticCore.ExecutePythonCode(model.InputCode);
             }
-
-            // If we got this far, something failed, redisplay form
+            
+            // Redisplay form with output
             return View(model);
         }
     }

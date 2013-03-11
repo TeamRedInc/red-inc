@@ -11,5 +11,6 @@ namespace redinc_reboot.Models
         [Required]
         [Display(Name = "Input code")]
         public string InputCode { get; set; }
+        public string OutputCode { get; set; }
     }
 }

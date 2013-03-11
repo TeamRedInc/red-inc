@@ -50,11 +50,18 @@ namespace core.Modules.PyInterpret
             paths.Add(dir);
             _engine.SetSearchPaths(paths);
 
-            _engine.Execute(code, _scope);
-            //return _scope.GetVariable("output");
-            StreamReader reader = new StreamReader(_stdout);
-            output = _encoding.GetString(_stdout.ToArray());
-            return output;
+            try
+            {
+                _engine.Execute(code, _scope);
+                //return _scope.GetVariable("output");
+                StreamReader reader = new StreamReader(_stdout);
+                output = _encoding.GetString(_stdout.ToArray());
+                return output;
+            }
+            catch (Exception e)
+            {
+                return "Shit's jank";
+            }
         }
     }
 }
