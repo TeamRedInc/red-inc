@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using core;
 
-namespace red_inc
+namespace redinc_reboot
 {
     public static class GlobalStaticVars
     {
