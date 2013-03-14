@@ -1,5 +1,6 @@
 ﻿using core.Modules;
 using core.Modules.User;
+using core.Modules.Class;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -14,6 +15,7 @@ namespace core
     public class Core
     {
         private readonly UserModel userModel;
+        private readonly ClassModel classModel;
 
         /// <summary>
         /// Primary thread of execution
@@ -22,6 +24,7 @@ namespace core
         public Core()
         {
             userModel = ModelFactory.UserModel;
+            classModel = ModelFactory.ClassModel;
         }
 
         public bool AddUser(string email, string passwordHash, string firstName, string lastName, bool isAdmin)
@@ -43,6 +46,12 @@ namespace core
             user.PasswordHash = passwordHash;
 
             return userModel.Login(user);
+        }
+
+        public List<ClassData> GetAllClasses()
+        {
+            List<ClassData> classList = new List<ClassData>();
+            return classModel.GetAllClasses();
         }
     }
 }

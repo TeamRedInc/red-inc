@@ -167,8 +167,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="GlobalStaticVars.cs" />
     <Compile Include="Models\AccountModels.cs" />
-    <Compile Include="Models\ClassModel.cs" />
     <Compile Include="Models\HomeClassListModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -290,6 +290,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\core\core.csproj">
+      <Project>{2f427821-0c46-4ecb-b3f3-924e64bac1ae}</Project>
+      <Name>core</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

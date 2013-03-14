@@ -20,7 +20,7 @@ namespace redinc_reboot.Controllers
         public ActionResult Home()
         {
             var viewModel = new HomeClassListModel();
-            /*viewModel.ClassItems = database.GetClasses();*/
+            viewModel.ClassItems = GlobalStaticVars.StaticCore.GetAllClasses();
             return View(viewModel);
         }
 
