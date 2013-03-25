@@ -1,7 +1,6 @@
 ﻿using core.Modules;
-using core.Modules.Class;
-using core.Modules.ProblemSet;
 using core.Modules.User;
+using core.Modules.Class;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -16,7 +15,7 @@ namespace core
     public class Core
     {
         private readonly UserModel userModel;
-        private readonly ProblemSetModel setModel;
+        private readonly ClassModel classModel;
 
         /// <summary>
         /// Primary thread of execution
@@ -24,27 +23,35 @@ namespace core
         /// </summary>
         public Core()
         {
-            //userModel = ModelFactory.UserModel;
-            setModel = ModelFactory.ProblemSetModel;
+            userModel = ModelFactory.UserModel;
+            classModel = ModelFactory.ClassModel;
         }
 
-        public bool AddUser(int id, string email)
+        public bool AddUser(string email, string passwordHash, string firstName, string lastName, bool isAdmin)
         {
-            UserData user = new UserData(id);
+            UserData user = new UserData(0);
             user.Email = email;
+            user.PasswordHash = passwordHash;
+            user.FirstName = firstName;
+            user.LastName = lastName;
+            user.IsAdmin = isAdmin;
 
             return userModel.Add(user);
         }
 
-        public List<ProblemSetData> GetSetsForStudent(int studentId, int classId)
+        public UserData Login(string email, string passwordHash)
         {
-            return setModel.GetForStudent(new UserData(studentId), new ClassData(classId));
+            UserData user = new UserData(0);
+            user.Email = email;
+            user.PasswordHash = passwordHash;
+
+            return userModel.Login(user);
         }
 
-        public string ExecutePythonCode(string code)
+        public List<ClassData> GetAllClasses()
         {
-            var py = new Modules.PyInterpret.PyInterpretUtility();
-            return py.FutureInterpret(code);
+            List<ClassData> classList = new List<ClassData>();
+            return classModel.GetAllClasses();
         }
     }
 }

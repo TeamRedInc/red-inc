@@ -19,16 +19,16 @@ namespace core.Modules.User
         {
             using (SqlConnection conn = new SqlConnection(connStr))
             {
-                string cmdStr = "Insert into dbo.[" + tableName + "] (Id, Email";
-                string paramList = ") values (@id, @email";
+                string cmdStr = "Insert into dbo.[" + tableName + "] (Email, PasswordHash";
+                string paramList = ") values (@email, @pwd";
 
                 SqlCommand cmd = conn.CreateCommand();
 
-                //Id
-                cmd.Parameters.AddWithValue("@id", user.Id);
-
                 //Email
                 cmd.Parameters.AddWithValue("@email", user.Email);
+
+                //Password hash
+                cmd.Parameters.AddWithValue("@pwd", user.PasswordHash);
 
                 //First name
                 if (!String.IsNullOrWhiteSpace(user.FirstName)) 
@@ -68,6 +68,54 @@ namespace core.Modules.User
                 }
             }
             return true;
+        }
+
+        /// <summary>
+        /// Verify a user's login information.</summary>
+        /// <param name="user">The UserData object with login credentials</param>
+        /// <returns>
+        /// The filled UserData object representing the logged in user, or null if login failed</returns>
+        public UserData Login(UserData user)
+        {
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                SqlCommand cmd = conn.CreateCommand();
+
+                cmd.CommandText = "Select * from dbo.[" + tableName + "] where Email = @email and PasswordHash = @pwd;";
+
+                //Email
+                cmd.Parameters.AddWithValue("@email", user.Email);
+
+                //Password hash
+                cmd.Parameters.AddWithValue("@pwd", user.PasswordHash);
+
+                SqlDataReader reader = null;
+                try
+                {
+                    conn.Open();
+                    reader = cmd.ExecuteReader();
+
+                    if (reader.HasRows)
+                    {
+                        reader.Read();
+                        UserData u = createFromReader(reader);
+                        //Successfully return only if there is one matching row
+                        if (!reader.Read())
+                            return u;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+                finally
+                {
+                    if (reader != null)
+                        reader.Close();
+                }
+
+                return null;
+            }
         }
 
         /// <summary>
@@ -200,6 +248,7 @@ namespace core.Modules.User
         {
             UserData user = new UserData((int)reader["Id"]);
             user.Email = (string)reader["Email"];
+            user.PasswordHash = (string)reader["PasswordHash"];
             user.FirstName = reader["FirstName"] as string;
             user.LastName = reader["LastName"] as string;
             user.IsAdmin = (bool)reader["IsAdmin"];

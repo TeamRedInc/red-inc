@@ -51,8 +51,8 @@ namespace core.Tests.Modules.Problem
         [TestMethod]
         public void TestRemoveFromSet()
         {
-            ProblemData problem = new ProblemData(3);
-            ProblemSetData set = new ProblemSetData(2);
+            ProblemData problem = new ProblemData(4);
+            ProblemSetData set = new ProblemSetData(4);
 
             Assert.IsTrue(problemModel.RemoveFromSet(problem, set));
 

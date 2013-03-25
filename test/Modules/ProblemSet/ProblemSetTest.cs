@@ -69,7 +69,7 @@ namespace core.Tests.Modules.ProblemSet
         [TestMethod]
         public void TestGetForStudent()
         {
-            List<ProblemSetData> sets = setModel.GetForStudent(new UserData(7), new ClassData(2));
+            List<ProblemSetData> sets = setModel.GetForStudent(new UserData(1), new ClassData(2));
 
             Assert.IsFalse(sets.Find(ps => ps.Id == 1).Locked);
             Assert.IsTrue(sets.Find(ps => ps.Id == 2).Locked);

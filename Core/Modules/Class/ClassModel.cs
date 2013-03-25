@@ -45,5 +45,14 @@ namespace core.Modules.Class
         {
             return classDao.GetInstructorClasses(user);
         }
+
+        /// <summary>
+        /// Gets all classes a user can register for or is registered for.
+        /// </summary>
+        /// <returns>A non-null, possibly empty list of filled ClassData objects</returns>
+        public List<ClassData> GetAllClasses()
+        {
+            return classDao.GetAllClasses();
+        }
     }
 }

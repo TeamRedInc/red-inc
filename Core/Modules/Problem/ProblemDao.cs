@@ -25,11 +25,11 @@ namespace core.Modules.Problem
 
                 SqlCommand cmd = conn.CreateCommand();
 
-                bool fieldInserted = false;
+                bool insertingName = false;
                 //Name
                 if (!String.IsNullOrWhiteSpace(problem.Name))
                 {
-                    fieldInserted = true;
+                    insertingName = true;
                     cmdStr += "Name";
                     paramList += "@name";
                     cmd.Parameters.AddWithValue("@name", problem.Name);
@@ -38,29 +38,14 @@ namespace core.Modules.Problem
                 //Description
                 if (!String.IsNullOrWhiteSpace(problem.Description))
                 {
-                    if (fieldInserted)
+                    if (insertingName)
                     {
                         cmdStr += ", ";
                         paramList += ", ";
                     }
-                    fieldInserted = true;
                     cmdStr += "Description";
                     paramList += "@description";
                     cmd.Parameters.AddWithValue("@description", problem.Description);
-                }
-                
-                //Solution Code
-                if (!String.IsNullOrWhiteSpace(problem.SolutionCode))
-                {
-                    if (fieldInserted)
-                    {
-                        cmdStr += ", ";
-                        paramList += ", ";
-                    }
-                    fieldInserted = true;
-                    cmdStr += "SolutionCode";
-                    paramList += "@slnCode";
-                    cmd.Parameters.AddWithValue("@slnCode", problem.SolutionCode);
                 }
 
                 cmd.CommandText = cmdStr + paramList + ");";
@@ -286,7 +271,6 @@ namespace core.Modules.Problem
             ProblemData problem = new ProblemData((int)reader["Id"]);
             problem.Name = reader["Name"] as string;
             problem.Description = reader["Description"] as string;
-            problem.SolutionCode = reader["SolutionCode"] as string;
             return problem;
         }
     }

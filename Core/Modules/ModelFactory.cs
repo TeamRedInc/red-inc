@@ -19,16 +19,8 @@ namespace core.Modules
 
         public static UserModel UserModel
         {
-            get
-            {
-                try { return userModel.Value; }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                }
-                return null;
-            }
-        }   
+            get { return userModel.Value; }
+        }
 
         public static ClassModel ClassModel
         {
