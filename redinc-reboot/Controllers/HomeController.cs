@@ -4,7 +4,6 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using redinc_reboot.Models;
-using redinc_reboot;
 
 namespace redinc_reboot.Controllers
 {
@@ -15,13 +14,6 @@ namespace redinc_reboot.Controllers
             ViewBag.Message = "Modify this template to jump-start your ASP.NET MVC application.";
 
             return View();
-        }
-
-        public ActionResult Home()
-        {
-            var viewModel = new HomeClassListModel();
-            viewModel.ClassItems = GlobalStaticVars.StaticCore.GetAllClasses();
-            return View(viewModel);
         }
 
         public ActionResult About()
@@ -36,6 +28,30 @@ namespace redinc_reboot.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+
+        public ActionResult PythonTestPage()
+        {
+            ViewBag.Message = "Python test page.";
+
+            return View();
+        }
+
+        //
+        // POST: /Home/PythonTestPage
+
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult PythonTestPage(CodeModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                // Attempt to execute code
+                model.OutputCode = GlobalStaticVars.StaticCore.ExecutePythonCode(model.InputCode);
+            }
+            
+            // Redisplay form with output
+            return View(model);
         }
     }
 }

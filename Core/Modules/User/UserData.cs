@@ -9,7 +9,6 @@ namespace core.Modules.User
     public class UserData : DataObject
     {
         private string email;
-        private string passwordHash;
         private string firstName;
         private string lastName;
         private bool isAdmin;
@@ -20,12 +19,6 @@ namespace core.Modules.User
         {
             get { return email; }
             set { email = value; }
-        }
-
-        public string PasswordHash
-        {
-            get { return passwordHash; }
-            set { passwordHash = value; }
         }
 
         public string FirstName

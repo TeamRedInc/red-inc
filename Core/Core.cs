@@ -1,6 +1,7 @@
 ﻿using core.Modules;
-using core.Modules.User;
 using core.Modules.Class;
+using core.Modules.ProblemSet;
+using core.Modules.User;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -15,7 +16,7 @@ namespace core
     public class Core
     {
         private readonly UserModel userModel;
-        private readonly ClassModel classModel;
+        private readonly ProblemSetModel setModel;
 
         /// <summary>
         /// Primary thread of execution
@@ -23,35 +24,27 @@ namespace core
         /// </summary>
         public Core()
         {
-            userModel = ModelFactory.UserModel;
-            classModel = ModelFactory.ClassModel;
+            //userModel = ModelFactory.UserModel;
+            setModel = ModelFactory.ProblemSetModel;
         }
 
-        public bool AddUser(string email, string passwordHash, string firstName, string lastName, bool isAdmin)
+        public bool AddUser(int id, string email)
         {
-            UserData user = new UserData(0);
+            UserData user = new UserData(id);
             user.Email = email;
-            user.PasswordHash = passwordHash;
-            user.FirstName = firstName;
-            user.LastName = lastName;
-            user.IsAdmin = isAdmin;
 
             return userModel.Add(user);
         }
 
-        public UserData Login(string email, string passwordHash)
+        public List<ProblemSetData> GetSetsForStudent(int studentId, int classId)
         {
-            UserData user = new UserData(0);
-            user.Email = email;
-            user.PasswordHash = passwordHash;
-
-            return userModel.Login(user);
+            return setModel.GetForStudent(new UserData(studentId), new ClassData(classId));
         }
 
-        public List<ClassData> GetAllClasses()
+        public string ExecutePythonCode(string code)
         {
-            List<ClassData> classList = new List<ClassData>();
-            return classModel.GetAllClasses();
+            var py = new Modules.PyInterpret.PyInterpretUtility();
+            return py.FutureInterpret(code);
         }
     }
 }
