@@ -80,6 +80,7 @@ namespace redinc_reboot.Controllers
                 try
                 {
                     WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
+                    GlobalStaticVars.StaticCore.AddUser(WebSecurity.GetUserId(model.UserName), model.UserName);
                     WebSecurity.Login(model.UserName, model.Password);
                     return RedirectToAction("Index", "Home");
                 }

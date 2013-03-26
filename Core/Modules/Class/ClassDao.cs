@@ -106,15 +106,6 @@ namespace core.Modules.Class
             return base.GetAll("InstructorId", user.Id);
         }
 
-        ///<summary>
-        /// Gets all of the classes that a user can register for or is registered for.
-        /// <returns>A non-null, possibly empty list of filled ClassData objects</returns>
-        /// </summary>
-        public List<ClassData> GetAllClasses()
-        {
-            return base.GetAll();
-        }
-
         /// <summary>
         /// This method only exists so the superclass BaseDao can polymorphically call createFromReader.
         /// Use of the static createFromReader(SqlDataReader) method is preferred.
