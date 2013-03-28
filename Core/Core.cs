@@ -46,5 +46,15 @@ namespace core
             var py = new Modules.PyInterpret.PyInterpretUtility();
             return py.FutureInterpret(code);
         }
+
+        public ProblemSetData GetSetById(int setId)
+        {
+            return setModel.GetById(setId);
+        }
+
+        public bool ModifySet(ProblemSetData set)
+        {
+            return setModel.Modify(set);
+        }
     }
 }

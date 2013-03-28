@@ -32,6 +32,20 @@ namespace core.Modules.ProblemSet
         {
             return setDao.Add(set);
         }
+        
+        /// <summary>
+        /// Modify a problem set's data.
+        /// </summary>
+        /// <param name="set">The ProblemSetData object with the set's information</param>
+        /// <returns>true if the modify was successful, false otherwise</returns>
+        public bool Modify(ProblemSetData set)
+        {
+            //Validate Name property
+            if (String.IsNullOrWhiteSpace(set.Name))
+                return false;
+
+            return setDao.Modify(set);
+        }
 
         /// <summary>
         /// Gets all problem sets in the specified class.

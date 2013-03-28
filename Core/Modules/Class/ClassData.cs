@@ -12,6 +12,8 @@ namespace core.Modules.Class
         private string name;
         private UserData instructor;
 
+        public ClassData() : base(0) { }
+
         public ClassData(int id) : base(id) { }
 
         public string Name

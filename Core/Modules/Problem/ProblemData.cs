@@ -12,6 +12,8 @@ namespace core.Modules.Problem
         private string description;
         private string solutionCode;
 
+        public ProblemData() : base(0) { }
+
         public ProblemData(int id) : base(id) { }
 
         public string Name
