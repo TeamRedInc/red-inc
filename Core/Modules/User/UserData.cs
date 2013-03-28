@@ -13,6 +13,8 @@ namespace core.Modules.User
         private string lastName;
         private bool isAdmin;
 
+        public UserData() : base(0) { }
+
         public UserData(int id) : base(id) {}
 
         public string Email

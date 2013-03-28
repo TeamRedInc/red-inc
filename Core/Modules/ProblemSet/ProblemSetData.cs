@@ -14,6 +14,8 @@ namespace core.Modules.ProblemSet
         private int prereqCount;
         private Boolean locked;
 
+        public ProblemSetData() : base(0) { }
+
         public ProblemSetData(int id) : base(id) { }
 
         public string Name

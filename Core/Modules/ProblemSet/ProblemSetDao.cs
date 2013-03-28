@@ -59,6 +59,41 @@ namespace core.Modules.ProblemSet
         }
 
         /// <summary>
+        /// Modify a problem set's data.
+        /// </summary>
+        /// <param name="set">The ProblemSetData object with the set's information</param>
+        /// <returns>true if the modify was successful, false otherwise</returns>
+        public bool Modify(ProblemSetData set)
+        {
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                SqlCommand cmd = conn.CreateCommand();
+
+                cmd.CommandText = "Update dbo.[" + tableName + "]"
+                    + " Set Name = @name"
+                    + " Where Id = @id;";
+
+                //Name
+                cmd.Parameters.AddWithValue("@name", set.Name);
+
+                //Id
+                cmd.Parameters.AddWithValue("@id", set.Id);
+
+                try
+                {
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
         /// Gets all problem sets in the specified class.
         /// </summary>
         /// <param name="cls">The ClassData object with the class' id</param>
