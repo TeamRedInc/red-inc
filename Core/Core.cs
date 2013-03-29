@@ -56,5 +56,10 @@ namespace core
         {
             return setModel.Modify(set);
         }
+
+        public List<ProblemSetData> GetSetPrereqs(int setId)
+        {
+            return setModel.GetPrereqs(new ProblemSetData(setId));
+        }
     }
 }

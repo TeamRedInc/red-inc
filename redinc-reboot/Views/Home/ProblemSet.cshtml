@@ -1,4 +1,4 @@
-﻿@model core.Modules.ProblemSet.ProblemSetData
+﻿@model redinc_reboot.Models.ProblemSetViewModel
 
 @{
     ViewBag.Title = "Edit Problem Set";
@@ -9,9 +9,38 @@
 @using (Html.BeginForm("EditProblemSet", "Home", FormMethod.Post))
 {
     <fieldset>
-        @Html.HiddenFor(m => m.Id)
-        @Html.LabelFor(m => m.Name)
-        @Html.TextBoxFor(m => m.Name)
-        <input type="submit" value="Save Name" />
+        @Html.HiddenFor(m => m.Set.Id)
+        @Html.LabelFor(m => m.Set.Name)
+        @Html.TextBoxFor(m => m.Set.Name)
+
+        <table id="prereqTable">
+            <tr>
+                <th>Prerequisite Set</th>
+                <th>Number of Problems Required</th>
+                <th>Delete</th>
+            </tr>
+            @foreach (var prereq in Model.Prereqs)
+            {
+                Html.RenderPartial("EditorTemplates/PrereqRow", prereq);
+            }
+        </table>
+        @Html.ActionLink("Add", "NewPrereq", null, new { id = "addItem" })
+        <input type="submit" value="Save" />
     </fieldset>
+}
+
+@section scripts
+{
+    <script type="text/javascript">
+        $("#addItem").click(function () {
+            $.ajax({
+                url: this.href,
+                cache: false,
+                success: function (html) {
+                    $("#prereqTable tbody").append(html);
+                }
+            });
+            return false;
+        });
+    </script>
 }

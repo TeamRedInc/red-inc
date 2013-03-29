@@ -59,17 +59,26 @@ namespace redinc_reboot.Controllers
         {
             ViewBag.Message = "Modify the problem set.";
             ProblemSetData set = GlobalStaticVars.StaticCore.GetSetById(id);
-            return View(set);
+            IList<ProblemSetData> prereqs = GlobalStaticVars.StaticCore.GetSetPrereqs(id);
+            ProblemSetViewModel model = new ProblemSetViewModel();
+            model.Set = set;
+            model.Prereqs = prereqs;
+            return View(model);
         }
 
-        public ActionResult EditProblemSet(ProblemSetData set)
+        public ActionResult EditProblemSet(ProblemSetViewModel model)
         {
             if (ModelState.IsValid)
             {
-                GlobalStaticVars.StaticCore.ModifySet(set);
+                GlobalStaticVars.StaticCore.ModifySet(model.Set);
             }
 
-            return RedirectToAction("ProblemSet", new { id = set.Id });
+            return RedirectToAction("ProblemSet", new { id = model.Set.Id });
+        }
+
+        public ActionResult NewPrereq()
+        {
+            return PartialView("EditorTemplates/PrereqRow", new ProblemSetData());
         }
     }
 }

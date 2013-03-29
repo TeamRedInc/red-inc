@@ -33,7 +33,10 @@ namespace core.Modules
 
         public override bool Equals(object obj)
         {
-            return this == (DataObject)obj;
+            if (obj is DataObject)
+                return this == (DataObject)obj;
+            else
+                return false;
         }
     }
 }
