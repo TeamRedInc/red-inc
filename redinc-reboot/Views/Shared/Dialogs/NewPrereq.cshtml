@@ -1,0 +1,19 @@
+﻿@model core.Modules.ProblemSet.ProblemSetData
+
+@using (Html.BeginForm("NewPrereq", "Home", FormMethod.Post, new { id = "dialogForm" }))
+{
+    @Html.LabelFor(m => m.Id, "Prerequisite Set")
+    @Html.DropDownListFor(m => m.Id, (IEnumerable<SelectListItem>) ViewBag.Sets)
+
+    @Html.LabelFor(m => m.PrereqCount, "Number of Problems Required")
+    @Html.TextBoxFor(m => m.PrereqCount)
+
+    <input id="dialogOk" type="submit" value="Ok" />
+    <input id="dialogCancel" type="button" value="Cancel" />
+}
+
+<script type="text/javascript">
+    $("#dialogCancel").click(function (e) {
+        $("#dialog").dialog("close");
+    });
+</script>

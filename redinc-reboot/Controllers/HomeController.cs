@@ -80,7 +80,16 @@ namespace redinc_reboot.Controllers
 
         public ActionResult NewPrereq()
         {
-            return PartialView("EditorTemplates/PrereqRow", new ProblemSetData());
+            //TODO Get current class from persistant storage
+            IEnumerable<ProblemSetData> sets = GlobalStaticVars.StaticCore.GetSetsForClass(2);
+            ViewBag.Sets = new SelectList(sets.Select(s => new { s.Id, s.Name }), "Id", "Name");
+            return PartialView("Dialogs/NewPrereq", new ProblemSetData());
+        }
+
+        [HttpPost]
+        public ActionResult NewPrereq(ProblemSetData model)
+        {
+            return PartialView("EditorTemplates/PrereqRow", model);
         }
     }
 }

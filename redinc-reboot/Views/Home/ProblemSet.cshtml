@@ -24,7 +24,7 @@
                 Html.RenderPartial("EditorTemplates/PrereqRow", prereq);
             }
         </table>
-        @Html.ActionLink("Add", "NewPrereq", null, new { id = "addItem" })
+        @Html.ActionLink("Add", "NewPrereq", null, new { id = "addPrereq" })
         <input type="submit" value="Save" />
     </fieldset>
 }
@@ -32,13 +32,30 @@
 @section scripts
 {
     <script type="text/javascript">
-        $("#addItem").click(function () {
-            $.ajax({
-                url: this.href,
-                cache: false,
-                success: function (html) {
-                    $("#prereqTable tbody").append(html);
-                }
+        $("#addPrereq").click(function (e) {
+            e.preventDefault();
+            $("<div id='dialog'></div>").appendTo("body").dialog({
+                title: "Add New Prerequisite",
+                close: function () { $(this).remove() },
+                modal: true
+            }).load(this.href, function (data) {
+                $("#dialogForm").submit(function (e) {
+                    e.preventDefault();
+                    $.ajax({
+                        url: this.action,
+                        type: "POST",
+                        data: {
+                            Id: $("#dialogForm #Id").val(),
+                            Name: $("#dialogForm #Id option:selected").text(),
+                            PrereqCount: $("#dialogForm #PrereqCount").val()
+                        },
+                        cache: false,
+                        success: function (html) {
+                            $("#prereqTable").append(html);
+                            $("#dialog").dialog("close");
+                        }
+                    });
+                });
             });
             return false;
         });

@@ -61,5 +61,10 @@ namespace core
         {
             return setModel.GetPrereqs(new ProblemSetData(setId));
         }
+
+        public List<ProblemSetData> GetSetsForClass(int classId)
+        {
+            return setModel.GetForClass(new ClassData(classId));
+        }
     }
 }
