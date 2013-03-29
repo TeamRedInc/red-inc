@@ -9,8 +9,13 @@ namespace redinc_reboot.Models
 {
     public class ProblemSetViewModel
     {
+        public ProblemSetViewModel()
+        {
+            Prereqs = new List<ProblemSetData>();
+            Problems = new List<ProblemData>();
+        }
         public ProblemSetData Set { get; set; }
-        public IList<ProblemSetData> Prereqs { get; set; }
-        public IList<ProblemData> Problems { get; set; }
+        public IEnumerable<ProblemSetData> Prereqs { get; set; }
+        public IEnumerable<ProblemData> Problems { get; set; }
     }
 }

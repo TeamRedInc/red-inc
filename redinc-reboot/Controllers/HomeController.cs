@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using redinc_reboot.Models;
 using core.Modules.ProblemSet;
+using core.Modules.Problem;
 
 namespace redinc_reboot.Controllers
 {
@@ -59,21 +60,22 @@ namespace redinc_reboot.Controllers
         {
             ViewBag.Message = "Modify the problem set.";
             ProblemSetData set = GlobalStaticVars.StaticCore.GetSetById(id);
-            IList<ProblemSetData> prereqs = GlobalStaticVars.StaticCore.GetSetPrereqs(id);
+            IEnumerable<ProblemSetData> prereqs = GlobalStaticVars.StaticCore.GetSetPrereqs(id);
             ProblemSetViewModel model = new ProblemSetViewModel();
             model.Set = set;
             model.Prereqs = prereqs;
             return View(model);
         }
 
-        public ActionResult EditProblemSet(ProblemSetViewModel model)
+        [HttpPost]
+        public ActionResult ProblemSet(ProblemSetViewModel model)
         {
             if (ModelState.IsValid)
             {
                 GlobalStaticVars.StaticCore.ModifySet(model.Set);
             }
 
-            return RedirectToAction("ProblemSet", new { id = model.Set.Id });
+            return View(model);
         }
 
         public ActionResult NewPrereq()
