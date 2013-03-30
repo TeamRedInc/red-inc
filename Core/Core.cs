@@ -66,5 +66,10 @@ namespace core
         {
             return setModel.GetForClass(new ClassData(classId));
         }
+
+        public bool UpdateSetPrereqs(int setId, ICollection<ProblemSetData> prereqs)
+        {
+            return setModel.UpdatePrereqs(new ProblemSetData(setId), prereqs);
+        }
     }
 }

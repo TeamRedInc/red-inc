@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace core.Modules
 {
-    public class DataObject
+    public class DataObject : IEquatable<DataObject>
     {
         private int id;
 
@@ -34,9 +34,19 @@ namespace core.Modules
         public override bool Equals(object obj)
         {
             if (obj is DataObject)
-                return this == (DataObject)obj;
+                return this.Equals((DataObject)obj);
             else
                 return false;
+        }
+
+        public bool Equals(DataObject obj)
+        {
+            return this == obj;
+        }
+
+        public override int GetHashCode()
+        {
+            return id.GetHashCode();
         }
     }
 }

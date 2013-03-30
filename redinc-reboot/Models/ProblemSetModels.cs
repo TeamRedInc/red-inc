@@ -15,7 +15,7 @@ namespace redinc_reboot.Models
             Problems = new List<ProblemData>();
         }
         public ProblemSetData Set { get; set; }
-        public IEnumerable<ProblemSetData> Prereqs { get; set; }
-        public IEnumerable<ProblemData> Problems { get; set; }
+        public ICollection<ProblemSetData> Prereqs { get; set; }
+        public ICollection<ProblemData> Problems { get; set; }
     }
 }

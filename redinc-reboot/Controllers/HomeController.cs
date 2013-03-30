@@ -60,7 +60,7 @@ namespace redinc_reboot.Controllers
         {
             ViewBag.Message = "Modify the problem set.";
             ProblemSetData set = GlobalStaticVars.StaticCore.GetSetById(id);
-            IEnumerable<ProblemSetData> prereqs = GlobalStaticVars.StaticCore.GetSetPrereqs(id);
+            ICollection<ProblemSetData> prereqs = GlobalStaticVars.StaticCore.GetSetPrereqs(id);
             ProblemSetViewModel model = new ProblemSetViewModel();
             model.Set = set;
             model.Prereqs = prereqs;
@@ -73,6 +73,10 @@ namespace redinc_reboot.Controllers
             if (ModelState.IsValid)
             {
                 GlobalStaticVars.StaticCore.ModifySet(model.Set);
+                GlobalStaticVars.StaticCore.UpdateSetPrereqs(model.Set.Id, model.Prereqs);
+
+                //This is necessary in case bad prereqs (ex. duplicates) are removed by the backend
+                model.Prereqs = GlobalStaticVars.StaticCore.GetSetPrereqs(model.Set.Id);
             }
 
             return View(model);
@@ -81,7 +85,7 @@ namespace redinc_reboot.Controllers
         public ActionResult NewPrereq()
         {
             //TODO Get current class from persistant storage
-            IEnumerable<ProblemSetData> sets = GlobalStaticVars.StaticCore.GetSetsForClass(2);
+            ICollection<ProblemSetData> sets = GlobalStaticVars.StaticCore.GetSetsForClass(2);
             ViewBag.Sets = new SelectList(sets.Select(s => new { s.Id, s.Name }), "Id", "Name");
             return PartialView("Dialogs/NewPrereq", new ProblemSetData());
         }

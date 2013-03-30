@@ -80,6 +80,7 @@
     <Compile Include="Modules\PyInterpret\PyInterpretUtility.cs" />
     <Compile Include="Modules\User\UserDao.cs" />
     <Compile Include="Modules\User\UserModel.cs" />
+    <Compile Include="Modules\Util\DelegateEqualityComparer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
