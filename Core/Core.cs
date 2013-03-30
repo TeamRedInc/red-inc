@@ -1,5 +1,6 @@
 ﻿using core.Modules;
 using core.Modules.Class;
+using core.Modules.Problem;
 using core.Modules.ProblemSet;
 using core.Modules.User;
 using System;
@@ -17,6 +18,7 @@ namespace core
     {
         private readonly UserModel userModel;
         private readonly ProblemSetModel setModel;
+        private readonly ProblemModel problemModel;
 
         /// <summary>
         /// Primary thread of execution
@@ -24,8 +26,9 @@ namespace core
         /// </summary>
         public Core()
         {
-            //userModel = ModelFactory.UserModel;
+            userModel = ModelFactory.UserModel;
             setModel = ModelFactory.ProblemSetModel;
+            problemModel = ModelFactory.ProblemModel;
         }
 
         public bool AddUser(int id, string email)
@@ -70,6 +73,21 @@ namespace core
         public bool UpdateSetPrereqs(int setId, ICollection<ProblemSetData> prereqs)
         {
             return setModel.UpdatePrereqs(new ProblemSetData(setId), prereqs);
+        }
+
+        public ProblemData GetProblemById(int problemId)
+        {
+            return problemModel.GetById(problemId);
+        }
+
+        public List<ProblemSetData> GetSetsForProblem(int problemId)
+        {
+            return setModel.GetForProblem(new ProblemData(problemId));
+        }
+
+        public bool ModifyProblem(ProblemData prob)
+        {
+            return problemModel.Modify(prob);
         }
     }
 }

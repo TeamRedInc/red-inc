@@ -80,6 +80,49 @@ namespace core.Modules.Problem
         }
 
         /// <summary>
+        /// Modify a problem's data.
+        /// </summary>
+        /// <param name="set">The ProblemData object with the problem's information</param>
+        /// <returns>true if the modify was successful, false otherwise</returns>
+        public bool Modify(ProblemData problem)
+        {
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                SqlCommand cmd = conn.CreateCommand();
+
+                cmd.CommandText = "Update dbo.[" + tableName + "]"
+                    + " Set Name = @name,"
+                    + " Description = @description,"
+                    + " SolutionCode = @slnCode"
+                    + " Where Id = @id;";
+
+                //Name
+                cmd.Parameters.AddWithValue("@name", problem.Name);
+
+                //Description
+                cmd.Parameters.AddWithValue("@description", problem.Description);
+
+                //Solution Code
+                cmd.Parameters.AddWithValue("@slnCode", problem.SolutionCode);
+
+                //Id
+                cmd.Parameters.AddWithValue("@id", problem.Id);
+
+                try
+                {
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
         /// Add the specified problem to the specified problem set.
         /// </summary>
         /// <param name="problem">The ProblemData object with the problem's id</param>
