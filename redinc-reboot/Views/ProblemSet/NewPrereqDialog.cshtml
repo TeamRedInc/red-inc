@@ -1,6 +1,6 @@
 ﻿@model core.Modules.ProblemSet.ProblemSetData
 
-@using (Html.BeginForm("NewPrereq", "Home", FormMethod.Post, new { id = "dialogForm" }))
+@using (Html.BeginForm("NewPrereq", "ProblemSet", FormMethod.Post, new { id = "dialogForm" }))
 {
     @Html.LabelFor(m => m.Id, "Prerequisite Set")
     @Html.DropDownListFor(m => m.Id, (IEnumerable<SelectListItem>) ViewBag.Sets)
