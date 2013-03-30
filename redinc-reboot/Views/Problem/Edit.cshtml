@@ -21,3 +21,18 @@
         <input type="submit" value="Save" />
     </fieldset>
 }
+
+@section styles
+{
+    @Styles.Render("~/Libs/markitup/css")
+}
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jquery.markitup")
+    <script type="text/javascript">
+        $(function () {
+            $('#descriptionArea').markItUp(mySettings);
+        });
+    </script>
+}

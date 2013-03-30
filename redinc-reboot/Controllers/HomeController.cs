@@ -1,4 +1,5 @@
-﻿using redinc_reboot.Models;
+﻿using CodeKicker.BBCode;
+using redinc_reboot.Models;
 using System.Web.Mvc;
 
 namespace redinc_reboot.Controllers
@@ -24,6 +25,11 @@ namespace redinc_reboot.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+
+        public string ParseBBCode(string data)
+        {
+            return BBCode.ToHtml(data);
         }
 
         public ActionResult PythonTestPage()

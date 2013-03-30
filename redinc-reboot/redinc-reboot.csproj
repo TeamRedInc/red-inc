@@ -42,6 +42,9 @@
     <Reference Include="BeginCollectionItem">
       <HintPath>..\packages\BeginCollectionItem.1.2.1.0\lib\net35\BeginCollectionItem.dll</HintPath>
     </Reference>
+    <Reference Include="CodeKicker.BBCode">
+      <HintPath>..\packages\BBCode.0.3.0\lib\CodeKicker.BBCode.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -236,7 +239,41 @@
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="App_Code\BBCodeTags.cshtml" />
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />
+    <Content Include="Libs\markitup\jquery.markitup.js" />
+    <Content Include="Libs\markitup\sets\default\images\bold.png" />
+    <Content Include="Libs\markitup\sets\default\images\clean.png" />
+    <Content Include="Libs\markitup\sets\default\images\image.png" />
+    <Content Include="Libs\markitup\sets\default\images\italic.png" />
+    <Content Include="Libs\markitup\sets\default\images\link.png" />
+    <Content Include="Libs\markitup\sets\default\images\list-bullet.png" />
+    <Content Include="Libs\markitup\sets\default\images\list-numeric.png" />
+    <Content Include="Libs\markitup\sets\default\images\picture.png" />
+    <Content Include="Libs\markitup\sets\default\images\preview.png" />
+    <Content Include="Libs\markitup\sets\default\images\stroke.png" />
+    <Content Include="Libs\markitup\sets\default\set.js" />
+    <Content Include="Libs\markitup\sets\default\style.css" />
+    <Content Include="Libs\markitup\skins\markitup\images\bg-container.png" />
+    <Content Include="Libs\markitup\skins\markitup\images\bg-editor-bbcode.png" />
+    <Content Include="Libs\markitup\skins\markitup\images\bg-editor-dotclear.png" />
+    <Content Include="Libs\markitup\skins\markitup\images\bg-editor-html.png" />
+    <Content Include="Libs\markitup\skins\markitup\images\bg-editor-json.png" />
+    <Content Include="Libs\markitup\skins\markitup\images\bg-editor-markdown.png" />
+    <Content Include="Libs\markitup\skins\markitup\images\bg-editor-textile.png" />
+    <Content Include="Libs\markitup\skins\markitup\images\bg-editor-wiki.png" />
+    <Content Include="Libs\markitup\skins\markitup\images\bg-editor-xml.png" />
+    <Content Include="Libs\markitup\skins\markitup\images\bg-editor.png" />
+    <Content Include="Libs\markitup\skins\markitup\images\handle.png" />
+    <Content Include="Libs\markitup\skins\markitup\images\menu.png" />
+    <Content Include="Libs\markitup\skins\markitup\images\submenu.png" />
+    <Content Include="Libs\markitup\skins\markitup\style.css" />
+    <Content Include="Libs\markitup\skins\simple\images\handle.png" />
+    <Content Include="Libs\markitup\skins\simple\images\menu.png" />
+    <Content Include="Libs\markitup\skins\simple\images\submenu.png" />
+    <Content Include="Libs\markitup\skins\simple\style.css" />
+    <Content Include="Libs\markitup\templates\preview.css" />
+    <Content Include="Libs\markitup\templates\preview.html" />
     <Content Include="Scripts\jquery-1.7.1.js" />
     <Content Include="Scripts\jquery-1.7.1.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
