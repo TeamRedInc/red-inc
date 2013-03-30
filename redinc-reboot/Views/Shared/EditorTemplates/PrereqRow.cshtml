@@ -1,5 +1,5 @@
 ﻿@model core.Modules.ProblemSet.ProblemSetData
-<tr>
+<tr class="prereqRow">
     @using(Html.BeginCollectionItem("Prereqs"))
     {
         @Html.HiddenFor(m => m.Id)
@@ -11,7 +11,7 @@
             @Html.TextBoxFor(m => m.PrereqCount)
         </td>
         <td>
-            <button>X</button>
+            <button class="deletePrereq">X</button>
         </td>
     }    
 </tr>

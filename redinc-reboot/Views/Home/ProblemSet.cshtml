@@ -59,5 +59,10 @@
             });
             return false;
         });
+
+        $("button.deletePrereq").live("click", function () {
+            $(this).parents("tr.prereqRow:first").remove();
+            return false;
+        });
     </script>
 }
