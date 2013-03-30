@@ -24,7 +24,7 @@
                 Html.RenderPartial("EditorTemplates/PrereqRow", prereq);
             }
         </table>
-        @Html.ActionLink("Add", "NewPrereq", null, new { id = "addPrereq" })
+        @Html.ActionLink("Add", "NewPrereq", new { classId = Model.Set.Class.Id }, new { id = "addPrereq" })
         <input type="submit" value="Save" />
     </fieldset>
 }

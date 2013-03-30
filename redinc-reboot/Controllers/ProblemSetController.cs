@@ -36,10 +36,9 @@ namespace redinc_reboot.Controllers
             return View(model);
         }
 
-        public ActionResult NewPrereq()
+        public ActionResult NewPrereq(int classId)
         {
-            //TODO Get current class from persistant storage
-            ICollection<ProblemSetData> sets = GlobalStaticVars.StaticCore.GetSetsForClass(2);
+            ICollection<ProblemSetData> sets = GlobalStaticVars.StaticCore.GetSetsForClass(classId);
             ViewBag.Sets = new SelectList(sets.Select(s => new { s.Id, s.Name }), "Id", "Name");
             return PartialView("NewPrereqDialog", new ProblemSetData());
         }
