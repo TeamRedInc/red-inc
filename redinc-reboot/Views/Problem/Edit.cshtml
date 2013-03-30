@@ -1,0 +1,23 @@
+﻿@model redinc_reboot.Models.ProblemViewModel
+@{
+    ViewBag.Title = "Edit Problem";
+}
+
+<h2>Edit Problem</h2>
+
+@using (Html.BeginForm())
+{
+    <fieldset>
+        @Html.HiddenFor(m => m.Problem.Id)
+        @Html.LabelFor(m => m.Problem.Name)
+        @Html.TextBoxFor(m => m.Problem.Name)
+
+        @Html.LabelFor(m => m.Problem.Description)
+        @Html.TextAreaFor(m => m.Problem.Description, new { id = "descriptionArea" })
+
+        @Html.LabelFor(m => m.Problem.SolutionCode, "Solution Code")
+        @Html.TextAreaFor(m => m.Problem.SolutionCode, new { id = "solutionArea" })
+
+        <input type="submit" value="Save" />
+    </fieldset>
+}

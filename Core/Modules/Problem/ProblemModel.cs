@@ -28,6 +28,19 @@ namespace core.Modules.Problem
         }
 
         /// <summary>
+        /// Modify a problem's data.
+        /// </summary>
+        /// <param name="problem">The ProblemData object with the problem's information</param>
+        /// <returns>true if the modify was successful, false otherwise</returns>
+        public bool Modify(ProblemData problem)
+        {
+            if (String.IsNullOrWhiteSpace(problem.SolutionCode))
+                return false;
+
+            return problemDao.Modify(problem);
+        }
+
+        /// <summary>
         /// Add the specified problem to the specified problem set.
         /// </summary>
         /// <param name="problem">The ProblemData object with the problem's id</param>
