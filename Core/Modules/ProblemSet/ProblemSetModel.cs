@@ -41,10 +41,6 @@ namespace core.Modules.ProblemSet
         /// <returns>true if the modify was successful, false otherwise</returns>
         public bool Modify(ProblemSetData set)
         {
-            //Validate Name property
-            if (String.IsNullOrWhiteSpace(set.Name))
-                return false;
-
             return setDao.Modify(set);
         }
 
