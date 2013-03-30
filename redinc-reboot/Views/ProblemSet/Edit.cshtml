@@ -1,0 +1,68 @@
+﻿@model redinc_reboot.Models.ProblemSetViewModel
+
+@{
+    ViewBag.Title = "Edit Problem Set";
+}
+
+<h2>Edit Problem Set</h2>
+
+@using (Html.BeginForm())
+{
+    <fieldset>
+        @Html.HiddenFor(m => m.Set.Id)
+        @Html.LabelFor(m => m.Set.Name)
+        @Html.TextBoxFor(m => m.Set.Name)
+
+        <table id="prereqTable">
+            <tr>
+                <th>Prerequisite Set</th>
+                <th>Number of Problems Required</th>
+                <th>Delete</th>
+            </tr>
+            @foreach (var prereq in Model.Prereqs)
+            {
+                Html.RenderPartial("EditorTemplates/PrereqRow", prereq);
+            }
+        </table>
+        @Html.ActionLink("Add", "NewPrereq", null, new { id = "addPrereq" })
+        <input type="submit" value="Save" />
+    </fieldset>
+}
+
+@section scripts
+{
+    <script type="text/javascript">
+        $("#addPrereq").click(function (e) {
+            e.preventDefault();
+            $("<div id='dialog'></div>").appendTo("body").dialog({
+                title: "Add New Prerequisite",
+                close: function () { $(this).remove() },
+                modal: true
+            }).load(this.href, function (data) {
+                $("#dialogForm").submit(function (e) {
+                    e.preventDefault();
+                    $.ajax({
+                        url: this.action,
+                        type: "POST",
+                        data: {
+                            Id: $("#dialogForm #Id").val(),
+                            Name: $("#dialogForm #Id option:selected").text(),
+                            PrereqCount: $("#dialogForm #PrereqCount").val()
+                        },
+                        cache: false,
+                        success: function (html) {
+                            $("#prereqTable").append(html);
+                            $("#dialog").dialog("close");
+                        }
+                    });
+                });
+            });
+            return false;
+        });
+
+        $("button.deletePrereq").live("click", function () {
+            $(this).parents("tr.prereqRow:first").remove();
+            return false;
+        });
+    </script>
+}

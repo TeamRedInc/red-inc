@@ -219,27 +219,44 @@ namespace core.Modules.ProblemSet
         }
 
         /// <summary>
-        /// Add a new prerequisite to the database.
+        /// Add new prerequisites to the database.
         /// </summary>
         /// <param name="set">The ProblemSetData object with the parent set's id</param>
-        /// <param name="prereq">The ProblemSetData object with the prerequisite set's data</param>
+        /// <param name="prereqs">A collection of ProblemSetData objects with the prerequisite sets' data</param>
         /// <returns>true if the add was successful, false otherwise</returns>
-        public bool AddPrereq(ProblemSetData set, ProblemSetData prereq)
+        public bool AddPrereqs(ProblemSetData set, IEnumerable<ProblemSetData> prereqs)
         {
+            if (prereqs == null || !prereqs.Any())
+                return true; //Nothing to add
+
             using (SqlConnection conn = new SqlConnection(connStr))
             {
                 SqlCommand cmd = conn.CreateCommand();
 
-                cmd.CommandText = "Insert into dbo.[Prereq] values (@setId, @prereqId, @numProbs);";
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("Insert into dbo.[Prereq] values ");
+                
+                int i = 0;
+                foreach (ProblemSetData prereq in prereqs)
+                {
+                    if (i != 0)
+                        query.AppendLine(",");
+
+                    query.Append("(@setId, @prereqId" + i + ", @numProbs" + i + ")");
+
+                    //Prereq Set
+                    cmd.Parameters.AddWithValue("@prereqId" + i, prereq.Id);
+
+                    //Number of problems
+                    cmd.Parameters.AddWithValue("@numProbs" + i, prereq.PrereqCount);
+
+                    ++i;
+                }
 
                 //Parent Set
                 cmd.Parameters.AddWithValue("@setId", set.Id);
 
-                //Prereq Set
-                cmd.Parameters.AddWithValue("@prereqId", prereq.Id);
-
-                //Number of problems
-                cmd.Parameters.AddWithValue("@numProbs", prereq.PrereqCount);
+                cmd.CommandText = query.ToString();
 
                 try
                 {
@@ -256,28 +273,53 @@ namespace core.Modules.ProblemSet
         }
 
         /// <summary>
-        /// Modify the number of required problems for a prerequisite.
+        /// Modify the number of required problems for the specified prerequisites.
         /// </summary>
         /// <param name="set">The ProblemSetData object with the parent set's id</param>
-        /// <param name="prereq">The ProblemSetData object with the prerequisite set's data</param>
-        /// <returns>true if the operation was successful, false otherwise</returns>
-        public bool UpdatePrereq(ProblemSetData set, ProblemSetData prereq)
+        /// <param name="prereqs">A collection of ProblemSetData objects with the prerequisite sets' data</param>
+        /// <returns>true if the update was successful, false otherwise</returns>
+        public bool UpdatePrereqs(ProblemSetData set, IEnumerable<ProblemSetData> prereqs)
         {
+            if (prereqs == null || !prereqs.Any())
+                return true; //Nothing to update
+
             using (SqlConnection conn = new SqlConnection(connStr))
             {
                 SqlCommand cmd = conn.CreateCommand();
 
-                cmd.CommandText = "Update dbo.[Prereq] Set NumProblems = @numProbs"
-                    + " Where ProblemSetId = @setId and RequiredSetId = @prereqId;";
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("Update dbo.[Prereq] Set NumProblems = Case RequiredSetId ");
+
+                StringBuilder whereClause = new StringBuilder();
+                whereClause.Append("RequiredSetId in (");
+
+                int i = 0;
+                foreach (ProblemSetData prereq in prereqs)
+                {
+                    if (i != 0)
+                        whereClause.Append(",");
+
+                    query.AppendLine("When @prereqId" + i + " Then @numProbs" + i + " ");
+                    whereClause.Append("@prereqId" + i);
+
+                    //Prereq Set
+                    cmd.Parameters.AddWithValue("@prereqId" + i, prereq.Id);
+
+                    //Number of problems
+                    cmd.Parameters.AddWithValue("@numProbs" + i, prereq.PrereqCount);
+
+                    ++i;
+                }
+                whereClause.Append(")");
+
+                query.AppendLine("End ");
+                query.AppendLine("Where ProblemSetId = @setId and ");
+                query.Append(whereClause);
 
                 //Parent Set
                 cmd.Parameters.AddWithValue("@setId", set.Id);
 
-                //Prereq Set
-                cmd.Parameters.AddWithValue("@prereqId", prereq.Id);
-
-                //Number of problems
-                cmd.Parameters.AddWithValue("@numProbs", prereq.PrereqCount);
+                cmd.CommandText = query.ToString();
 
                 try
                 {
@@ -294,24 +336,42 @@ namespace core.Modules.ProblemSet
         }
 
         /// <summary>
-        /// Removes the specified prerequisite.
+        /// Removes the specified prerequisites.
         /// </summary>
         /// <param name="set">The ProblemSetData object with the parent set's id</param>
-        /// <param name="prereq">The ProblemSetData object with the prerequisite set's data</param>
+        /// <param name="prereqs">A collection of ProblemSetData objects with the prerequisite sets' ids</param>
         /// <returns>true if the remove was successful, false otherwise</returns>
-        public bool RemovePrereq(ProblemSetData set, ProblemSetData prereq)
+        public bool RemovePrereqs(ProblemSetData set, IEnumerable<ProblemSetData> prereqs)
         {
+            if (prereqs == null || !prereqs.Any())
+                return true; //Nothing to remove
+
             using (SqlConnection conn = new SqlConnection(connStr))
             {
                 SqlCommand cmd = conn.CreateCommand();
 
-                cmd.CommandText = "Delete from dbo.[Prereq] Where ProblemSetId = @setId and RequiredSetId = @prereqId;";
+                StringBuilder query = new StringBuilder();
+                query.Append("Delete from dbo.[Prereq] Where ProblemSetId = @setId and RequiredSetId in (");
+
+                int i = 0;
+                foreach (ProblemSetData prereq in prereqs)
+                {
+                    if (i != 0)
+                        query.Append(",");
+
+                    query.Append("@prereqId" + i);
+
+                    //Prereq Set
+                    cmd.Parameters.AddWithValue("@prereqId" + i, prereq.Id);
+
+                    ++i;
+                }
+                query.Append(")");
 
                 //Parent Set
                 cmd.Parameters.AddWithValue("@setId", set.Id);
 
-                //Prereq Set
-                cmd.Parameters.AddWithValue("@prereqId", prereq.Id);
+                cmd.CommandText = query.ToString();
 
                 try
                 {
