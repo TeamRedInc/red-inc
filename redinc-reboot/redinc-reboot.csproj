@@ -458,9 +458,9 @@
     <Content Include="Views\ProblemSet\Edit.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\PrereqRow.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Collection.cshtml" />
-    <Content Include="Views\ProblemSet\NewPrereqDialog.cshtml" />
     <Content Include="Views\Problem\Edit.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\ProblemSetRow.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\ProblemRow.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
