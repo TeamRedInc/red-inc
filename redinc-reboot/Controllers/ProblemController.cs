@@ -1,4 +1,5 @@
-﻿using core.Modules.Problem;
+﻿using CodeKicker.BBCode;
+using core.Modules.Problem;
 using core.Modules.ProblemSet;
 using redinc_reboot.Models;
 using System;
@@ -34,6 +35,20 @@ namespace redinc_reboot.Controllers
             }
 
             return View(model);
+        }
+
+        public ActionResult Solve(int id = 0)
+        {
+            ProblemData prob = GlobalStaticVars.StaticCore.GetProblemById(id);
+            ViewBag.Description = BBCode.ToHtml(prob.Description);
+            return View();
+        }
+
+        [HttpPost]
+        public JsonResult Solve(string code)
+        {
+            string output = GlobalStaticVars.StaticCore.ExecutePythonCode(code);
+            return Json(new { success = true, output = output });
         }
 
         public ActionResult AddProblemSet(ProblemSetData model)
