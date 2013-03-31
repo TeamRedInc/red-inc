@@ -3,15 +3,7 @@ using core.Modules.Class;
 using core.Modules.Problem;
 using core.Modules.ProblemSet;
 using core.Modules.User;
-using core.Modules.Class;
-using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace core
 {
@@ -93,7 +85,7 @@ namespace core
             return problemModel.Modify(prob);
         }
 
-        public List<ClassData> GetAll()
+        public List<ClassData> GetAllClasses()
         {
             List<ClassData> classList = new List<ClassData>();
             return classModel.GetAll();
