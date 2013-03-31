@@ -1,6 +1,8 @@
 ﻿using CodeKicker.BBCode;
 using redinc_reboot.Models;
 using System.Web.Mvc;
+using core.Modules.Class;
+using WebMatrix.WebData;
 
 namespace redinc_reboot.Controllers
 {
@@ -54,6 +56,24 @@ namespace redinc_reboot.Controllers
             
             // Redisplay form with output
             return View(model);
+        }
+
+        public ActionResult Home()
+        {
+            var viewModel = new HomeClassListModel();
+            viewModel.StudentClassList = GlobalStaticVars.StaticCore.GetStudentClasses(WebSecurity.CurrentUserId);
+            viewModel.InstructorClassList = GlobalStaticVars.StaticCore.GetInstructorClasses(WebSecurity.CurrentUserId);
+            var allClasses = GlobalStaticVars.StaticCore.GetAll();
+            ClassData[] classesArr = allClasses.ToArray();
+            for (int i = 0; i < allClasses.Count; i++)
+            {
+                if (!viewModel.StudentClassList.Contains((ClassData) classesArr.GetValue(i)) ||
+                    !viewModel.InstructorClassList.Contains((ClassData) classesArr.GetValue(i)))
+                {
+                    viewModel.AllOtherClassesList.Add((ClassData) classesArr.GetValue(i));
+                }
+            }
+            return View(viewModel);
         }
     }
 }

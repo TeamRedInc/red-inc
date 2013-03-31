@@ -93,22 +93,22 @@ namespace core
             return problemModel.Modify(prob);
         }
 
-        public List<ClassData> GetAllClasses()
+        public List<ClassData> GetAll()
         {
             List<ClassData> classList = new List<ClassData>();
-            return classModel.GetAllClasses();
+            return classModel.GetAll();
         }
 
-        public List<ClassData> GetStudentClasses(UserData user)
+        public List<ClassData> GetStudentClasses(int userId)
         {
             List<ClassData> classList = new List<ClassData>();
-            return classModel.GetStudentClasses(user);
+            return classModel.GetStudentClasses(new UserData(userId));
         }
 
-        public List<ClassData> GetInstructorClasses(UserData user)
+        public List<ClassData> GetInstructorClasses(int userId)
         {
             List<ClassData> classList = new List<ClassData>();
-            return classModel.GetInstructorClasses(user);
+            return classModel.GetInstructorClasses(new UserData(userId));
         }
     }
 }
