@@ -30,9 +30,18 @@
 @section scripts
 {
     @Scripts.Render("~/bundles/jquery.markitup")
+    @Scripts.Render("~/bundles/edit_area")
     <script type="text/javascript">
         $(function () {
             $('#descriptionArea').markItUp(mySettings);
+
+            editAreaLoader.init({
+                id: "solutionArea",
+                syntax: "python",
+                start_highlight: true,
+                allow_toggle: false,
+                toolbar: "search, |, undo, redo, |, select_font,|, highlight, reset_highlight, word_wrap, |, help"
+            });
         });
     </script>
 }
