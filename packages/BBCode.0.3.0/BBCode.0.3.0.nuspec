@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>BBCode</id>
+    <version>0.3.0</version>
+    <title>BBCode Parser and Helper</title>
+    <authors>[BBCode Helper - John Katsiotis],  [BBCode - codekicker.de]</authors>
+    <owners>[BBCode Helper - John Katsiotis],  [BBCode - codekicker.de]</owners>
+    <projectUrl>http://john.katsiotis.com/blog/bbcode-helper-for-webmatrix-and-asp.net-mvc-razor-view-engine</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>BBCodeHelper is a helper based on an excellent BBCode parser available at Codeplex (http://bbcode.codeplex.com/) This package contains a helper that can be used with Razor Syntax for easy set up!</description>
+    <summary>BBCodeHelper is a helper based on an excellent BBCode parser available at Codeplex (http://bbcode.codeplex.com/) This package contains a helper that can be used with Razor Syntax for easy set up!</summary>
+    <tags>ASPNETWEBPAGES</tags>
+    <references>
+      <reference file="CodeKicker.BBCode.dll" />
+    </references>
+  </metadata>
+</package>
