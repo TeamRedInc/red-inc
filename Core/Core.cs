@@ -110,5 +110,15 @@ namespace core
             List<ClassData> classList = new List<ClassData>();
             return classModel.GetInstructorClasses(new UserData(userId));
         }
+
+        public bool UpdateProblemSets(int problemId, ICollection<ProblemSetData> sets)
+        {
+            return problemModel.UpdateSets(new ProblemData(problemId), sets);
+        }
+
+        public List<ProblemSetData> SearchSetsInClass(int classId, string search)
+        {
+            return setModel.SearchInClass(new ClassData(classId), search);
+        }
     }
 }

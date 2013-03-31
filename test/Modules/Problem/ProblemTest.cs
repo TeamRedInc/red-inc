@@ -9,6 +9,7 @@ namespace core.Tests.Modules.Problem
     public class ProblemTest
     {
         private ProblemModel problemModel = new ProblemModel();
+        private ProblemSetModel setModel = new ProblemSetModel();
 
         [TestMethod]
         public void TestAdd()
@@ -39,24 +40,24 @@ namespace core.Tests.Modules.Problem
         }
 
         [TestMethod]
-        public void TestAddToSet()
+        public void TestUpdateSets()
         {
-            ProblemData problem = new ProblemData(1);
-            ProblemSetData set = new ProblemSetData(1);
+            ProblemData prob = new ProblemData(3);
+            List<ProblemSetData> original = setModel.GetForProblem(prob);
 
-            //This problem should already belong to this set
-            Assert.IsFalse(problemModel.AddToSet(problem, set));
-        }
+            //Test remove from sets
+            Assert.IsTrue(problemModel.UpdateSets(prob, new List<ProblemSetData>()));
+            Assert.AreEqual(0, setModel.GetForProblem(prob).Count);
 
-        [TestMethod]
-        public void TestRemoveFromSet()
-        {
-            ProblemData problem = new ProblemData(3);
-            ProblemSetData set = new ProblemSetData(2);
+            //Test add to sets
+            Assert.IsTrue(problemModel.UpdateSets(prob, original));
+            CollectionAssert.AreEqual(original, setModel.GetForProblem(prob));
 
-            Assert.IsTrue(problemModel.RemoveFromSet(problem, set));
-
-            Assert.IsTrue(problemModel.AddToSet(problem, set));
+            //Test add bad data
+            List<ProblemSetData> badList = new List<ProblemSetData>(original);
+            badList.Add(new ProblemSetData { Id = original[0].Id, PrereqCount = original[0].PrereqCount }); //Can't have duplicate set entries
+            Assert.IsTrue(problemModel.UpdateSets(prob, badList));
+            CollectionAssert.AreEqual(original, setModel.GetForProblem(prob));
         }
 
         [TestMethod]

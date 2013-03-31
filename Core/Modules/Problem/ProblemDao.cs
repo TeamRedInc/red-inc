@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
+using System.Text;
 
 namespace core.Modules.Problem
 {
@@ -123,24 +125,41 @@ namespace core.Modules.Problem
         }
 
         /// <summary>
-        /// Add the specified problem to the specified problem set.
+        /// Add the specified problem to the specified problem sets.
         /// </summary>
         /// <param name="problem">The ProblemData object with the problem's id</param>
-        /// <param name="set">The ProblemSetData object with the set's id</param>
+        /// <param name="sets">A collection of ProblemSetData objects with the sets' ids</param>
         /// <returns>true if the add was successful, false otherwise</returns>
-        public bool AddToSet(ProblemData problem, ProblemSetData set)
+        public bool AddToSets(ProblemData problem, IEnumerable<ProblemSetData> sets)
         {
+            if (sets == null || !sets.Any())
+                return true; //Nothing to add to
+
             using (SqlConnection conn = new SqlConnection(connStr))
             {
                 SqlCommand cmd = conn.CreateCommand();
 
-                cmd.CommandText = "Insert into dbo.[ProblemSetProblem] values (@setId, @problemId);";
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("Insert into dbo.[ProblemSetProblem] values ");
 
-                //Problem Set
-                cmd.Parameters.AddWithValue("@setId", set.Id);
+                int i = 0;
+                foreach (ProblemSetData set in sets)
+                {
+                    if (i != 0)
+                        query.AppendLine(",");
+
+                    query.Append("(@setId" + i + ", @problemId)");
+
+                    //Problem Set
+                    cmd.Parameters.AddWithValue("@setId" + i, set.Id);
+
+                    ++i;
+                }
 
                 //Problem
                 cmd.Parameters.AddWithValue("@problemId", problem.Id);
+
+                cmd.CommandText = query.ToString();
 
                 try
                 {
@@ -157,24 +176,42 @@ namespace core.Modules.Problem
         }
 
         /// <summary>
-        /// Removes the specified problem from the specified problem set.
+        /// Removes the specified problem from the specified problem sets.
         /// </summary>
         /// <param name="problem">The ProblemData object with the problem's id</param>
-        /// <param name="set">The ProblemSetData object with the set's id</param>
+        /// <param name="sets">A collection of ProblemSetData objects with the sets' ids</param>
         /// <returns>true if the remove was successful, false otherwise</returns>
-        public bool RemoveFromSet(ProblemData problem, ProblemSetData set)
+        public bool RemoveFromSets(ProblemData problem, IEnumerable<ProblemSetData> sets)
         {
+            if (sets == null || !sets.Any())
+                return true; //Nothing to remove from
+
             using (SqlConnection conn = new SqlConnection(connStr))
             {
                 SqlCommand cmd = conn.CreateCommand();
 
-                cmd.CommandText = "Delete from dbo.[ProblemSetProblem] Where ProblemSetId = @setId and ProblemId = @problemId;";
+                StringBuilder query = new StringBuilder();
+                query.Append("Delete from dbo.[ProblemSetProblem] Where ProblemId = @problemId and ProblemSetId in (");
 
-                //Problem Set
-                cmd.Parameters.AddWithValue("@setId", set.Id);
+                int i = 0;
+                foreach (ProblemSetData set in sets)
+                {
+                    if (i != 0)
+                        query.Append(",");
+
+                    query.Append("@setId" + i);
+
+                    //Problem Set
+                    cmd.Parameters.AddWithValue("@setId" + i, set.Id);
+
+                    ++i;
+                }
+                query.Append(")");
 
                 //Problem
                 cmd.Parameters.AddWithValue("@problemId", problem.Id);
+
+                cmd.CommandText = query.ToString();
 
                 try
                 {
