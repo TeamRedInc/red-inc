@@ -1,4 +1,5 @@
-﻿using core.Modules.ProblemSet;
+﻿using core.Modules.Problem;
+using core.Modules.ProblemSet;
 using redinc_reboot.Models;
 using System;
 using System.Collections.Generic;
@@ -13,11 +14,12 @@ namespace redinc_reboot.Controllers
         public ActionResult Edit(int id = 0)
         {
             ViewBag.Message = "Modify the problem set.";
-            ProblemSetData set = GlobalStaticVars.StaticCore.GetSetById(id);
-            ICollection<ProblemSetData> prereqs = GlobalStaticVars.StaticCore.GetSetPrereqs(id);
+
             ProblemSetViewModel model = new ProblemSetViewModel();
-            model.Set = set;
-            model.Prereqs = prereqs;
+            model.Set = GlobalStaticVars.StaticCore.GetSetById(id);
+            model.Prereqs = GlobalStaticVars.StaticCore.GetSetPrereqs(id);
+            model.Problems = GlobalStaticVars.StaticCore.GetProblemsForSet(id);
+
             return View(model);
         }
 

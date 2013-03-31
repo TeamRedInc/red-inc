@@ -112,5 +112,10 @@ namespace core
         {
             return setModel.SearchInClass(new ClassData(classId), search);
         }
+
+        public List<ProblemData> GetProblemsForSet(int setId)
+        {
+            return problemModel.GetForSet(new ProblemSetData(setId));
+        }
     }
 }

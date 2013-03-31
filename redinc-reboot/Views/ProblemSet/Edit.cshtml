@@ -32,6 +32,16 @@
     </fieldset>
 }
 
+<hr />
+
+<label>Problems</label>
+<table>
+    @foreach (var prob in Model.Problems)
+    {
+        Html.RenderPartial("EditorTemplates/ProblemRow", prob);
+    }
+</table>
+
 @section scripts
 {
     <script type="text/javascript">

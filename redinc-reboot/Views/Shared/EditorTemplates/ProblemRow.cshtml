@@ -1,0 +1,11 @@
+﻿@model core.Modules.Problem.ProblemData
+<tr>
+    @using(Html.BeginCollectionItem("Problems"))
+    {
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.Name);
+        <td>
+            @Html.ActionLink(Model.Name, "Edit", "Problem", new { id = Model.Id }, null)
+        </td>
+    }    
+</tr>
