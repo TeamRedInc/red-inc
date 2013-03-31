@@ -3,6 +3,7 @@ using core.Modules.Class;
 using core.Modules.Problem;
 using core.Modules.ProblemSet;
 using core.Modules.User;
+using core.Modules.Class;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -19,6 +20,7 @@ namespace core
         private readonly UserModel userModel;
         private readonly ProblemSetModel setModel;
         private readonly ProblemModel problemModel;
+        private readonly ClassModel classModel;
 
         /// <summary>
         /// Primary thread of execution
@@ -29,6 +31,7 @@ namespace core
             userModel = ModelFactory.UserModel;
             setModel = ModelFactory.ProblemSetModel;
             problemModel = ModelFactory.ProblemModel;
+            classModel = ModelFactory.ClassModel;
         }
 
         public bool AddUser(int id, string email)
@@ -88,6 +91,24 @@ namespace core
         public bool ModifyProblem(ProblemData prob)
         {
             return problemModel.Modify(prob);
+        }
+
+        public List<ClassData> GetAllClasses()
+        {
+            List<ClassData> classList = new List<ClassData>();
+            return classModel.GetAllClasses();
+        }
+
+        public List<ClassData> GetStudentClasses(UserData user)
+        {
+            List<ClassData> classList = new List<ClassData>();
+            return classModel.GetStudentClasses(user);
+        }
+
+        public List<ClassData> GetInstructorClasses(UserData user)
+        {
+            List<ClassData> classList = new List<ClassData>();
+            return classModel.GetInstructorClasses(user);
         }
     }
 }
