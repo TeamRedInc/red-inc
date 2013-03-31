@@ -63,7 +63,7 @@ namespace redinc_reboot.Controllers
             var viewModel = new HomeClassListModel();
             viewModel.StudentClassList = GlobalStaticVars.StaticCore.GetStudentClasses(WebSecurity.CurrentUserId);
             viewModel.InstructorClassList = GlobalStaticVars.StaticCore.GetInstructorClasses(WebSecurity.CurrentUserId);
-            var allClasses = GlobalStaticVars.StaticCore.GetAll();
+            var allClasses = GlobalStaticVars.StaticCore.GetAllClasses();
             ClassData[] classesArr = allClasses.ToArray();
             for (int i = 0; i < allClasses.Count; i++)
             {

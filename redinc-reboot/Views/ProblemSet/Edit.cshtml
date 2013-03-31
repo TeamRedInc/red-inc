@@ -24,7 +24,10 @@
                 Html.RenderPartial("EditorTemplates/PrereqRow", prereq);
             }
         </table>
-        @Html.ActionLink("Add", "NewPrereq", new { classId = Model.Set.Class.Id }, new { id = "addPrereq" })
+        <label for="addPrereq" style="display: inline-block">Add:</label>
+        <input type="text" id="addPrereq" />
+        
+        <br />
         <input type="submit" value="Save" />
     </fieldset>
 }
@@ -32,37 +35,28 @@
 @section scripts
 {
     <script type="text/javascript">
-        $("#addPrereq").click(function (e) {
-            e.preventDefault();
-            $("<div id='dialog'></div>").appendTo("body").dialog({
-                title: "Add New Prerequisite",
-                close: function () { $(this).remove() },
-                modal: true
-            }).load(this.href, function (data) {
-                $("#dialogForm").submit(function (e) {
-                    e.preventDefault();
+        $(function () {
+            $("button.deletePrereq").live("click", function () {
+                $(this).parents("tr.prereqRow:first").remove();
+                return false;
+            });
+
+            $('#addPrereq').autocomplete({
+                source: '@Url.Action("Search", "ProblemSet")',
+                minLength: 2,
+                select: function (e, ui) {
                     $.ajax({
-                        url: this.action,
-                        type: "POST",
-                        data: {
-                            Id: $("#dialogForm #Id").val(),
-                            Name: $("#dialogForm #Id option:selected").text(),
-                            PrereqCount: $("#dialogForm #PrereqCount").val()
-                        },
+                        url: '@Url.Action("AddPrereq")',
+                        data: ui.item,
                         cache: false,
                         success: function (html) {
                             $("#prereqTable").append(html);
-                            $("#dialog").dialog("close");
                         }
                     });
-                });
+                    $(this).val('');
+                    return false;
+                }
             });
-            return false;
-        });
-
-        $("button.deletePrereq").live("click", function () {
-            $(this).parents("tr.prereqRow:first").remove();
-            return false;
         });
     </script>
 }

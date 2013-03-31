@@ -36,15 +36,7 @@ namespace redinc_reboot.Controllers
             return View(model);
         }
 
-        public ActionResult NewPrereq(int classId)
-        {
-            ICollection<ProblemSetData> sets = GlobalStaticVars.StaticCore.GetSetsForClass(classId);
-            ViewBag.Sets = new SelectList(sets.Select(s => new { s.Id, s.Name }), "Id", "Name");
-            return PartialView("NewPrereqDialog", new ProblemSetData());
-        }
-
-        [HttpPost]
-        public ActionResult NewPrereq(ProblemSetData model)
+        public ActionResult AddPrereq(ProblemSetData model)
         {
             return PartialView("EditorTemplates/PrereqRow", model);
         }
