@@ -55,6 +55,17 @@ namespace core.Modules.ProblemSet
         }
 
         /// <summary>
+        /// Gets all problem sets in the specified class that match the search query.
+        /// </summary>
+        /// <param name="cls">The ClassData object with the class' id</param>
+        /// <param name="search">The search query string</param>
+        /// <returns>A non-null, possibly empty list of filled ProblemSetData objects</returns>
+        public List<ProblemSetData> SearchInClass(ClassData cls, string search)
+        {
+            return setDao.SearchInClass(cls, search);
+        }
+
+        /// <summary>
         /// Gets all problem sets for the specified problem.
         /// </summary>
         /// <param name="problem">The ProblemData object with the problem's id</param>

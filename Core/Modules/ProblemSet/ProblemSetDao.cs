@@ -104,6 +104,69 @@ namespace core.Modules.ProblemSet
         }
 
         /// <summary>
+        /// Gets all problem sets in the specified class that match the search query.
+        /// </summary>
+        /// <param name="cls">The ClassData object with the class' id</param>
+        /// <param name="search">The search query string</param>
+        /// <returns>A non-null, possibly empty list of filled ProblemSetData objects</returns>
+        public List<ProblemSetData> SearchInClass(ClassData cls, string search)
+        {
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                List<ProblemSetData> sets = new List<ProblemSetData>();
+                SqlCommand cmd = conn.CreateCommand();
+
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("With Results(Id, Priority) as (");
+                query.AppendLine("  Select Id, 1 as 'Priority' from dbo.[" + tableName + "] ");
+                query.AppendLine("  Where Name Like @search and ClassId = @clsId ");
+                query.AppendLine("  Union ");
+                query.AppendLine("  Select Id, 2 as 'Priority' from dbo.[" + tableName + "] ");
+                query.AppendLine("  Where Name Like Concat(@search, '%') and ClassId = @clsId ");
+                query.AppendLine("  Union ");
+                query.AppendLine("  Select Id, 3 as 'Priority' from dbo.[" + tableName + "] ");
+                query.AppendLine("  Where Name Like Concat('%', @search, '%') and ClassId = @clsId ");
+                query.AppendLine("), ");
+                query.AppendLine("Ordered(Id, Priority) as (");
+                query.AppendLine("  Select Id, MIN(Priority) from Results Group by Id ");
+                query.AppendLine(") ");
+                query.AppendLine("Select ps.* from Ordered o ");
+                query.AppendLine("Join dbo.[ProblemSet] ps on o.Id = ps.Id ");
+                query.AppendLine("Order by o.Priority");
+
+                //Class
+                cmd.Parameters.AddWithValue("@clsId", cls.Id);
+
+                //Search query
+                cmd.Parameters.AddWithValue("@search", search);
+
+                cmd.CommandText = query.ToString();
+
+                SqlDataReader reader = null;
+                try
+                {
+                    conn.Open();
+                    reader = cmd.ExecuteReader();
+
+                    if (reader.HasRows)
+                        while (reader.Read())
+                            sets.Add(createObjectFromReader(reader));
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+                finally
+                {
+                    if (reader != null)
+                        reader.Close();
+                }
+
+                return sets;
+            }
+        }
+
+        /// <summary>
         /// Gets all problem sets for the specified problem.
         /// </summary>
         /// <param name="problem">The ProblemData object with the problem's id</param>

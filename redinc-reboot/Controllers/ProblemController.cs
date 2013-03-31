@@ -27,9 +27,18 @@ namespace redinc_reboot.Controllers
             if (ModelState.IsValid)
             {
                 GlobalStaticVars.StaticCore.ModifyProblem(model.Problem);
+                GlobalStaticVars.StaticCore.UpdateProblemSets(model.Problem.Id, model.Sets);
+
+                //This is necessary in case bad prereqs (ex. duplicates) are removed by the backend
+                model.Sets = GlobalStaticVars.StaticCore.GetSetsForProblem(model.Problem.Id);
             }
 
             return View(model);
+        }
+
+        public ActionResult AddProblemSet(ProblemSetData model)
+        {
+            return PartialView("EditorTemplates/ProblemSetRow", model);
         }
     }
 }

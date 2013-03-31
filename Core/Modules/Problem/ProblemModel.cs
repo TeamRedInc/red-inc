@@ -17,6 +17,11 @@ namespace core.Modules.Problem
             get { return (ProblemDao)dao; }
         }
 
+        private ProblemSetDao setDao
+        {
+            get { return DaoFactory.ProblemSetDao; }
+        }
+
         /// <summary>
         /// Add a new problem to the database.</summary>
         /// <param name="problem">The ProblemData object with the problem's information</param>
@@ -40,28 +45,20 @@ namespace core.Modules.Problem
             return problemDao.Modify(problem);
         }
 
-        /// <summary>
-        /// Add the specified problem to the specified problem set.
-        /// </summary>
-        /// <param name="problem">The ProblemData object with the problem's id</param>
-        /// <param name="set">The ProblemSetData object with the set's id</param>
-        /// <returns>true if the add was successful, false otherwise</returns>
-        public bool AddToSet(ProblemData problem, ProblemSetData set)
+        public bool UpdateSets(ProblemData problem, ICollection<ProblemSetData> sets)
         {
-            //TODO: untagged set
-            return problemDao.AddToSet(problem, set);
-        }
+            ICollection<ProblemSetData> oldSets = setDao.GetForProblem(problem);
 
-        /// <summary>
-        /// Removes the specified problem from the specified problem set.
-        /// </summary>
-        /// <param name="problem">The ProblemData object with the problem's id</param>
-        /// <param name="set">The ProblemSetData object with the set's id</param>
-        /// <returns>true if the remove was successful, false otherwise</returns>
-        public bool RemoveFromSet(ProblemData problem, ProblemSetData set)
-        {
-            //TODO: untagged set
-            return problemDao.RemoveFromSet(problem, set);
+            //Remove duplicates
+            IEnumerable<ProblemSetData> newSets = sets.Distinct();
+
+            IEnumerable<ProblemSetData> toAdd = newSets.Except(oldSets);
+            IEnumerable<ProblemSetData> toRemove = oldSets.Except(newSets);
+
+            bool add = problemDao.AddToSets(problem, toAdd);
+            bool remove = problemDao.RemoveFromSets(problem, toRemove);
+
+            return add && remove;
         }
 
         /// <summary>

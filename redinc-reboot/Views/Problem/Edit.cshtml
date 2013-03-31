@@ -18,6 +18,20 @@
         @Html.LabelFor(m => m.Problem.SolutionCode, "Solution Code")
         @Html.TextAreaFor(m => m.Problem.SolutionCode, new { id = "solutionArea" })
 
+        <table id="setTable">
+            <tr>
+                <th>Problem Set</th>
+                <th>Delete</th>
+            </tr>
+            @foreach (var prereq in Model.Sets)
+            {
+                Html.RenderPartial("EditorTemplates/ProblemSetRow", prereq);
+            }
+        </table>
+        <label for="addSet" style="display: inline-block">Add:</label>
+        <input type="text" id="addSet" />
+        
+        <br />
         <input type="submit" value="Save" />
     </fieldset>
 }
@@ -41,6 +55,26 @@
                 start_highlight: true,
                 allow_toggle: false,
                 toolbar: "search, |, undo, redo, |, select_font,|, highlight, reset_highlight, word_wrap, |, help"
+            });
+
+            $("button.deleteSet").live("click", function () {
+                $(this).parents("tr.setRow:first").remove();
+                return false;
+            });
+
+            $('#addSet').autocomplete({
+                source: '@Url.Action("Search", "ProblemSet")',
+                minLength: 2,
+                select: function (e, ui) {
+                    $.ajax({
+                        url: '@Url.Action("AddProblemSet")',
+                        data: ui.item,
+                        cache: false,
+                        success: function (html) {
+                            $("#setTable").append(html);
+                        }
+                    });
+                }
             });
         });
     </script>

@@ -48,5 +48,12 @@ namespace redinc_reboot.Controllers
         {
             return PartialView("EditorTemplates/PrereqRow", model);
         }
+
+        public JsonResult Search(string term)
+        {
+            //TODO Get class id from persistent storage
+            List<ProblemSetData> sets = GlobalStaticVars.StaticCore.SearchSetsInClass(2, term);
+            return Json(sets.Select(s => new { Id = s.Id, label = s.Name, Name = s.Name }), JsonRequestBehavior.AllowGet);
+        }
     }
 }
