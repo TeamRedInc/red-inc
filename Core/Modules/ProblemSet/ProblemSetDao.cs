@@ -239,10 +239,11 @@ namespace core.Modules.ProblemSet
                 query.AppendLine("  ( Select * from ProblemSet ps Where ps.ClassId = @classId )");
                 query.AppendLine("  Except");
                 query.AppendLine("  ( Select * from LockedSets )");
-                query.AppendLine(")");
-                query.AppendLine("( Select ls.*, Cast(1 as Bit) as 'Locked' from LockedSets ls )");
-                query.AppendLine("Union");
-                query.AppendLine("( Select us.*, Cast(0 as Bit) as 'Locked' from UnlockedSets us )");
+                query.AppendLine(") ");
+                query.AppendLine("Select ls.*, Cast(1 as Bit) as 'Locked' from LockedSets ls ");
+                query.AppendLine("Union ");
+                query.AppendLine("Select us.*, Cast(0 as Bit) as 'Locked' from UnlockedSets us ");
+                query.AppendLine("Where Id in ( Select ProblemSetId from dbo.[ProblemSetProblem] ) ");
                 query.AppendLine("Order by Locked, Id;");
 
                 cmd.CommandText = query.ToString();

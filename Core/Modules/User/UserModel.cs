@@ -36,6 +36,17 @@ namespace core.Modules.User
         {
             return userDao.AddStudent(student, cls);
         }
+        
+        /// <summary>
+        /// Checks if the specified user is a student in the specified class.
+        /// </summary>
+        /// <param name="user">The UserData object with the user's id</param>
+        /// <param name="cls">The ClassData object with the class's id</param>
+        /// <returns>true if user is a student in cls, false otherwise</returns>
+        public bool IsStudent(UserData user, ClassData cls)
+        {
+            return userDao.IsStudent(user, cls);
+        }
 
         /// <summary>
         /// Gets all students in the specified class.
