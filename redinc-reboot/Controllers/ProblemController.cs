@@ -37,9 +37,10 @@ namespace redinc_reboot.Controllers
             return View(model);
         }
 
-        public ActionResult Solve(int id = 0)
+        public ActionResult Solve(int setId)
         {
-            ProblemData prob = GlobalStaticVars.StaticCore.GetProblemById(id);
+            List<ProblemData> problems = GlobalStaticVars.StaticCore.GetProblemsForSet(setId);
+            ProblemData prob = problems[new Random().Next(problems.Count)];
             ViewBag.Description = BBCode.ToHtml(prob.Description);
             ViewBag.SubmitAction = "Solve";
             return View();

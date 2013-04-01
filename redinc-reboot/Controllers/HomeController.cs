@@ -3,9 +3,15 @@ using redinc_reboot.Models;
 using System.Web.Mvc;
 using core.Modules.Class;
 using WebMatrix.WebData;
+using redinc_reboot.Filters;
+using System.Linq;
+using core.Modules.User;
+using core.Modules.ProblemSet;
+using System.Collections.Generic;
 
 namespace redinc_reboot.Controllers
 {
+    [InitializeSimpleMembership]
     public class HomeController : Controller
     {
         public ActionResult Index()
@@ -64,16 +70,34 @@ namespace redinc_reboot.Controllers
             viewModel.StudentClassList = GlobalStaticVars.StaticCore.GetStudentClasses(WebSecurity.CurrentUserId);
             viewModel.InstructorClassList = GlobalStaticVars.StaticCore.GetInstructorClasses(WebSecurity.CurrentUserId);
             var allClasses = GlobalStaticVars.StaticCore.GetAllClasses();
-            ClassData[] classesArr = allClasses.ToArray();
-            for (int i = 0; i < allClasses.Count; i++)
-            {
-                if (!viewModel.StudentClassList.Contains((ClassData) classesArr.GetValue(i)) ||
-                    !viewModel.InstructorClassList.Contains((ClassData) classesArr.GetValue(i)))
-                {
-                    viewModel.AllOtherClassesList.Add((ClassData) classesArr.GetValue(i));
-                }
-            }
+            viewModel.AllOtherClassesList = allClasses.Except(viewModel.StudentClassList).Except(viewModel.InstructorClassList);
+            
             return View(viewModel);
+        }
+
+        public ActionResult JoinClass(int id)
+        {
+            GlobalStaticVars.StaticCore.AddStudent(WebSecurity.CurrentUserId, id);
+            return RedirectToAction("Home");
+        }
+
+        public ActionResult ClassHome(int id)
+        {
+            ClassData cls = GlobalStaticVars.StaticCore.GetClassById(id);
+
+            if (WebSecurity.CurrentUserId == cls.Instructor.Id)
+            {
+                IEnumerable<ProblemSetData> sets = GlobalStaticVars.StaticCore.GetSetsForClass(id);
+                return View("InstructorClassHome", sets);
+            }
+            //TODO Do this check better (faster)
+            else if (GlobalStaticVars.StaticCore.GetStudentsForClass(id).Contains(new UserData(WebSecurity.CurrentUserId)))
+            {
+                IEnumerable<ProblemSetData> sets = GlobalStaticVars.StaticCore.GetSetsForStudent(WebSecurity.CurrentUserId, id);
+                return View("StudentClassHome", sets);
+            }
+
+            return RedirectToAction("Home");
         }
     }
 }
