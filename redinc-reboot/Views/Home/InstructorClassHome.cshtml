@@ -10,7 +10,7 @@
     @foreach (var set in Model)
     {
         <tr><td>
-        @Html.ActionLink(set.Name, "Edit", "ProblemSet", new { setId = set.Id }, null)
+        @Html.ActionLink(set.Name, "Edit", "ProblemSet", new { id = set.Id }, null)
         </td></tr>
     }
 </table>

@@ -87,16 +87,20 @@ namespace redinc_reboot.Controllers
 
             if (WebSecurity.CurrentUserId == cls.Instructor.Id)
             {
+                Session["ClassId"] = id;
                 IEnumerable<ProblemSetData> sets = GlobalStaticVars.StaticCore.GetSetsForClass(id);
                 return View("InstructorClassHome", sets);
             }
             //TODO Do this check better (faster)
             else if (GlobalStaticVars.StaticCore.GetStudentsForClass(id).Contains(new UserData(WebSecurity.CurrentUserId)))
             {
+                Session["ClassId"] = id;
+                //TODO Only return sets with problems
                 IEnumerable<ProblemSetData> sets = GlobalStaticVars.StaticCore.GetSetsForStudent(WebSecurity.CurrentUserId, id);
                 return View("StudentClassHome", sets);
             }
 
+            Session.Clear();
             return RedirectToAction("Home");
         }
     }

@@ -11,7 +11,7 @@ namespace redinc_reboot.Controllers
 {
     public class ProblemSetController : Controller
     {     
-        public ActionResult Edit(int id = 0)
+        public ActionResult Edit(int id)
         {
             ViewBag.Message = "Modify the problem set.";
 
@@ -45,8 +45,7 @@ namespace redinc_reboot.Controllers
 
         public JsonResult Search(string term)
         {
-            //TODO Get class id from persistent storage
-            List<ProblemSetData> sets = GlobalStaticVars.StaticCore.SearchSetsInClass(2, term);
+            List<ProblemSetData> sets = GlobalStaticVars.StaticCore.SearchSetsInClass((int)Session["ClassId"], term);
             return Json(sets.Select(s => new { Id = s.Id, label = s.Name, Name = s.Name }), JsonRequestBehavior.AllowGet);
         }
     }
