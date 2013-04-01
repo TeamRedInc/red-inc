@@ -50,15 +50,16 @@ namespace redinc_reboot
              * */
 
             bundles.Add(new ScriptBundle("~/Content/js/js").Include(
-                        "~/Scripts/bootstrap",
-                        "~/Scripts/bootstrap.min"));
+                        "~/Scripts/bootstrap"
+                        ));
+            /**
+             * add "~/Scripts/bootstrap.min" if necessary
+             */
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                "~/Content/bootstrap-responsive.css",
-                "~/Content/bootstrap-responsive.min.css",
-                "~/Content/bootstrap.css",
-                "~/Content/bootstrap.min.css"));
-
+                "~/Content/bootstrap.css"));
+            // also add "~/Content/bootstrap-responsive.css",
+            // and      "~/Content/bootstrap-responsive.min.css",
 
             bundles.Add(new StyleBundle("~/Libs/markitup/css").Include(
                         "~/Libs/markitup/skins/simple/style.css",

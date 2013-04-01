@@ -284,11 +284,14 @@ a:hover {
   margin-left: 20px;
 }
 
-.container,
+.container {
+    width: 940px;
+}
+
 .navbar-static-top .container,
 .navbar-fixed-top .container,
 .navbar-fixed-bottom .container {
-  width: 940px;
+  /*width: 940px;*/
 }
 
 .span12 {
@@ -2252,7 +2255,7 @@ table th[class*="span"],
   *margin-right: .3em;
   line-height: 14px;
   vertical-align: text-top;
-  background-image: url("../img/glyphicons-halflings.png");
+  background-image: url("/Content/images/glyphicons-halflings.png");
   background-position: 14px 14px;
   background-repeat: no-repeat;
 }
@@ -2272,7 +2275,7 @@ table th[class*="span"],
 .dropdown-menu > .active > a > [class*=" icon-"],
 .dropdown-submenu:hover > a > [class^="icon-"],
 .dropdown-submenu:hover > a > [class*=" icon-"] {
-  background-image: url("../img/glyphicons-halflings-white.png");
+  background-image: url("/Content/images/glyphicons-halflings-white.png");
 }
 
 .icon-glass {
@@ -4481,7 +4484,7 @@ input[type="submit"].btn.btn-mini {
 .navbar-fixed-top .navbar-inner,
 .navbar-fixed-bottom .navbar-inner {
   padding-right: 0;
-  padding-left: 0;
+  padding-left: 10px;
   -webkit-border-radius: 0;
      -moz-border-radius: 0;
           border-radius: 0;
