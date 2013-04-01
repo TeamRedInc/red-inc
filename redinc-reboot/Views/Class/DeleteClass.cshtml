@@ -1,7 +1,7 @@
 ﻿@model core.Modules.Class.ClassData
 
 @{
-    ViewBag.Title = "Delete Class";
+    ViewBag.Title = "DeleteClass";
 }
 
 <h2>DeleteClass</h2>
@@ -20,6 +20,6 @@
 @using (Html.BeginForm()) {
     <p>
         <input type="submit" value="Delete" /> |
-        @Html.ActionLink("Back to List", "Index")
+        @Html.ActionLink("Back to List", "ClassHome")
     </p>
 }
