@@ -9,12 +9,8 @@ namespace redinc_reboot.Models
 {
     public class HomeClassListModel : Controller
     {
-        public int Id { get; set; }
-        public String Name { get; set; }
-        public String Instructor { get; set; }
-
-        public List<ClassData> StudentClassList { get; set; }
-        public List<ClassData> InstructorClassList { get; set; }
-        public List<ClassData> AllOtherClassesList { get; set; }
+        public IEnumerable<ClassData> StudentClassList { get; set; }
+        public IEnumerable<ClassData> InstructorClassList { get; set; }
+        public IEnumerable<ClassData> AllOtherClassesList { get; set; }
     }
 }

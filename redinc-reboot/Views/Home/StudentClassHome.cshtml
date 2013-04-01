@@ -1,0 +1,23 @@
+﻿@model IEnumerable<core.Modules.ProblemSet.ProblemSetData>
+
+@{
+    ViewBag.Title = "Student Class Home";
+}
+
+<h2>Student Class Home</h2>
+
+<table>
+    @foreach (var set in Model)
+    {
+        <tr><td>
+        @if (set.Locked)
+        {
+            @Html.DisplayTextFor(m => set.Name)
+        }
+        else
+        {
+            @Html.ActionLink(set.Name, "Solve", "Problem", new { id = set.Id }, null)
+        }
+        </td></tr>
+    }
+</table>
