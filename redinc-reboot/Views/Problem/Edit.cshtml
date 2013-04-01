@@ -1,0 +1,106 @@
+﻿@model redinc_reboot.Models.ProblemViewModel
+@{
+    ViewBag.Title = "Edit Problem";
+}
+
+<h2>Edit Problem</h2>
+
+@using (Html.BeginForm())
+{
+    <fieldset>
+        @Html.HiddenFor(m => m.Problem.Id)
+        @Html.LabelFor(m => m.Problem.Name)
+        @Html.TextBoxFor(m => m.Problem.Name)
+
+        @Html.LabelFor(m => m.Problem.Description)
+        @Html.TextAreaFor(m => m.Problem.Description, new { id = "descriptionArea" })
+
+        @Html.LabelFor(m => m.Problem.SolutionCode, "Solution Code")
+        @Html.TextAreaFor(m => m.Problem.SolutionCode, new { id = "solutionArea" })
+
+        <table id="setTable">
+            <tr>
+                <th>Problem Set</th>
+                <th>Delete</th>
+            </tr>
+            @foreach (var prereq in Model.Sets)
+            {
+                Html.RenderPartial("EditorTemplates/ProblemSetRow", prereq);
+            }
+        </table>
+        <label for="addSet" style="display: inline-block">Add:</label>
+        <input type="text" id="addSet" />
+        
+        <br />
+        <input type="submit" value="Save" />
+        <input id="testButton" type="button" value="Test" />
+    </fieldset>
+}
+
+@section styles
+{
+    @Styles.Render("~/Libs/markitup/css")
+}
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jquery.markitup")
+    @Scripts.Render("~/bundles/edit_area")
+    <script type="text/javascript">
+        $(function () {
+            $('#descriptionArea').markItUp(mySettings);
+
+            editAreaLoader.init({
+                id: "solutionArea",
+                syntax: "python",
+                start_highlight: true,
+                allow_toggle: false,
+                toolbar: "search, |, undo, redo, |, select_font,|, highlight, reset_highlight, word_wrap, |, help"
+            });
+
+            $("button.deleteSet").live("click", function () {
+                $(this).parents("tr.setRow:first").remove();
+                return false;
+            });
+
+            $('#addSet').autocomplete({
+                source: '@Url.Action("Search", "ProblemSet")',
+                minLength: 2,
+                select: function (e, ui) {
+                    $.ajax({
+                        url: '@Url.Action("AddProblemSet")',
+                        data: ui.item,
+                        cache: false,
+                        success: function (html) {
+                            $("#setTable").append(html);
+                        }
+                    });
+                    $(this).val('');
+                    return false;
+                }
+            });
+
+            $('#testButton').click(function () {
+                $.ajax({
+                    url: '@Url.Action("TestPage")',
+                    type: 'POST',
+                    data: {
+                        Id: @Model.Problem.Id,
+                        Name: $('#Problem_Name').val(),
+                        Description: $('#descriptionArea').val(),
+                        SolutionCode: editAreaLoader.getValue('solutionArea')
+                    },
+                    success: function (data) {
+                        var win=window.open('about:blank');
+                        with(win.document)
+                        {
+                            open();
+                            write(data);
+                            close();
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+}

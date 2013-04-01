@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
+using System.Text;
 
 namespace core.Modules.Problem
 {
@@ -25,11 +27,11 @@ namespace core.Modules.Problem
 
                 SqlCommand cmd = conn.CreateCommand();
 
-                bool insertingName = false;
+                bool fieldInserted = false;
                 //Name
                 if (!String.IsNullOrWhiteSpace(problem.Name))
                 {
-                    insertingName = true;
+                    fieldInserted = true;
                     cmdStr += "Name";
                     paramList += "@name";
                     cmd.Parameters.AddWithValue("@name", problem.Name);
@@ -38,14 +40,29 @@ namespace core.Modules.Problem
                 //Description
                 if (!String.IsNullOrWhiteSpace(problem.Description))
                 {
-                    if (insertingName)
+                    if (fieldInserted)
                     {
                         cmdStr += ", ";
                         paramList += ", ";
                     }
+                    fieldInserted = true;
                     cmdStr += "Description";
                     paramList += "@description";
                     cmd.Parameters.AddWithValue("@description", problem.Description);
+                }
+                
+                //Solution Code
+                if (!String.IsNullOrWhiteSpace(problem.SolutionCode))
+                {
+                    if (fieldInserted)
+                    {
+                        cmdStr += ", ";
+                        paramList += ", ";
+                    }
+                    fieldInserted = true;
+                    cmdStr += "SolutionCode";
+                    paramList += "@slnCode";
+                    cmd.Parameters.AddWithValue("@slnCode", problem.SolutionCode);
                 }
 
                 cmd.CommandText = cmdStr + paramList + ");";
@@ -65,24 +82,33 @@ namespace core.Modules.Problem
         }
 
         /// <summary>
-        /// Add the specified problem to the specified problem set.
+        /// Modify a problem's data.
         /// </summary>
-        /// <param name="problem">The ProblemData object with the problem's id</param>
-        /// <param name="set">The ProblemSetData object with the set's id</param>
-        /// <returns>true if the add was successful, false otherwise</returns>
-        public bool AddToSet(ProblemData problem, ProblemSetData set)
+        /// <param name="set">The ProblemData object with the problem's information</param>
+        /// <returns>true if the modify was successful, false otherwise</returns>
+        public bool Modify(ProblemData problem)
         {
             using (SqlConnection conn = new SqlConnection(connStr))
             {
                 SqlCommand cmd = conn.CreateCommand();
 
-                cmd.CommandText = "Insert into dbo.[ProblemSetProblem] values (@setId, @problemId);";
+                cmd.CommandText = "Update dbo.[" + tableName + "]"
+                    + " Set Name = @name,"
+                    + " Description = @description,"
+                    + " SolutionCode = @slnCode"
+                    + " Where Id = @id;";
 
-                //Problem Set
-                cmd.Parameters.AddWithValue("@setId", set.Id);
+                //Name
+                cmd.Parameters.AddWithValue("@name", problem.Name);
 
-                //Problem
-                cmd.Parameters.AddWithValue("@problemId", problem.Id);
+                //Description
+                cmd.Parameters.AddWithValue("@description", problem.Description);
+
+                //Solution Code
+                cmd.Parameters.AddWithValue("@slnCode", problem.SolutionCode);
+
+                //Id
+                cmd.Parameters.AddWithValue("@id", problem.Id);
 
                 try
                 {
@@ -99,24 +125,93 @@ namespace core.Modules.Problem
         }
 
         /// <summary>
-        /// Removes the specified problem from the specified problem set.
+        /// Add the specified problem to the specified problem sets.
         /// </summary>
         /// <param name="problem">The ProblemData object with the problem's id</param>
-        /// <param name="set">The ProblemSetData object with the set's id</param>
-        /// <returns>true if the remove was successful, false otherwise</returns>
-        public bool RemoveFromSet(ProblemData problem, ProblemSetData set)
+        /// <param name="sets">A collection of ProblemSetData objects with the sets' ids</param>
+        /// <returns>true if the add was successful, false otherwise</returns>
+        public bool AddToSets(ProblemData problem, IEnumerable<ProblemSetData> sets)
         {
+            if (sets == null || !sets.Any())
+                return true; //Nothing to add to
+
             using (SqlConnection conn = new SqlConnection(connStr))
             {
                 SqlCommand cmd = conn.CreateCommand();
 
-                cmd.CommandText = "Delete from dbo.[ProblemSetProblem] Where ProblemSetId = @setId and ProblemId = @problemId;";
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("Insert into dbo.[ProblemSetProblem] values ");
 
-                //Problem Set
-                cmd.Parameters.AddWithValue("@setId", set.Id);
+                int i = 0;
+                foreach (ProblemSetData set in sets)
+                {
+                    if (i != 0)
+                        query.AppendLine(",");
+
+                    query.Append("(@setId" + i + ", @problemId)");
+
+                    //Problem Set
+                    cmd.Parameters.AddWithValue("@setId" + i, set.Id);
+
+                    ++i;
+                }
 
                 //Problem
                 cmd.Parameters.AddWithValue("@problemId", problem.Id);
+
+                cmd.CommandText = query.ToString();
+
+                try
+                {
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Removes the specified problem from the specified problem sets.
+        /// </summary>
+        /// <param name="problem">The ProblemData object with the problem's id</param>
+        /// <param name="sets">A collection of ProblemSetData objects with the sets' ids</param>
+        /// <returns>true if the remove was successful, false otherwise</returns>
+        public bool RemoveFromSets(ProblemData problem, IEnumerable<ProblemSetData> sets)
+        {
+            if (sets == null || !sets.Any())
+                return true; //Nothing to remove from
+
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                SqlCommand cmd = conn.CreateCommand();
+
+                StringBuilder query = new StringBuilder();
+                query.Append("Delete from dbo.[ProblemSetProblem] Where ProblemId = @problemId and ProblemSetId in (");
+
+                int i = 0;
+                foreach (ProblemSetData set in sets)
+                {
+                    if (i != 0)
+                        query.Append(",");
+
+                    query.Append("@setId" + i);
+
+                    //Problem Set
+                    cmd.Parameters.AddWithValue("@setId" + i, set.Id);
+
+                    ++i;
+                }
+                query.Append(")");
+
+                //Problem
+                cmd.Parameters.AddWithValue("@problemId", problem.Id);
+
+                cmd.CommandText = query.ToString();
 
                 try
                 {
@@ -271,6 +366,7 @@ namespace core.Modules.Problem
             ProblemData problem = new ProblemData((int)reader["Id"]);
             problem.Name = reader["Name"] as string;
             problem.Description = reader["Description"] as string;
+            problem.SolutionCode = reader["SolutionCode"] as string;
             return problem;
         }
     }

@@ -1,6 +1,7 @@
 ﻿using core.Modules.Class;
 using core.Modules.Problem;
 using core.Modules.User;
+using core.Modules.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,6 +33,16 @@ namespace core.Modules.ProblemSet
         {
             return setDao.Add(set);
         }
+        
+        /// <summary>
+        /// Modify a problem set's data.
+        /// </summary>
+        /// <param name="set">The ProblemSetData object with the set's information</param>
+        /// <returns>true if the modify was successful, false otherwise</returns>
+        public bool Modify(ProblemSetData set)
+        {
+            return setDao.Modify(set);
+        }
 
         /// <summary>
         /// Gets all problem sets in the specified class.
@@ -41,6 +52,17 @@ namespace core.Modules.ProblemSet
         public List<ProblemSetData> GetForClass(ClassData cls)
         {
             return setDao.GetForClass(cls);
+        }
+
+        /// <summary>
+        /// Gets all problem sets in the specified class that match the search query.
+        /// </summary>
+        /// <param name="cls">The ClassData object with the class' id</param>
+        /// <param name="search">The search query string</param>
+        /// <returns>A non-null, possibly empty list of filled ProblemSetData objects</returns>
+        public List<ProblemSetData> SearchInClass(ClassData cls, string search)
+        {
+            return setDao.SearchInClass(cls, search);
         }
 
         /// <summary>
@@ -68,43 +90,26 @@ namespace core.Modules.ProblemSet
                 return new List<ProblemSetData>();
         }
 
-        /// <summary>
-        /// Add a new prerequisite to the database.
-        /// </summary>
-        /// <param name="set">The ProblemSetData object with the parent set's id</param>
-        /// <param name="prereq">The ProblemSetData object with the prerequisite set's data</param>
-        /// <returns>true if the add was successful, false otherwise</returns>
-        public bool AddPrereq(ProblemSetData set, ProblemSetData prereq)
+        public bool UpdatePrereqs(ProblemSetData set, ICollection<ProblemSetData> prereqs)
         {
-            if (prereq.PrereqCount > 0)
-                return setDao.AddPrereq(set, prereq);
-            else
-                return false;
-        }
+            ICollection<ProblemSetData> oldPrereqs = GetPrereqs(set);
 
-        /// <summary>
-        /// Modify the number of required problems for a prerequisite.
-        /// </summary>
-        /// <param name="set">The ProblemSetData object with the parent set's id</param>
-        /// <param name="prereq">The ProblemSetData object with the prerequisite set's data</param>
-        /// <returns>true if the operation was successful, false otherwise</returns>
-        public bool UpdatePrereq(ProblemSetData set, ProblemSetData prereq)
-        {
-            if (prereq.PrereqCount > 0)
-                return setDao.UpdatePrereq(set, prereq);
-            else
-                return false;
-        }
-        
-        /// <summary>
-        /// Removes the specified prerequisite.
-        /// </summary>
-        /// <param name="set">The ProblemSetData object with the parent set's id</param>
-        /// <param name="prereq">The ProblemSetData object with the prerequisite set's data</param>
-        /// <returns>true if the remove was successful, false otherwise</returns>
-        public bool RemovePrereq(ProblemSetData set, ProblemSetData prereq)
-        {
-            return setDao.RemovePrereq(set, prereq);
+            //Remove self prerequisite
+            prereqs.Remove(set);
+
+            //Remove duplicates
+            IEnumerable<ProblemSetData> newPrereqs = prereqs.Distinct();
+
+            IEnumerable<ProblemSetData> toAdd = newPrereqs.Except(oldPrereqs);
+            IEnumerable<ProblemSetData> toRemove = oldPrereqs.Except(newPrereqs);
+            IEnumerable<ProblemSetData> toUpdate = newPrereqs.Intersect(oldPrereqs, 
+                new DelegateEqualityComparer<ProblemSetData>((n, o) => n == o && n.PrereqCount != o.PrereqCount));
+
+            bool add = setDao.AddPrereqs(set, toAdd);
+            bool remove = setDao.RemovePrereqs(set, toRemove);
+            bool update = setDao.UpdatePrereqs(set, toUpdate);
+
+            return add && remove && update;
         }
 
         /// <summary>

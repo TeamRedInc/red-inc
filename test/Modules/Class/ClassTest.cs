@@ -15,7 +15,7 @@ namespace core.Tests.Modules.Class
         {
             ClassData cls = new ClassData(0);
             cls.Name = "CS 4911 Design Capstone Project";
-            cls.Instructor = new UserData(1);
+            cls.Instructor = new UserData(7);
 
             //This class should already exist in the database
             Assert.IsFalse(classModel.Add(cls));
@@ -49,12 +49,12 @@ namespace core.Tests.Modules.Class
             ClassData cls1 = classModel.GetById(1);
             ClassData cls2 = classModel.GetById(2);
 
-            List<ClassData> classes = classModel.GetStudentClasses(new UserData(1));
+            List<ClassData> classes = classModel.GetStudentClasses(new UserData(7));
 
             Assert.IsFalse(classes.Contains(cls1));
             Assert.IsTrue(classes.Contains(cls2));
 
-            classes = classModel.GetInstructorClasses(new UserData(1));
+            classes = classModel.GetInstructorClasses(new UserData(7));
 
             Assert.IsTrue(classes.Contains(cls1));
             Assert.IsFalse(classes.Contains(cls2));

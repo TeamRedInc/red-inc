@@ -1,0 +1,72 @@
+﻿@model redinc_reboot.Models.ProblemSetViewModel
+
+@{
+    ViewBag.Title = "Edit Problem Set";
+}
+
+<h2>Edit Problem Set</h2>
+
+@using (Html.BeginForm())
+{
+    <fieldset>
+        @Html.HiddenFor(m => m.Set.Id)
+        @Html.LabelFor(m => m.Set.Name)
+        @Html.TextBoxFor(m => m.Set.Name)
+
+        <table id="prereqTable">
+            <tr>
+                <th>Prerequisite Set</th>
+                <th>Number of Problems Required</th>
+                <th>Delete</th>
+            </tr>
+            @foreach (var prereq in Model.Prereqs)
+            {
+                Html.RenderPartial("EditorTemplates/PrereqRow", prereq);
+            }
+        </table>
+        <label for="addPrereq" style="display: inline-block">Add:</label>
+        <input type="text" id="addPrereq" />
+        
+        <br />
+        <input type="submit" value="Save" />
+    </fieldset>
+}
+
+<hr />
+
+<label>Problems</label>
+<table>
+    @foreach (var prob in Model.Problems)
+    {
+        Html.RenderPartial("EditorTemplates/ProblemRow", prob);
+    }
+</table>
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(function () {
+            $("button.deletePrereq").live("click", function () {
+                $(this).parents("tr.prereqRow:first").remove();
+                return false;
+            });
+
+            $('#addPrereq').autocomplete({
+                source: '@Url.Action("Search", "ProblemSet")',
+                minLength: 2,
+                select: function (e, ui) {
+                    $.ajax({
+                        url: '@Url.Action("AddPrereq")',
+                        data: ui.item,
+                        cache: false,
+                        success: function (html) {
+                            $("#prereqTable").append(html);
+                        }
+                    });
+                    $(this).val('');
+                    return false;
+                }
+            });
+        });
+    </script>
+}

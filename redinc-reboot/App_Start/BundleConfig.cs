@@ -18,6 +18,13 @@ namespace redinc_reboot
                         "~/Scripts/jquery.unobtrusive*",
                         "~/Scripts/jquery.validate*"));
 
+            bundles.Add(new ScriptBundle("~/bundles/jquery.markitup").Include(
+                        "~/Libs/markitup/jquery.markitup.js",
+                        "~/Libs/markitup/sets/bbcode/set.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/edit_area").Include(
+                        "~/Libs/edit_area/edit_area_full.js"));
+
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
@@ -39,6 +46,7 @@ namespace redinc_reboot
                         "~/Content/themes/base/jquery.ui.datepicker.css",
                         "~/Content/themes/base/jquery.ui.progressbar.css",
                         "~/Content/themes/base/jquery.ui.theme.css"));
+
              * */
 
             bundles.Add(new ScriptBundle("~/Content/js/js").Include(
@@ -50,6 +58,12 @@ namespace redinc_reboot
                 "~/Content/bootstrap-responsive.min.css",
                 "~/Content/bootstrap.css",
                 "~/Content/bootstrap.min.css"));
+
+
+            bundles.Add(new StyleBundle("~/Libs/markitup/css").Include(
+                        "~/Libs/markitup/skins/simple/style.css",
+                        "~/Libs/markitup/sets/bbcode/style.css"));
+
         }
     }
 }

@@ -69,7 +69,7 @@ namespace core.Tests.Modules.ProblemSet
         [TestMethod]
         public void TestGetForStudent()
         {
-            List<ProblemSetData> sets = setModel.GetForStudent(new UserData(1), new ClassData(2));
+            List<ProblemSetData> sets = setModel.GetForStudent(new UserData(7), new ClassData(2));
 
             Assert.IsFalse(sets.Find(ps => ps.Id == 1).Locked);
             Assert.IsTrue(sets.Find(ps => ps.Id == 2).Locked);
@@ -78,42 +78,44 @@ namespace core.Tests.Modules.ProblemSet
         }
 
         [TestMethod]
-        public void TestPrereq()
+        public void TestPrereqs()
         {
-            ProblemSetData set1 = new ProblemSetData(2);
-            ProblemSetData set2 = new ProblemSetData(1);
-            set2.PrereqCount = 3;
+            ProblemSetData parent = new ProblemSetData(3);
+            List<ProblemSetData> original = setModel.GetPrereqs(parent);
 
-            //This prereq should already exist in the database
-            Assert.IsFalse(setModel.AddPrereq(set1, set2));
+            //Test remove prereqs
+            Assert.IsTrue(setModel.UpdatePrereqs(parent, new List<ProblemSetData>()));
+            Assert.AreEqual(0, setModel.GetPrereqs(parent).Count);
 
-            List<ProblemSetData> prereqs = setModel.GetPrereqs(set1);
+            //Test add prereqs
+            Assert.IsTrue(setModel.UpdatePrereqs(parent, original));
+            CollectionAssert.AreEqual(original, setModel.GetPrereqs(parent));
 
-            //Assert prereq exists with a problem count of 3
-            Assert.IsTrue(prereqs.Contains(set2));
-            Assert.AreEqual(3, prereqs.Find(ps => ps.Id == 1).PrereqCount);
-            Assert.IsFalse(prereqs.Contains(set1));
+            //Test add bad data
+            List<ProblemSetData> badList = new List<ProblemSetData>(original);
+            badList.Add(new ProblemSetData { Id = original[0].Id, PrereqCount = original[0].PrereqCount }); //Can't have duplicate prereq entries
+            badList.Add(new ProblemSetData { Id = 3, PrereqCount = 1 }); //Set can't require itself
+            Assert.IsTrue(setModel.UpdatePrereqs(parent, badList));
+            CollectionAssert.AreEqual(original, setModel.GetPrereqs(parent));
 
-            set2.PrereqCount = 10;
+            //Test update prereqs
+            foreach (ProblemSetData p in original)
+                p.PrereqCount += 1;
+            Assert.IsTrue(setModel.UpdatePrereqs(parent, original));
+            foreach (ProblemSetData p in setModel.GetPrereqs(parent))
+            {
+                ProblemSetData op = original.Find(s => s.Id == p.Id);
+                Assert.AreEqual(op.PrereqCount, p.PrereqCount);
+            }
 
-            Assert.IsTrue(setModel.UpdatePrereq(set1, set2));
-
-            prereqs = setModel.GetPrereqs(set1);
-
-            //Assert update worked
-            Assert.AreEqual(10, prereqs.Find(ps => ps.Id == 1).PrereqCount);
-
-            Assert.IsTrue(setModel.RemovePrereq(set1, set2));
-
-            prereqs = setModel.GetPrereqs(set1);
-
-            //Assert remove worked
-            Assert.IsFalse(prereqs.Contains(set2));
-
-            set2.PrereqCount = 3;
-
-            //Add prereq back in
-            Assert.IsTrue(setModel.AddPrereq(set1, set2));
+            foreach (ProblemSetData p in original)
+                p.PrereqCount -= 1;
+            Assert.IsTrue(setModel.UpdatePrereqs(parent, original));
+            foreach (ProblemSetData p in setModel.GetPrereqs(parent))
+            {
+                ProblemSetData op = original.Find(s => s.Id == p.Id);
+                Assert.AreEqual(op.PrereqCount, p.PrereqCount);
+            }
         }
     }
 }

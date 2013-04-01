@@ -13,7 +13,7 @@ namespace core.Modules
 
         public BaseDao(string tableName)
         {
-            connStr = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["AzureConnection"].ConnectionString).ToString();
+            connStr = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString).ToString();
             this.tableName = tableName;
         }
 
