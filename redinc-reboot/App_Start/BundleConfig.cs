@@ -30,6 +30,7 @@ namespace redinc_reboot
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
+            /*
             bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/site.css"));
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
@@ -46,9 +47,24 @@ namespace redinc_reboot
                         "~/Content/themes/base/jquery.ui.progressbar.css",
                         "~/Content/themes/base/jquery.ui.theme.css"));
 
+             * */
+
+            bundles.Add(new ScriptBundle("~/Content/js/js").Include(
+                        "~/Scripts/bootstrap"
+                        ));
+            /**
+             * add "~/Scripts/bootstrap.min" if necessary
+             */
+
+            bundles.Add(new StyleBundle("~/Content/css").Include(
+                "~/Content/bootstrap.css"));
+            // also add "~/Content/bootstrap-responsive.css",
+            // and      "~/Content/bootstrap-responsive.min.css",
+
             bundles.Add(new StyleBundle("~/Libs/markitup/css").Include(
                         "~/Libs/markitup/skins/simple/style.css",
                         "~/Libs/markitup/sets/bbcode/style.css"));
+
         }
     }
 }
