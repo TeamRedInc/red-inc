@@ -6,6 +6,12 @@ using System.Threading.Tasks;
 
 namespace core.Modules.User
 {
+    public enum UserType
+    {
+        Instructor,
+        Student
+    }
+
     public class UserData : DataObject
     {
         private string email;

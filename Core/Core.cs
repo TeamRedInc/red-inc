@@ -123,6 +123,11 @@ namespace core
             return userModel.AddStudent(new UserData(userId), new ClassData(classId));
         }
 
+        public bool IsStudent(int userId, int classId)
+        {
+            return userModel.IsStudent(new UserData(userId), new ClassData(classId));
+        }
+
         public ClassData GetClassById(int classId)
         {
             return classModel.GetById(classId);
