@@ -117,5 +117,10 @@ namespace core
         {
             return problemModel.GetForSet(new ProblemSetData(setId));
         }
+
+        public bool AddStudent(int userId, int classId)
+        {
+            return userModel.AddStudent(new UserData(userId), new ClassData(classId));
+        }
     }
 }
