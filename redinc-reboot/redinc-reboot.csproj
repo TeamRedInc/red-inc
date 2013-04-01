@@ -462,6 +462,11 @@
     <Content Include="Views\Shared\EditorTemplates\ProblemSetRow.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\ProblemRow.cshtml" />
     <Content Include="Views\Problem\Solve.cshtml" />
+    <Content Include="Views\Class\ClassDetails.cshtml" />
+    <Content Include="Views\Class\ClassHome.cshtml" />
+    <Content Include="Views\Class\DeleteClass.cshtml" />
+    <Content Include="Views\Class\EditClass.cshtml" />
+    <Content Include="Views\Class\NewClass.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
