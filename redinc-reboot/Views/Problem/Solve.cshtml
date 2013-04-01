@@ -31,7 +31,7 @@
 
             $('#submitButton').click(function () {
                 $.ajax({
-                    url: '@Url.Action("Solve")',
+                    url: '@Url.Action(ViewBag.SubmitAction)',
                     type: 'POST',
                     data: {
                         code: editAreaLoader.getValue("codeArea")
