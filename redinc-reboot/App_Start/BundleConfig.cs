@@ -23,6 +23,7 @@ namespace redinc_reboot
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
+            /*
             bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/site.css"));
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
@@ -38,6 +39,17 @@ namespace redinc_reboot
                         "~/Content/themes/base/jquery.ui.datepicker.css",
                         "~/Content/themes/base/jquery.ui.progressbar.css",
                         "~/Content/themes/base/jquery.ui.theme.css"));
+             * */
+
+            bundles.Add(new ScriptBundle("~/Content/js/js").Include(
+                        "~/Scripts/bootstrap",
+                        "~/Scripts/bootstrap.min"));
+
+            bundles.Add(new StyleBundle("~/Content/css").Include(
+                "~/Content/bootstrap-responsive.css",
+                "~/Content/bootstrap-responsive.min.css",
+                "~/Content/bootstrap.css",
+                "~/Content/bootstrap.min.css"));
         }
     }
 }
