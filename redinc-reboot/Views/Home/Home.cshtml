@@ -1,0 +1,54 @@
+﻿@model redinc_reboot.Models.HomeClassListModel
+
+@{
+    ViewBag.Title = "Home";
+}
+
+<h2>Class Home</h2>
+<p>
+    @Html.ActionLink("Create New", "NewClass")
+</p>
+<h3>Instructor Classes</h3>
+<table>
+@foreach(var classItem in Model.InstructorClassList)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => classItem.Name)
+        </td>
+        <td>
+            @Html.ActionLink("View", "ClassHome", new { id=classItem.Id })
+        </td>
+    </tr>
+}
+</table>
+
+<h3>Student Classes</h3>
+<table>
+@foreach(var classItem in Model.StudentClassList)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => classItem.Name)
+        </td>
+        <td>
+            @Html.ActionLink("View", "ClassHome", new { id=classItem.Id })
+        </td>
+    </tr>
+}
+</table>
+
+<h3>More Classes</h3>
+<table>
+@foreach(var classItem in Model.AllOtherClassesList)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => classItem.Name)
+        </td>
+        <td>
+            @Html.ActionLink("Join", "JoinClass", new { id=classItem.Id })
+        </td>
+    </tr>
+}
+</table>
