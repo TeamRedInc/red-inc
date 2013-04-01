@@ -41,6 +41,7 @@ namespace redinc_reboot.Controllers
         {
             ProblemData prob = GlobalStaticVars.StaticCore.GetProblemById(id);
             ViewBag.Description = BBCode.ToHtml(prob.Description);
+            ViewBag.SubmitAction = "Solve";
             return View();
         }
 
@@ -49,6 +50,22 @@ namespace redinc_reboot.Controllers
         {
             string output = GlobalStaticVars.StaticCore.ExecutePythonCode(code);
             return Json(new { success = true, output = output });
+        }
+        
+        [HttpPost]
+        public ActionResult TestPage(ProblemData prob)
+        {
+            ViewBag.Description = BBCode.ToHtml(prob.Description);
+            ViewBag.SubmitAction = "Test";
+            return View("Solve");
+        }
+
+        [HttpPost]
+        public ActionResult Test(string code)
+        {
+            //TODO This could verify the code without recording the problem as solved
+            string output = GlobalStaticVars.StaticCore.ExecutePythonCode(code);
+            return Json(new { success = true, output = output + " (test)" });
         }
 
         public ActionResult AddProblemSet(ProblemSetData model)

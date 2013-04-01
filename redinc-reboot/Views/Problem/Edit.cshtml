@@ -33,6 +33,7 @@
         
         <br />
         <input type="submit" value="Save" />
+        <input id="testButton" type="button" value="Test" />
     </fieldset>
 }
 
@@ -77,6 +78,28 @@
                     $(this).val('');
                     return false;
                 }
+            });
+
+            $('#testButton').click(function () {
+                $.ajax({
+                    url: '@Url.Action("TestPage")',
+                    type: 'POST',
+                    data: {
+                        Id: @Model.Problem.Id,
+                        Name: $('#Problem_Name').val(),
+                        Description: $('#descriptionArea').val(),
+                        SolutionCode: editAreaLoader.getValue('solutionArea')
+                    },
+                    success: function (data) {
+                        var win=window.open('about:blank');
+                        with(win.document)
+                        {
+                            open();
+                            write(data);
+                            close();
+                        }
+                    }
+                });
             });
         });
     </script>
