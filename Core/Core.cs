@@ -122,5 +122,15 @@ namespace core
         {
             return userModel.AddStudent(new UserData(userId), new ClassData(classId));
         }
+
+        public ClassData GetClassById(int classId)
+        {
+            return classModel.GetById(classId);
+        }
+
+        public List<UserData> GetStudentsForClass(int classId)
+        {
+            return userModel.GetStudents(new ClassData(classId));
+        }
     }
 }
