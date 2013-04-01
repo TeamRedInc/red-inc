@@ -461,6 +461,7 @@
     <Content Include="Views\Problem\Edit.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\ProblemSetRow.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\ProblemRow.cshtml" />
+    <Content Include="Views\Problem\Solve.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

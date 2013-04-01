@@ -1,0 +1,51 @@
+﻿@{
+    ViewBag.Title = "Solve Problem";
+}
+
+<h2>Solve Problem</h2>
+
+<br />
+<div>
+    @Html.Raw(ViewBag.Description)
+</div>
+
+<hr />
+
+<textarea id="codeArea"></textarea>
+
+<br />
+<button id="submitButton">Submit</button>
+
+@section scripts
+{    
+    @Scripts.Render("~/bundles/edit_area")
+    <script type="text/javascript">
+        $(function () {
+            editAreaLoader.init({
+                id: "codeArea",
+                syntax: "python",
+                start_highlight: true,
+                allow_toggle: false,
+                toolbar: "search, |, undo, redo, |, select_font,|, highlight, reset_highlight, word_wrap, |, help"
+            });
+
+            $('#submitButton').click(function () {
+                $.ajax({
+                    url: '@Url.Action("Solve")',
+                    type: 'POST',
+                    data: {
+                        code: editAreaLoader.getValue("codeArea")
+                    },
+                    success: function (data) {
+                        if (data.success) {
+                            alert("Correct!\nOutput: " + data.output);
+                            //TODO Go back to class home
+                        } else {
+                            alert("Incorrect. Modify your code and try again.\nOutput: " + data.output);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+}
