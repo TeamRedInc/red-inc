@@ -40,6 +40,7 @@
 @section styles
 {
     @Styles.Render("~/Libs/markitup/css")
+    <link href="~/Content/autocomplete.css" rel="stylesheet" />
 }
 
 @section scripts
@@ -58,7 +59,7 @@
                 toolbar: "search, |, undo, redo, |, select_font,|, highlight, reset_highlight, word_wrap, |, help"
             });
 
-            $("button.deleteSet").live("click", function () {
+            $("#setTable").on("click", "button.deleteSet", function () {
                 $(this).parents("tr.setRow:first").remove();
                 return false;
             });

@@ -42,11 +42,16 @@
     }
 </table>
 
+@section styles
+{    
+    <link href="~/Content/autocomplete.css" rel="stylesheet" />
+}
+
 @section scripts
 {
     <script type="text/javascript">
         $(function () {
-            $("button.deletePrereq").live("click", function () {
+            $("#prereqTable").on("click", "button.deletePrereq", function () {
                 $(this).parents("tr.prereqRow:first").remove();
                 return false;
             });
