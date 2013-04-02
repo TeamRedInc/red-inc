@@ -17,8 +17,8 @@ namespace core.Modules.Problem
         /// Add a new problem to the database.</summary>
         /// <param name="problem">The ProblemData object with the problem's information</param>
         /// <returns>
-        /// true if the add was successful, false otherwise</returns>
-        public bool Add(ProblemData problem)
+        /// the new problem's id if the add was successful, 0 otherwise</returns>
+        public int Add(ProblemData problem)
         {
             using (SqlConnection conn = new SqlConnection(connStr))
             {
@@ -65,20 +65,20 @@ namespace core.Modules.Problem
                     cmd.Parameters.AddWithValue("@slnCode", problem.SolutionCode);
                 }
 
-                cmd.CommandText = cmdStr + paramList + ");";
+                cmd.CommandText = cmdStr + paramList + "); Select SCOPE_IDENTITY()";
 
                 try
                 {
                     conn.Open();
-                    cmd.ExecuteNonQuery();
+                    object obj = cmd.ExecuteScalar();
+                    return Decimal.ToInt32((decimal)obj);
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine(e);
-                    return false;
+                    return 0;
                 }
             }
-            return true;
         }
 
         /// <summary>

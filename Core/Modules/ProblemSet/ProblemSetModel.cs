@@ -28,8 +28,8 @@ namespace core.Modules.ProblemSet
         /// Add a new problem set to the database.</summary>
         /// <param name="set">The ProblemSetData object with the set's information</param>
         /// <returns>
-        /// true if the add was successful, false otherwise</returns>
-        public bool Add(ProblemSetData set)
+        /// the new set's id if the add was successful, 0 otherwise</returns>
+        public int Add(ProblemSetData set)
         {
             return setDao.Add(set);
         }

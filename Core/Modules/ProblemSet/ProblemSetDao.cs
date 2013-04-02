@@ -19,8 +19,8 @@ namespace core.Modules.ProblemSet
         /// Add a new problem set to the database.</summary>
         /// <param name="set">The ProblemSetData object with the set's information</param>
         /// <returns>
-        /// true if the add was successful, false otherwise</returns>
-        public bool Add(ProblemSetData set)
+        /// the new set's id if the add was successful, 0 otherwise</returns>
+        public int Add(ProblemSetData set)
         {
             using (SqlConnection conn = new SqlConnection(connStr))
             {
@@ -42,20 +42,20 @@ namespace core.Modules.ProblemSet
                 paramList += ", @classId";
                 cmd.Parameters.AddWithValue("@classId", set.Class.Id);
 
-                cmd.CommandText = cmdStr + paramList + ");";
+                cmd.CommandText = cmdStr + paramList + "); Select SCOPE_IDENTITY()";
 
                 try
                 {
                     conn.Open();
-                    cmd.ExecuteNonQuery();
+                    object obj = cmd.ExecuteScalar();
+                    return Decimal.ToInt32((decimal)obj);
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine(e);
-                    return false;
+                    return 0;
                 }
             }
-            return true;
         }
 
         /// <summary>

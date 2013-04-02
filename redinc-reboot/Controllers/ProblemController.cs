@@ -12,13 +12,18 @@ namespace redinc_reboot.Controllers
 {
     public class ProblemController : Controller
     {
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int id = 0)
         {
-            ProblemData prob = GlobalStaticVars.StaticCore.GetProblemById(id);
-            ICollection<ProblemSetData> sets = GlobalStaticVars.StaticCore.GetSetsForProblem(id);
             ProblemViewModel model = new ProblemViewModel();
-            model.Problem = prob;
-            model.Sets = sets;
+            if (id == 0)
+            {
+                model.Problem = new ProblemData();
+            }
+            else
+            {
+                model.Problem = GlobalStaticVars.StaticCore.GetProblemById(id);
+                model.Sets = GlobalStaticVars.StaticCore.GetSetsForProblem(id);
+            }
             return View(model);
         }
 
@@ -27,7 +32,10 @@ namespace redinc_reboot.Controllers
         {
             if (ModelState.IsValid)
             {
-                GlobalStaticVars.StaticCore.ModifyProblem(model.Problem);
+                if (model.Problem.Id == 0)
+                    model.Problem.Id = GlobalStaticVars.StaticCore.AddProblem(model.Problem);
+                else
+                    GlobalStaticVars.StaticCore.ModifyProblem(model.Problem);
                 GlobalStaticVars.StaticCore.UpdateProblemSets(model.Problem.Id, model.Sets);
 
                 //This is necessary in case bad prereqs (ex. duplicates) are removed by the backend
