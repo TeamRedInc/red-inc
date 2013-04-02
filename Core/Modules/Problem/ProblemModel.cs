@@ -26,8 +26,8 @@ namespace core.Modules.Problem
         /// Add a new problem to the database.</summary>
         /// <param name="problem">The ProblemData object with the problem's information</param>
         /// <returns>
-        /// true if the add was successful, false otherwise</returns>
-        public bool Add(ProblemData problem)
+        /// the new problem's id if the add was successful, 0 otherwise</returns>
+        public int Add(ProblemData problem)
         {
             return problemDao.Add(problem);
         }

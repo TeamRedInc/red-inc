@@ -10,6 +10,7 @@
 {
     <fieldset>
         @Html.HiddenFor(m => m.Set.Id)
+        @Html.HiddenFor(m => m.Set.Class.Id)
         @Html.LabelFor(m => m.Set.Name)
         @Html.TextBoxFor(m => m.Set.Name)
 

@@ -137,5 +137,15 @@ namespace core
         {
             return userModel.GetStudents(new ClassData(classId));
         }
+
+        public int AddProblem(ProblemData prob)
+        {
+            return problemModel.Add(prob);
+        }
+
+        public int AddSet(ProblemSetData set)
+        {
+            return setModel.Add(set);
+        }
     }
 }
