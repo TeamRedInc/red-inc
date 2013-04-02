@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -487,11 +487,6 @@
     <Content Include="Views\Home\Home.cshtml" />
     <Content Include="Views\Home\StudentClassHome.cshtml" />
     <Content Include="Views\Home\InstructorClassHome.cshtml" />
-    <Content Include="Views\Class\ClassDetails.cshtml" />
-    <Content Include="Views\Class\ClassHome.cshtml" />
-    <Content Include="Views\Class\DeleteClass.cshtml" />
-    <Content Include="Views\Class\EditClass.cshtml" />
-    <Content Include="Views\Class\NewClass.cshtml" />
     <Content Include="Views\Shared\_NavbarPartial.cshtml" />
     <Content Include="Views\Shared\_BootstrapLayout.cshtml" />
   </ItemGroup>
