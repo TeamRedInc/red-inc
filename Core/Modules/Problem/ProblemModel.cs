@@ -72,6 +72,19 @@ namespace core.Modules.Problem
         }
 
         /// <summary>
+        /// Gets all problems in the specified problem set that 
+        /// the specified user has either solved or not solved.
+        /// </summary>
+        /// <param name="set">The ProblemSetData object with the set's id</param>
+        /// <param name="user">The UserData object with the user's id</param>
+        /// <param name="solved">true to get solved problems, false to get unsolved problems</param>
+        /// <returns>A non-null, possibly empty list of filled ProblemData objects</returns>
+        public List<ProblemData> GetForSetAndUser(ProblemSetData set, UserData user, bool solved)
+        {
+            return problemDao.GetForSetAndUser(set, user, solved);
+        }
+
+        /// <summary>
         /// Record a user's first attempt at a problem.</summary>
         /// <param name="user">The UserData object with the user's information</param>
         /// <param name="problem">The ProblemData object with the problem's id</param>

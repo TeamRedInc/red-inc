@@ -1,15 +1,18 @@
 ﻿using CodeKicker.BBCode;
 using core.Modules.Problem;
 using core.Modules.ProblemSet;
+using redinc_reboot.Filters;
 using redinc_reboot.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using WebMatrix.WebData;
 
 namespace redinc_reboot.Controllers
 {
+    [InitializeSimpleMembership]
     public class ProblemController : Controller
     {
         public ActionResult Edit(int id = 0)
@@ -47,7 +50,7 @@ namespace redinc_reboot.Controllers
 
         public ActionResult Solve(int id)
         {
-            List<ProblemData> problems = GlobalStaticVars.StaticCore.GetProblemsForSet(id);
+            List<ProblemData> problems = GlobalStaticVars.StaticCore.GetUnsolvedProblemsForSet(id, WebSecurity.CurrentUserId);
             ProblemData prob = problems[new Random().Next(problems.Count)];
             ViewBag.Description = BBCode.ToHtml(prob.Description);
             ViewBag.SubmitAction = "Solve";

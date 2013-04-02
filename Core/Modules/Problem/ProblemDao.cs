@@ -241,10 +241,79 @@ namespace core.Modules.Problem
 
                 cmd.CommandText = "Select * from dbo.[ProblemSetProblem] psp"
                     + " Join dbo.[" + tableName + "] p on p.Id = psp.ProblemId"
-                    + " Where ProblemSetId = @setId;";
+                    + " Where psp.ProblemSetId = @setId;";
 
                 //Problem Set
                 cmd.Parameters.AddWithValue("@setId", set.Id);
+
+                SqlDataReader reader = null;
+                try
+                {
+                    conn.Open();
+                    reader = cmd.ExecuteReader();
+
+                    if (reader.HasRows)
+                        while (reader.Read())
+                            problems.Add(createFromReader(reader));
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+                finally
+                {
+                    if (reader != null)
+                        reader.Close();
+                }
+
+                return problems;
+            }
+        }
+
+        /// <summary>
+        /// Gets all problems in the specified problem set that 
+        /// the specified user has either solved or not solved.
+        /// </summary>
+        /// <param name="set">The ProblemSetData object with the set's id</param>
+        /// <param name="user">The UserData object with the user's id</param>
+        /// <param name="solved">true to get solved problems, false to get unsolved problems</param>
+        /// <returns>A non-null, possibly empty list of filled ProblemData objects</returns>
+        public List<ProblemData> GetForSetAndUser(ProblemSetData set, UserData user, bool solved)
+        {
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                List<ProblemData> problems = new List<ProblemData>();
+                SqlCommand cmd = conn.CreateCommand();
+
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("Select * from dbo.[ProblemSetProblem] psp ");
+                query.AppendLine("Join dbo.[" + tableName + "] p on p.Id = psp.ProblemId ");
+                query.AppendLine("Where psp.ProblemSetId = @setId ");
+                query.AppendLine("and Exists ( ");
+                query.AppendLine("  Select * from dbo.[Solution] s ");
+                query.AppendLine("  Where s.ProblemId = p.Id ");
+                query.AppendLine("  and s.UserId = @userId ");
+                query.AppendLine("  and s.IsCorrect = @correct ");
+                query.AppendLine(") ");
+                if (!solved)
+                {
+                    query.AppendLine("or Not Exists ( ");
+                    query.AppendLine("  Select * from dbo.[Solution] s ");
+                    query.AppendLine("  Where s.ProblemId = p.Id ");
+                    query.AppendLine("  and s.UserId = @userId ");
+                    query.AppendLine(")");
+                }
+
+                //Problem Set
+                cmd.Parameters.AddWithValue("@setId", set.Id);
+
+                //User
+                cmd.Parameters.AddWithValue("@userId", user.Id);
+
+                //Correct
+                cmd.Parameters.AddWithValue("@correct", solved);
+
+                cmd.CommandText = query.ToString();
 
                 SqlDataReader reader = null;
                 try

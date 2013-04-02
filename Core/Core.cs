@@ -147,5 +147,10 @@ namespace core
         {
             return setModel.Add(set);
         }
+
+        public List<ProblemData> GetUnsolvedProblemsForSet(int setId, int userId)
+        {
+            return problemModel.GetForSetAndUser(new ProblemSetData(setId), new UserData(userId), false);
+        }
     }
 }
