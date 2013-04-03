@@ -1,4 +1,5 @@
 ﻿using CodeKicker.BBCode;
+using core.Modules.Class;
 using core.Modules.Problem;
 using core.Modules.ProblemSet;
 using redinc_reboot.Filters;
@@ -21,6 +22,7 @@ namespace redinc_reboot.Controllers
             if (id == 0)
             {
                 model.Problem = new ProblemData();
+                model.Problem.Class = new ClassData((int)Session["ClassId"]);
             }
             else
             {

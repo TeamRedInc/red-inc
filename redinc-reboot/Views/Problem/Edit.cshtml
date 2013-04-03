@@ -9,6 +9,7 @@
 {
     <fieldset>
         @Html.HiddenFor(m => m.Problem.Id)
+        @Html.HiddenFor(m => m.Problem.Class.Id)
         @Html.LabelFor(m => m.Problem.Name)
         @Html.TextBoxFor(m => m.Problem.Name)
 

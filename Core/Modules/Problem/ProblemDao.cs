@@ -1,4 +1,5 @@
-﻿using core.Modules.ProblemSet;
+﻿using core.Modules.Class;
+using core.Modules.ProblemSet;
 using core.Modules.User;
 using System;
 using System.Collections.Generic;
@@ -64,6 +65,17 @@ namespace core.Modules.Problem
                     paramList += "@slnCode";
                     cmd.Parameters.AddWithValue("@slnCode", problem.SolutionCode);
                 }
+
+                //Class
+                if (fieldInserted)
+                {
+                    cmdStr += ", ";
+                    paramList += ", ";
+                }
+                fieldInserted = true;
+                cmdStr += "ClassId";
+                paramList += "@clsId";
+                cmd.Parameters.AddWithValue("@clsId", problem.Class.Id);
 
                 cmd.CommandText = cmdStr + paramList + "); Select SCOPE_IDENTITY()";
 
@@ -438,6 +450,7 @@ namespace core.Modules.Problem
             problem.Name = reader["Name"] as string;
             problem.Description = reader["Description"] as string;
             problem.SolutionCode = reader["SolutionCode"] as string;
+            problem.Class = new ClassData((int)reader["ClassId"]);
             return problem;
         }
     }

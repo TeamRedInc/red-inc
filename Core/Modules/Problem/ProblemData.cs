@@ -1,4 +1,5 @@
-﻿using System;
+﻿using core.Modules.Class;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,7 @@ namespace core.Modules.Problem
         private string name;
         private string description;
         private string solutionCode;
+        private ClassData _class;
 
         public ProblemData() : base(0) { }
 
@@ -37,6 +39,12 @@ namespace core.Modules.Problem
         {
             get { return solutionCode; }
             set { solutionCode = value; }
+        }
+
+        public ClassData Class
+        {
+            get { return _class; }
+            set { _class = value; }
         }
 
         public override string ToString()
