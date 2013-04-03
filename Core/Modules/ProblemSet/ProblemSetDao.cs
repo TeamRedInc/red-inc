@@ -117,22 +117,14 @@ namespace core.Modules.ProblemSet
                 SqlCommand cmd = conn.CreateCommand();
 
                 StringBuilder query = new StringBuilder();
-                query.AppendLine("With Results(Id, Priority) as (");
-                query.AppendLine("  Select Id, 1 as 'Priority' from dbo.[" + tableName + "] ");
-                query.AppendLine("  Where Name Like @search and ClassId = @clsId ");
-                query.AppendLine("  Union ");
-                query.AppendLine("  Select Id, 2 as 'Priority' from dbo.[" + tableName + "] ");
-                query.AppendLine("  Where Name Like Concat(@search, '%') and ClassId = @clsId ");
-                query.AppendLine("  Union ");
-                query.AppendLine("  Select Id, 3 as 'Priority' from dbo.[" + tableName + "] ");
-                query.AppendLine("  Where Name Like Concat('%', @search, '%') and ClassId = @clsId ");
-                query.AppendLine("), ");
-                query.AppendLine("Ordered(Id, Priority) as (");
-                query.AppendLine("  Select Id, MIN(Priority) from Results Group by Id ");
-                query.AppendLine(") ");
-                query.AppendLine("Select ps.* from Ordered o ");
-                query.AppendLine("Join dbo.[ProblemSet] ps on o.Id = ps.Id ");
-                query.AppendLine("Order by o.Priority");
+                query.AppendLine("Select ps.*, Case ");
+                query.AppendLine("  When ps.Name Like @search Then 1 ");
+                query.AppendLine("  When ps.Name Like Concat(@search, '%') Then 2 ");
+                query.AppendLine("  When ps.Name Like Concat('%', @search, '%') Then 3 ");
+                query.AppendLine("End as 'Priority' ");
+                query.AppendLine("from dbo.[" + tableName + "] ps ");
+                query.AppendLine("Where ps.ClassId = @clsId and ps.Name Like Concat('%', @search, '%') ");
+                query.AppendLine("Order by Priority ");
 
                 //Class
                 cmd.Parameters.AddWithValue("@clsId", cls.Id);
