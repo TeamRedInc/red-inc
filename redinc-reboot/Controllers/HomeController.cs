@@ -1,13 +1,14 @@
 ﻿using CodeKicker.BBCode;
-using redinc_reboot.Models;
-using System.Web.Mvc;
 using core.Modules.Class;
-using WebMatrix.WebData;
-using redinc_reboot.Filters;
-using System.Linq;
-using core.Modules.User;
 using core.Modules.ProblemSet;
+using core.Modules.User;
+using redinc_reboot.Filters;
+using redinc_reboot.Models;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
+using WebMatrix.WebData;
 
 namespace redinc_reboot.Controllers
 {
@@ -96,8 +97,12 @@ namespace redinc_reboot.Controllers
             {
                 Session["ClassId"] = id;
                 Session["UserType"] = UserType.Student;
-                IEnumerable<ProblemSetData> sets = GlobalStaticVars.StaticCore.GetSetsForStudent(WebSecurity.CurrentUserId, id);
-                return View("StudentClassHome", sets);
+                Tuple<List<ProblemSetData>, List<ProblemSetData>, List<ProblemSetData>> sets = 
+                    GlobalStaticVars.StaticCore.GetSetsForStudent(WebSecurity.CurrentUserId, id);
+                ViewBag.UnlockedSets = sets.Item1;
+                ViewBag.LockedSets = sets.Item2;
+                ViewBag.SolvedSets = sets.Item3;
+                return View("StudentClassHome");
             }
 
             Session.Clear();

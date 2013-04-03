@@ -45,16 +45,6 @@ namespace core.Modules.ProblemSet
             set { prereqCount = value; }
         }
 
-        /// <summary>
-        /// Whether or not this problem set is available to do problems from.
-        /// This only applies when looking up problem sets for a particular user in a particular class.
-        /// </summary>
-        public Boolean Locked
-        {
-            get { return locked; }
-            set { locked = value; }
-        }
-
         public override string ToString()
         {
             return String.Format("Problem Set: Id={0}, Name={1}", Id, Name);
