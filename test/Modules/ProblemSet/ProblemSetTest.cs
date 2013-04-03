@@ -67,17 +67,6 @@ namespace core.Tests.Modules.ProblemSet
         }
 
         [TestMethod]
-        public void TestGetForStudent()
-        {
-            List<ProblemSetData> sets = setModel.GetForStudent(new UserData(7), new ClassData(2));
-
-            Assert.IsFalse(sets.Find(ps => ps.Id == 1).Locked);
-            Assert.IsTrue(sets.Find(ps => ps.Id == 2).Locked);
-            Assert.IsFalse(sets.Find(ps => ps.Id == 3).Locked);
-            Assert.IsFalse(sets.Contains(new ProblemSetData(4)));
-        }
-
-        [TestMethod]
         public void TestPrereqs()
         {
             ProblemSetData parent = new ProblemSetData(3);

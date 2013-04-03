@@ -3,6 +3,7 @@ using core.Modules.Class;
 using core.Modules.Problem;
 using core.Modules.ProblemSet;
 using core.Modules.User;
+using System;
 using System.Collections.Generic;
 
 namespace core
@@ -34,7 +35,7 @@ namespace core
             return userModel.Add(user);
         }
 
-        public List<ProblemSetData> GetSetsForStudent(int studentId, int classId)
+        public Tuple<List<ProblemSetData>, List<ProblemSetData>, List<ProblemSetData>> GetSetsForStudent(int studentId, int classId)
         {
             return setModel.GetForStudent(new UserData(studentId), new ClassData(classId));
         }

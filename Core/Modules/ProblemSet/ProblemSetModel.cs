@@ -74,20 +74,36 @@ namespace core.Modules.ProblemSet
         {
             return setDao.GetForProblem(problem);
         }
-        
+
         /// <summary>
         /// Gets all problem sets in the specified class. Each set is also determined to be
         /// locked or unlocked based on the specified user's progress in the class.
+        /// Gets all problem sets in the specified class that have problems in them.
+        /// The sets are separated into 3 categories:
+        /// <list type="bullet">
+        /// <item><description>
+        /// Unlocked - All of the set's prerequisites are satisfied and the set has problems not solved by the user.
+        /// </description></item>
+        /// <item><description>
+        /// Locked - Not all of the set's prerequistes are satisfied.
+        /// </description></item>
+        /// <item><description>
+        /// Solved - All of the set's prerequisites are satisfied and all problems in the set have been solved by the user.
+        /// </description></item>
+        /// </list>
         /// </summary>
         /// <param name="user">The UserData object with the user's id</param>
         /// <param name="cls">The ClassData object with the class' id</param>
-        /// <returns>A non-null, possibly empty list of filled ProblemSetData objects with Locked properties set</returns>
-        public List<ProblemSetData> GetForStudent(UserData user, ClassData cls)
+        /// <returns>
+        /// A tuple containing 3 non-null, possibly empty lists of filled ProblemSetData objects.
+        /// The lists represent the unlocked, locked, and solved sets, respectively.
+        /// </returns>
+        public Tuple<List<ProblemSetData>, List<ProblemSetData>, List<ProblemSetData>> GetForStudent(UserData user, ClassData cls)
         {
             if (userDao.IsStudent(user, cls))
                 return setDao.GetForStudent(user, cls);
             else
-                return new List<ProblemSetData>();
+                return Tuple.Create(new List<ProblemSetData>(), new List<ProblemSetData>(), new List<ProblemSetData>());
         }
 
         public bool UpdatePrereqs(ProblemSetData set, ICollection<ProblemSetData> prereqs)
