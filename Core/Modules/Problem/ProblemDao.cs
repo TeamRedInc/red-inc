@@ -289,19 +289,21 @@ namespace core.Modules.Problem
                 query.AppendLine("Select * from dbo.[ProblemSetProblem] psp ");
                 query.AppendLine("Join dbo.[" + tableName + "] p on p.Id = psp.ProblemId ");
                 query.AppendLine("Where psp.ProblemSetId = @setId ");
-                query.AppendLine("and Exists ( ");
+                query.AppendLine("and ( Exists ( ");
                 query.AppendLine("  Select * from dbo.[Solution] s ");
                 query.AppendLine("  Where s.ProblemId = p.Id ");
                 query.AppendLine("  and s.UserId = @userId ");
                 query.AppendLine("  and s.IsCorrect = @correct ");
-                query.AppendLine(") ");
-                if (!solved)
+                if (solved)
+                    query.AppendLine(") ) ");
+                else
                 {
+                    query.AppendLine(") ");
                     query.AppendLine("or Not Exists ( ");
                     query.AppendLine("  Select * from dbo.[Solution] s ");
                     query.AppendLine("  Where s.ProblemId = p.Id ");
                     query.AppendLine("  and s.UserId = @userId ");
-                    query.AppendLine(")");
+                    query.AppendLine(") )");
                 }
 
                 //Problem Set
