@@ -65,5 +65,13 @@ namespace redinc_reboot.Controllers
             List<ProblemSetData> sets = GlobalStaticVars.StaticCore.SearchSetsInClass((int)Session["ClassId"], term);
             return Json(sets.Select(s => new { Id = s.Id, label = s.Name, Name = s.Name }), JsonRequestBehavior.AllowGet);
         }
+
+        [HttpPost]
+        public ActionResult Delete(int id)
+        {
+            GlobalStaticVars.StaticCore.DeleteSet(id);
+
+            return RedirectToAction("Home", "Class", new { id = Session["ClassId"] });
+        }
     }
 }

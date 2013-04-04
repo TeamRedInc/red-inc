@@ -13,6 +13,18 @@
 }
 else
 {
+    <p>
+        <a href="#confirmModal" role="button" class="btn btn-danger" data-toggle="modal">Delete</a>
+    </p>
+
+    using (Html.BeginConfirmModal("Delete Problem Set?"))
+    {
+        <p>
+            Are you sure you want to delete @Model.Set.Name? 
+            This cannot be undone.
+        </p>
+    }
+    
     using (Html.BeginForm())
     {
         <fieldset>
@@ -80,6 +92,20 @@ else
                     $(this).val('');
                     return false;
                 }
+            });
+
+            $('#confirmModalButton').click(function () {
+                $('#confirmModalButton').prop('disabled', true);
+                $.ajax({
+                    url: '@Url.Action("Delete")',
+                    type: 'POST',
+                    data: {
+                        id: @Model.Set.Id
+                    },
+                    success: function (response) {
+                        window.location.href = '@Url.Action("Home", "Class", new { id = @Model.Set.Class.Id })';
+                    }
+                });
             });
         });
     </script>

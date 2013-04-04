@@ -45,6 +45,17 @@ namespace core.Modules.ProblemSet
         }
 
         /// <summary>
+        /// Deletes the specified problem set.
+        /// </summary>
+        /// <param name="set">The ProblemSetData object with the set's id</param>
+        /// <returns>true if the delete was successful, false otherwise</returns>
+        public bool Delete(ProblemSetData set)
+        {
+            setDao.RemovePrereqs(set, null);
+            return setDao.Delete(set);
+        }
+
+        /// <summary>
         /// Gets all problem sets in the specified class.
         /// </summary>
         /// <param name="cls">The ClassData object with the class' id</param>

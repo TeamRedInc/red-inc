@@ -168,5 +168,10 @@ namespace core
         {
             return problemModel.Delete(new ProblemData(problemId));
         }
+
+        public bool DeleteSet(int setId)
+        {
+            return setModel.Delete(new ProblemSetData(setId));
+        }
     }
 }
