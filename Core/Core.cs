@@ -163,5 +163,10 @@ namespace core
         {
             return classModel.Modify(cls);
         }
+
+        public bool DeleteProblem(int problemId)
+        {
+            return problemModel.Delete(new ProblemData(problemId));
+        }
     }
 }

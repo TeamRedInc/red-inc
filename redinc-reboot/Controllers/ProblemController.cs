@@ -86,5 +86,13 @@ namespace redinc_reboot.Controllers
         {
             return PartialView("EditorTemplates/ProblemSetRow", model);
         }
+
+        [HttpPost]
+        public ActionResult Delete(int id)
+        {
+            GlobalStaticVars.StaticCore.DeleteProblem(id);
+
+            return RedirectToAction("Home", "Class", new { id = Session["ClassId"] });
+        }
     }
 }
