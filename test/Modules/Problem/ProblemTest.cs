@@ -1,4 +1,5 @@
-﻿using core.Modules.Problem;
+﻿using core.Modules.Class;
+using core.Modules.Problem;
 using core.Modules.ProblemSet;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ namespace core.Tests.Modules.Problem
         {
             ProblemData problem = new ProblemData(0);
             problem.Name = "Hello, World!";
+            problem.Class = new ClassData(2);
 
             //This test works as of 10:30am on 2/21
             //Commenting it out to prevent cluttering the database
@@ -33,6 +35,7 @@ namespace core.Tests.Modules.Problem
             problem = problemModel.GetById(1);
 
             Assert.AreEqual("Hello, World!", problem.Name);
+            Assert.AreEqual(2, problem.Class.Id);
 
             List<ProblemData> problems = problemModel.GetAll();
 

@@ -15,16 +15,24 @@ namespace redinc_reboot.Controllers
         public ActionResult Edit(int id = 0)
         {
             ProblemSetViewModel model = new ProblemSetViewModel();
-            if (id == 0)
+            if (id == 0) //Create a new set
             {
                 model.Set = new ProblemSetData();
                 model.Set.Class = new ClassData((int)Session["ClassId"]);
             }
-            else
+            else if (id == -1) //View the unassigned set
+            {
+                ProblemSetData unassigned = new ProblemSetData(-1);
+                unassigned.Name = "Unassigned Problems";
+                unassigned.Class = new ClassData((int)Session["ClassId"]);
+                model.Set = unassigned;
+                model.Problems = GlobalStaticVars.StaticCore.GetProblemsForSet(model.Set);
+            }
+            else //Edit a set normally
             {
                 model.Set = GlobalStaticVars.StaticCore.GetSetById(id);
                 model.Prereqs = GlobalStaticVars.StaticCore.GetSetPrereqs(id);
-                model.Problems = GlobalStaticVars.StaticCore.GetProblemsForSet(id);
+                model.Problems = GlobalStaticVars.StaticCore.GetProblemsForSet(model.Set);
             }
             return View(model);
         }

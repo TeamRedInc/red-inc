@@ -1,5 +1,5 @@
-Id	Name	Description	SolutionCode
-1	Hello, World!	Everyone's first program	
-2	Printing practice	Learn how printing works	
-3	Program args	Print out the program arguments	
-4	Hello, World!	Everyone's first program	
+Id	Name	Description	SolutionCode	ClassId
+1	Hello, World!	Everyone's first program	test	2
+2	Printing practice	Learn how printing works	test	2
+3	Program args	Print out the program arguments	test	2
+4	Hello, World!	Everyone's first program	test	1

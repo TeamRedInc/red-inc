@@ -90,7 +90,14 @@ namespace redinc_reboot.Controllers
             {
                 Session["ClassId"] = id;
                 Session["UserType"] = UserType.Instructor;
-                IEnumerable<ProblemSetData> sets = GlobalStaticVars.StaticCore.GetSetsForClass(id);
+                ICollection<ProblemSetData> sets = GlobalStaticVars.StaticCore.GetSetsForClass(id);
+
+                //Add in the unassigned set that captures any problems not assigned to any sets
+                ProblemSetData unassigned = new ProblemSetData(-1);
+                unassigned.Name = "Unassigned Problems";
+                unassigned.Class = new ClassData(id);
+                sets.Add(unassigned);
+
                 return View("InstructorClassHome", sets);
             }
             else if (GlobalStaticVars.StaticCore.IsStudent(WebSecurity.CurrentUserId, id))
