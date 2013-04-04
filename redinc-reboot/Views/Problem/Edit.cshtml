@@ -3,7 +3,19 @@
     ViewBag.Title = "Edit Problem";
 }
 
-<h2>Edit Problem</h2>
+<h2 style="display:inline-block">Edit Problem</h2>
+<p>
+    <a href="#confirmModal" role="button" class="btn btn-danger" data-toggle="modal">Delete</a>
+</p>
+
+@using (Html.BeginConfirmModal("Delete Problem?"))
+{
+    <p>
+        Are you sure you want to delete @Model.Problem.Name? 
+        Doing so will also delete all recorded student solutions. 
+        This cannot be undone.
+    </p>
+}
 
 @using (Html.BeginForm())
 {
@@ -90,7 +102,8 @@
                         Id: @Model.Problem.Id,
                         Name: $('#Problem_Name').val(),
                         Description: $('#descriptionArea').val(),
-                        SolutionCode: editAreaLoader.getValue('solutionArea')
+                        SolutionCode: editAreaLoader.getValue('solutionArea'),
+                        'Class.Id': @Model.Problem.Class.Id
                     },
                     success: function (data) {
                         var win=window.open('about:blank');
@@ -100,6 +113,20 @@
                             write(data);
                             close();
                         }
+                    }
+                });
+            });
+
+            $('#confirmModalButton').click(function () {
+                $('#confirmModalButton').prop('disabled', true);
+                $.ajax({
+                    url: '@Url.Action("Delete")',
+                    type: 'POST',
+                    data: {
+                        id: @Model.Problem.Id
+                    },
+                    success: function (response) {
+                        window.location.href = '@Url.Action("Home", "Class", new { id = @Model.Problem.Class.Id })';
                     }
                 });
             });

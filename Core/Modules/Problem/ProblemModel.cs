@@ -44,6 +44,16 @@ namespace core.Modules.Problem
 
             return problemDao.Modify(problem);
         }
+        
+        /// <summary>
+        /// Deletes the specified problem.
+        /// </summary>
+        /// <param name="problem">The ProblemData object with the problem's id</param>
+        /// <returns>true if the delete was successful, false otherwise</returns>
+        public bool Delete(ProblemData problem)
+        {
+            return problemDao.Delete(problem);
+        }
 
         public bool UpdateSets(ProblemData problem, ICollection<ProblemSetData> sets)
         {

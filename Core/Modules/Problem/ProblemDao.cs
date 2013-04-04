@@ -96,7 +96,7 @@ namespace core.Modules.Problem
         /// <summary>
         /// Modify a problem's data.
         /// </summary>
-        /// <param name="set">The ProblemData object with the problem's information</param>
+        /// <param name="problem">The ProblemData object with the problem's information</param>
         /// <returns>true if the modify was successful, false otherwise</returns>
         public bool Modify(ProblemData problem)
         {
@@ -118,6 +118,36 @@ namespace core.Modules.Problem
 
                 //Solution Code
                 cmd.Parameters.AddWithValue("@slnCode", problem.SolutionCode);
+
+                //Id
+                cmd.Parameters.AddWithValue("@id", problem.Id);
+
+                try
+                {
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Deletes the specified problem.
+        /// </summary>
+        /// <param name="problem">The ProblemData object with the problem's id</param>
+        /// <returns>true if the delete was successful, false otherwise</returns>
+        public bool Delete(ProblemData problem)
+        {
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                SqlCommand cmd = conn.CreateCommand();
+
+                cmd.CommandText = "Delete from dbo.[" + tableName + "] Where Id = @id;";
 
                 //Id
                 cmd.Parameters.AddWithValue("@id", problem.Id);
