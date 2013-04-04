@@ -158,5 +158,10 @@ namespace core
         {
             return problemModel.GetForSetAndUser(new ProblemSetData(setId), new UserData(userId), false);
         }
+
+        public bool ModifyClass(ClassData cls)
+        {
+            return classModel.Modify(cls);
+        }
     }
 }

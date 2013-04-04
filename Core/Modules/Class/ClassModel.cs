@@ -27,6 +27,16 @@ namespace core.Modules.Class
         }
 
         /// <summary>
+        /// Modify a class's data.
+        /// </summary>
+        /// <param name="cls">The ClassData object with the class's information</param>
+        /// <returns>true if the modify was successful, false otherwise</returns>
+        public bool Modify(ClassData cls)
+        {
+            return classDao.Modify(cls);
+        }
+
+        /// <summary>
         /// Gets all classes the specified user is a student in.
         /// </summary>
         /// <param name="user">The UserData object with the student's id</param>

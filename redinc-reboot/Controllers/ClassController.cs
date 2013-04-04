@@ -2,6 +2,7 @@
 using core.Modules.ProblemSet;
 using core.Modules.User;
 using redinc_reboot.Filters;
+using redinc_reboot.Models;
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
@@ -12,6 +13,17 @@ namespace redinc_reboot.Controllers
     [InitializeSimpleMembership]
     public class ClassController : Controller
     {
+        [HttpPost]
+        public ActionResult Edit(ClassViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                GlobalStaticVars.StaticCore.ModifyClass(model.Class);
+            }
+
+            return View("InstructorClassHome", model);
+        }
+
         public ActionResult JoinClass(int id)
         {
             GlobalStaticVars.StaticCore.AddStudent(WebSecurity.CurrentUserId, id);
@@ -26,15 +38,18 @@ namespace redinc_reboot.Controllers
             {
                 Session["ClassId"] = id;
                 Session["UserType"] = UserType.Instructor;
-                ICollection<ProblemSetData> sets = GlobalStaticVars.StaticCore.GetSetsForClass(id);
+
+                ClassViewModel model = new ClassViewModel();
+                model.Class = cls;
+                model.Sets = GlobalStaticVars.StaticCore.GetSetsForClass(id);
 
                 //Add in the unassigned set that captures any problems not assigned to any sets
                 ProblemSetData unassigned = new ProblemSetData(-1);
                 unassigned.Name = "Unassigned Problems";
                 unassigned.Class = new ClassData(id);
-                sets.Add(unassigned);
+                model.Sets.Add(unassigned);
 
-                return View("InstructorClassHome", sets);
+                return View("InstructorClassHome", model);
             }
             else if (GlobalStaticVars.StaticCore.IsStudent(WebSecurity.CurrentUserId, id))
             {
@@ -45,7 +60,7 @@ namespace redinc_reboot.Controllers
                 ViewBag.UnlockedSets = sets.Item1;
                 ViewBag.LockedSets = sets.Item2;
                 ViewBag.SolvedSets = sets.Item3;
-                return View("StudentClassHome");
+                return View("StudentClassHome", cls);
             }
 
             Session.Clear();

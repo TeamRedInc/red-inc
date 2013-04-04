@@ -181,6 +181,7 @@
     </Compile>
     <Compile Include="GlobalStaticVars.cs" />
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\ClassModels.cs" />
     <Compile Include="Models\HomeClassListModel.cs" />
     <Compile Include="Models\ProblemModels.cs" />
     <Compile Include="Models\ProblemSetModels.cs" />
