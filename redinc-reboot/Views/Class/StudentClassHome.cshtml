@@ -1,8 +1,9 @@
-﻿@{
+﻿@model core.Modules.Class.ClassData
+@{
     ViewBag.Title = "Student Class Home";
 }
 
-<h2>Student Class Home</h2>
+<h2>@Model.Name Student Home</h2>
 
 @Html.ActionLink("New Problem", "Edit", "Problem")
 <br /><br />

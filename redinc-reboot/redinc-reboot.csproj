@@ -171,6 +171,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ClassController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProblemController.cs" />
     <Compile Include="Controllers\ProblemSetController.cs" />
@@ -180,6 +181,7 @@
     </Compile>
     <Compile Include="GlobalStaticVars.cs" />
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\ClassModels.cs" />
     <Compile Include="Models\HomeClassListModel.cs" />
     <Compile Include="Models\ProblemModels.cs" />
     <Compile Include="Models\ProblemSetModels.cs" />
@@ -485,11 +487,11 @@
     <Content Include="Views\Shared\EditorTemplates\ProblemRow.cshtml" />
     <Content Include="Views\Problem\Solve.cshtml" />
     <Content Include="Views\Home\Home.cshtml" />
-    <Content Include="Views\Home\StudentClassHome.cshtml" />
-    <Content Include="Views\Home\InstructorClassHome.cshtml" />
+    <Content Include="Views\Class\StudentClassHome.cshtml" />
+    <Content Include="Views\Class\InstructorClassHome.cshtml" />
     <Content Include="Views\Shared\_NavbarPartial.cshtml" />
     <Content Include="Views\Shared\_BootstrapLayout.cshtml" />
-    <Content Include="Views\Home\NewClassDialog.cshtml" />
+    <Content Include="Views\Class\NewClassDialog.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

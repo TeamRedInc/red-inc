@@ -54,6 +54,41 @@ namespace core.Modules.Class
         }
 
         /// <summary>
+        /// Modify a class's data.
+        /// </summary>
+        /// <param name="cls">The ClassData object with the class's information</param>
+        /// <returns>true if the modify was successful, false otherwise</returns>
+        public bool Modify(ClassData cls)
+        {
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                SqlCommand cmd = conn.CreateCommand();
+
+                cmd.CommandText = "Update dbo.[" + tableName + "]"
+                    + " Set Name = @name"
+                    + " Where Id = @id;";
+
+                //Name
+                cmd.Parameters.AddWithValue("@name", cls.Name);
+
+                //Id
+                cmd.Parameters.AddWithValue("@id", cls.Id);
+
+                try
+                {
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
         /// Gets all classes the specified user is a student in.
         /// </summary>
         /// <param name="user">The UserData object with the student's id</param>

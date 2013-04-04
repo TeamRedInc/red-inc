@@ -1,0 +1,33 @@
+﻿@model redinc_reboot.Models.ClassViewModel
+
+@{
+    ViewBag.Title = "Instructor Class Home";
+}
+
+<h2>@Model.Class.Name Instructor Home</h2>
+
+@Html.ActionLink("New Problem Set", "Edit", "ProblemSet")
+@Html.ActionLink("New Problem", "Edit", "Problem")
+<br /><br />
+
+@using (Html.BeginForm("Edit", "Class"))
+{
+    <fieldset>
+        @Html.HiddenFor(m => m.Class.Id)
+        @Html.LabelFor(m => m.Class.Name)
+        @Html.TextBoxFor(m => m.Class.Name)
+
+        <p>
+            <input type="submit" value="Save Name" />
+        </p>
+    </fieldset>
+}
+
+<table>
+    @foreach (var set in Model.Sets)
+    {
+        <tr><td>
+        @Html.ActionLink(set.Name, "Edit", "ProblemSet", new { id = set.Id }, null)
+        </td></tr>
+    }
+</table>

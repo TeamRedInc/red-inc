@@ -4,9 +4,9 @@
     ViewBag.Title = "Home";
 }
 
-<h2>Class Home</h2>
+<h2>Home</h2>
 <p>
-    @Html.ActionLink("New Class", "NewClass", null, new { id = "newClass" })
+    @Html.ActionLink("New Class", "NewClass", "Class", null, new { id = "newClass" })
 </p>
 
 <div id="modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
@@ -30,7 +30,7 @@
             @Html.DisplayFor(modelItem => classItem.Name)
         </td>
         <td>
-            @Html.ActionLink("View", "ClassHome", new { id=classItem.Id })
+            @Html.ActionLink("View", "Home", "Class", new { id=classItem.Id }, null)
         </td>
     </tr>
 }
@@ -45,7 +45,7 @@
             @Html.DisplayFor(modelItem => classItem.Name)
         </td>
         <td>
-            @Html.ActionLink("View", "ClassHome", new { id=classItem.Id })
+            @Html.ActionLink("View", "Home", "Class", new { id=classItem.Id }, null)
         </td>
     </tr>
 }
@@ -60,7 +60,7 @@
             @Html.DisplayFor(modelItem => classItem.Name)
         </td>
         <td>
-            @Html.ActionLink("Join", "JoinClass", new { id=classItem.Id })
+            @Html.ActionLink("Join", "JoinClass", "Home", new { id=classItem.Id }, null)
         </td>
     </tr>
 }
