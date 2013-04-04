@@ -1,6 +1,6 @@
 ﻿@model core.Modules.Class.ClassData
 
-@using (Html.BeginForm("NewClass", "Home", FormMethod.Post, new { id = "newClassForm" })) {
+@using (Html.BeginForm("NewClass", "Class", FormMethod.Post, new { id = "newClassForm" })) {
     <fieldset>
         <div class="editor-label">
             @Html.LabelFor(model => model.Name)
