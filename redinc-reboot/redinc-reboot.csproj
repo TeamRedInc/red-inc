@@ -489,7 +489,7 @@
     <Content Include="Views\Home\InstructorClassHome.cshtml" />
     <Content Include="Views\Shared\_NavbarPartial.cshtml" />
     <Content Include="Views\Shared\_BootstrapLayout.cshtml" />
-    <Content Include="Views\Home\CreateClass.cshtml" />
+    <Content Include="Views\Home\NewClassDialog.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
