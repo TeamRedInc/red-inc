@@ -114,9 +114,9 @@ namespace core
             return setModel.SearchInClass(new ClassData(classId), search);
         }
 
-        public List<ProblemData> GetProblemsForSet(int setId)
+        public List<ProblemData> GetProblemsForSet(ProblemSetData set)
         {
-            return problemModel.GetForSet(new ProblemSetData(setId));
+            return problemModel.GetForSet(set);
         }
 
         public bool AddStudent(int userId, int classId)

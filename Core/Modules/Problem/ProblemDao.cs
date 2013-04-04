@@ -283,6 +283,49 @@ namespace core.Modules.Problem
         }
 
         /// <summary>
+        /// Gets all problems not assigned to a set.
+        /// </summary>
+        /// <param name="set">The ProblemSetData object with the set's information</param>
+        /// <returns>A non-null, possibly empty list of filled ProblemData objects</returns>
+        public List<ProblemData> GetUnassigned(ProblemSetData set)
+        {
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                List<ProblemData> problems = new List<ProblemData>();
+                SqlCommand cmd = conn.CreateCommand();
+
+                cmd.CommandText = "Select p.* from dbo.[" + tableName + "] p "
+                    + "Left Join dbo.[ProblemSetProblem] psp on psp.ProblemId = p.Id "
+                    + "Where psp.ProblemSetId is null and p.ClassId = @clsId;";
+
+                //Class
+                cmd.Parameters.AddWithValue("@clsId", set.Class.Id);
+
+                SqlDataReader reader = null;
+                try
+                {
+                    conn.Open();
+                    reader = cmd.ExecuteReader();
+
+                    if (reader.HasRows)
+                        while (reader.Read())
+                            problems.Add(createFromReader(reader));
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+                finally
+                {
+                    if (reader != null)
+                        reader.Close();
+                }
+
+                return problems;
+            }
+        }
+
+        /// <summary>
         /// Gets all problems in the specified problem set that 
         /// the specified user has either solved or not solved.
         /// </summary>

@@ -6,31 +6,39 @@
 
 <h2>Edit Problem Set</h2>
 
-@using (Html.BeginForm())
+@if (Model.Set.Id == -1)
 {
-    <fieldset>
-        @Html.HiddenFor(m => m.Set.Id)
-        @Html.HiddenFor(m => m.Set.Class.Id)
-        @Html.LabelFor(m => m.Set.Name)
-        @Html.TextBoxFor(m => m.Set.Name)
+    @Html.LabelFor(m => m.Set.Name)
+    @Html.DisplayTextFor(m => m.Set.Name);
+}
+else
+{
+    using (Html.BeginForm())
+    {
+        <fieldset>
+            @Html.HiddenFor(m => m.Set.Id)
+            @Html.HiddenFor(m => m.Set.Class.Id)
+            @Html.LabelFor(m => m.Set.Name)
+            @Html.TextBoxFor(m => m.Set.Name)
 
-        <table id="prereqTable">
-            <tr>
-                <th>Prerequisite Set</th>
-                <th>Number of Problems Required</th>
-                <th>Delete</th>
-            </tr>
-            @foreach (var prereq in Model.Prereqs)
-            {
-                Html.RenderPartial("EditorTemplates/PrereqRow", prereq);
-            }
-        </table>
-        <label for="addPrereq" style="display: inline-block">Add:</label>
-        <input type="text" id="addPrereq" />
+            <table id="prereqTable">
+                <tr>
+                    <th>Prerequisite Set</th>
+                    <th>Number of Problems Required</th>
+                    <th>Delete</th>
+                </tr>
+                @foreach (var prereq in Model.Prereqs)
+                {
+                    Html.RenderPartial("EditorTemplates/PrereqRow", prereq);
+                }
+            </table>
+            <label for="addPrereq" style="display: inline-block">Add:</label>
+            <input type="text" id="addPrereq" />
         
-        <br />
-        <input type="submit" value="Save" />
-    </fieldset>
+            <br />
+            <input type="submit" value="Save" />
+        </fieldset>
+    }
 }
 
 <hr />

@@ -68,7 +68,10 @@ namespace core.Modules.Problem
         /// <returns>A non-null, possibly empty list of filled ProblemData objects</returns>
         public List<ProblemData> GetForSet(ProblemSetData set)
         {
-            return problemDao.GetForSet(set);
+            if (set.Id == -1)
+                return problemDao.GetUnassigned(set);
+            else
+                return problemDao.GetForSet(set);
         }
 
         /// <summary>
