@@ -104,6 +104,11 @@ namespace core
             return classModel.GetInstructorClasses(new UserData(userId));
         }
 
+        public bool AddClass(ClassData newClass)
+        {
+            return classModel.Add(newClass);
+        }
+
         public bool UpdateProblemSets(int problemId, ICollection<ProblemSetData> sets)
         {
             return problemModel.UpdateSets(new ProblemData(problemId), sets);
