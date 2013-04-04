@@ -116,6 +116,12 @@ namespace redinc_reboot.Controllers
             return RedirectToAction("Home");
         }
 
+        public ActionResult NewClass()
+        {
+            return PartialView("NewClassDialog", new ClassData());
+        }
+
+        [HttpPost]
         public ActionResult NewClass(ClassData newClass)
         {
             newClass.Instructor = new UserData(WebSecurity.CurrentUserId);

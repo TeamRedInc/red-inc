@@ -6,8 +6,21 @@
 
 <h2>Class Home</h2>
 <p>
-    @Html.ActionLink("Create New", "NewClass")
+    @Html.ActionLink("New Class", "NewClass", null, new { id = "newClass" })
 </p>
+
+<div id="modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="modalTitle">Create New Class</h3>
+    </div>
+    <div class="modal-body"></div>
+    <div class="modal-footer">
+        <input type="button" class="btn" data-dismiss="modal" aria-hidden="true" value="Close"/>
+        <input id="createNewClass" type="submit" class="btn btn-primary" value="Create" />
+    </div>
+</div>
+
 <h3>Instructor Classes</h3>
 <table>
 @foreach(var classItem in Model.InstructorClassList)
@@ -52,3 +65,19 @@
     </tr>
 }
 </table>
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(function () {
+            $('#newClass').click(function (e) {
+                e.preventDefault();
+                $('#modal').modal({ remote: this.href });
+            });
+
+            $('#createNewClass').click(function () {
+                $('#newClassForm').submit();
+            });
+        });
+    </script>
+}
