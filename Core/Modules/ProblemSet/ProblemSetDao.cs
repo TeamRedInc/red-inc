@@ -94,6 +94,36 @@ namespace core.Modules.ProblemSet
         }
 
         /// <summary>
+        /// Deletes the specified problem set.
+        /// </summary>
+        /// <param name="set">The ProblemSetData object with the set's id</param>
+        /// <returns>true if the delete was successful, false otherwise</returns>
+        public bool Delete(ProblemSetData set)
+        {
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                SqlCommand cmd = conn.CreateCommand();
+
+                cmd.CommandText = "Delete from dbo.[" + tableName + "] Where Id = @id;";
+
+                //Id
+                cmd.Parameters.AddWithValue("@id", set.Id);
+
+                try
+                {
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
         /// Gets all problem sets in the specified class.
         /// </summary>
         /// <param name="cls">The ClassData object with the class' id</param>
@@ -420,37 +450,39 @@ namespace core.Modules.ProblemSet
         }
 
         /// <summary>
-        /// Removes the specified prerequisites.
+        /// Removes the specified prerequisites. If the list of prereqs to remove is null or empty,
+        /// this method will instead remove all prerequisites for the parent set.
         /// </summary>
         /// <param name="set">The ProblemSetData object with the parent set's id</param>
         /// <param name="prereqs">A collection of ProblemSetData objects with the prerequisite sets' ids</param>
         /// <returns>true if the remove was successful, false otherwise</returns>
         public bool RemovePrereqs(ProblemSetData set, IEnumerable<ProblemSetData> prereqs)
         {
-            if (prereqs == null || !prereqs.Any())
-                return true; //Nothing to remove
-
             using (SqlConnection conn = new SqlConnection(connStr))
             {
                 SqlCommand cmd = conn.CreateCommand();
 
                 StringBuilder query = new StringBuilder();
-                query.Append("Delete from dbo.[Prereq] Where ProblemSetId = @setId and RequiredSetId in (");
+                query.Append("Delete from dbo.[Prereq] Where ProblemSetId = @setId");
 
-                int i = 0;
-                foreach (ProblemSetData prereq in prereqs)
+                if (prereqs != null && prereqs.Any())
                 {
-                    if (i != 0)
-                        query.Append(",");
+                    query.Append(" and RequiredSetId in (");
+                    int i = 0;
+                    foreach (ProblemSetData prereq in prereqs)
+                    {
+                        if (i != 0)
+                            query.Append(",");
 
-                    query.Append("@prereqId" + i);
+                        query.Append("@prereqId" + i);
 
-                    //Prereq Set
-                    cmd.Parameters.AddWithValue("@prereqId" + i, prereq.Id);
+                        //Prereq Set
+                        cmd.Parameters.AddWithValue("@prereqId" + i, prereq.Id);
 
-                    ++i;
+                        ++i;
+                    }
+                    query.Append(")");
                 }
-                query.Append(")");
 
                 //Parent Set
                 cmd.Parameters.AddWithValue("@setId", set.Id);
