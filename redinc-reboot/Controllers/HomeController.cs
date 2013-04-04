@@ -115,5 +115,12 @@ namespace redinc_reboot.Controllers
             Session.Clear();
             return RedirectToAction("Home");
         }
+
+        public ActionResult NewClass(ClassData newClass)
+        {
+            newClass.Instructor = new UserData(WebSecurity.CurrentUserId);
+            GlobalStaticVars.StaticCore.AddClass(newClass);
+            return RedirectToAction("Home");
+        }
     }
 }

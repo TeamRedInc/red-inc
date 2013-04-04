@@ -7,7 +7,7 @@ using core.Modules.Class;
 
 namespace redinc_reboot.Models
 {
-    public class HomeClassListModel : Controller
+    public class HomeClassListModel
     {
         public IEnumerable<ClassData> StudentClassList { get; set; }
         public IEnumerable<ClassData> InstructorClassList { get; set; }
