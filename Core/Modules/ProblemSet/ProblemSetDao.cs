@@ -124,6 +124,36 @@ namespace core.Modules.ProblemSet
         }
 
         /// <summary>
+        /// Deletes all problem sets in the specified class.
+        /// </summary>
+        /// <param name="cls">The ClassData object with the class's id</param>
+        /// <returns>true if the delete was successful, false otherwise</returns>
+        public bool DeleteAllForClass(ClassData cls)
+        {
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                SqlCommand cmd = conn.CreateCommand();
+
+                cmd.CommandText = "Delete from dbo.[" + tableName + "] Where ClassId = @clsId;";
+
+                //Class
+                cmd.Parameters.AddWithValue("@clsId", cls.Id);
+
+                try
+                {
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
         /// Gets all problem sets in the specified class.
         /// </summary>
         /// <param name="cls">The ClassData object with the class' id</param>
@@ -450,7 +480,7 @@ namespace core.Modules.ProblemSet
         }
 
         /// <summary>
-        /// Removes the specified prerequisites. If the list of prereqs to remove is null or empty,
+        /// Removes the specified prerequisites. If the list of prereqs to remove is null,
         /// this method will instead remove all prerequisites for the parent set.
         /// </summary>
         /// <param name="set">The ProblemSetData object with the parent set's id</param>
@@ -458,6 +488,9 @@ namespace core.Modules.ProblemSet
         /// <returns>true if the remove was successful, false otherwise</returns>
         public bool RemovePrereqs(ProblemSetData set, IEnumerable<ProblemSetData> prereqs)
         {
+            if (prereqs != null && !prereqs.Any())
+                return true; //Nothing to remove
+
             using (SqlConnection conn = new SqlConnection(connStr))
             {
                 SqlCommand cmd = conn.CreateCommand();
@@ -465,7 +498,7 @@ namespace core.Modules.ProblemSet
                 StringBuilder query = new StringBuilder();
                 query.Append("Delete from dbo.[Prereq] Where ProblemSetId = @setId");
 
-                if (prereqs != null && prereqs.Any())
+                if (prereqs != null) //We've already checked to see if the list has data above, so if it's not null, it must have data
                 {
                     query.Append(" and RequiredSetId in (");
                     int i = 0;
@@ -488,6 +521,38 @@ namespace core.Modules.ProblemSet
                 cmd.Parameters.AddWithValue("@setId", set.Id);
 
                 cmd.CommandText = query.ToString();
+
+                try
+                {
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Removes all prerequisites for sets in the specified class.
+        /// </summary>
+        /// <param name="cls">The ClassData object with the class's id</param>
+        /// <returns>true if the remove was successful, false otherwise</returns>
+        public bool RemovePrereqsForClass(ClassData cls)
+        {
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                SqlCommand cmd = conn.CreateCommand();
+
+                cmd.CommandText = "Delete from dbo.[Prereq] p "
+                    + "Join dbo.[" + tableName + "] ps on ps.Id = p.ProblemSetId "
+                    + "Where ps.ClassId = @clsId;";
+
+                //Class
+                cmd.Parameters.AddWithValue("@clsId", cls.Id);
 
                 try
                 {

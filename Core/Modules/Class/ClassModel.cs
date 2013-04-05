@@ -1,4 +1,5 @@
-﻿using core.Modules.User;
+﻿using core.Modules.ProblemSet;
+using core.Modules.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,11 @@ namespace core.Modules.Class
         private ClassDao classDao
         {
             get { return (ClassDao)dao; }
+        }
+
+        private ProblemSetModel setModel
+        {
+            get { return ModelFactory.ProblemSetModel; }
         }
 
         /// <summary>
@@ -34,6 +40,18 @@ namespace core.Modules.Class
         public bool Modify(ClassData cls)
         {
             return classDao.Modify(cls);
+        }
+
+        /// <summary>
+        /// Deletes the specified class.
+        /// </summary>
+        /// <param name="cls">The ClassData object with the class's id</param>
+        /// <returns>true if the delete was successful, false otherwise</returns>
+        public bool Delete(ClassData cls)
+        {
+            //Must manually delete problem sets because SQL Server will not allow multiple cascading delete paths
+            setModel.DeleteAllForClass(cls);
+            return classDao.Delete(cls);
         }
 
         /// <summary>

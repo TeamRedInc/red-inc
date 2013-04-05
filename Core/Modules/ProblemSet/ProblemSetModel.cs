@@ -51,8 +51,21 @@ namespace core.Modules.ProblemSet
         /// <returns>true if the delete was successful, false otherwise</returns>
         public bool Delete(ProblemSetData set)
         {
+            //Must manually delete prerequistes because SQL Server will not allow multiple cascading delete paths
             setDao.RemovePrereqs(set, null);
             return setDao.Delete(set);
+        }
+
+        /// <summary>
+        /// Deletes all problem sets in the specified class.
+        /// </summary>
+        /// <param name="cls">The ClassData object with the class's id</param>
+        /// <returns>true if the delete was successful, false otherwise</returns>
+        public bool DeleteAllForClass(ClassData cls)
+        {
+            //Must manually delete prerequistes because SQL Server will not allow multiple cascading delete paths
+            setDao.RemovePrereqsForClass(cls);
+            return setDao.DeleteAllForClass(cls);
         }
 
         /// <summary>

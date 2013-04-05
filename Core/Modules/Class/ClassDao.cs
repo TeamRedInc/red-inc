@@ -89,6 +89,36 @@ namespace core.Modules.Class
         }
 
         /// <summary>
+        /// Deletes the specified class.
+        /// </summary>
+        /// <param name="cls">The ClassData object with the class's id</param>
+        /// <returns>true if the delete was successful, false otherwise</returns>
+        public bool Delete(ClassData cls)
+        {
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                SqlCommand cmd = conn.CreateCommand();
+
+                cmd.CommandText = "Delete from dbo.[" + tableName + "] Where Id = @id;";
+
+                //Id
+                cmd.Parameters.AddWithValue("@id", cls.Id);
+
+                try
+                {
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
         /// Gets all classes the specified user is a student in.
         /// </summary>
         /// <param name="user">The UserData object with the student's id</param>

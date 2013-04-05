@@ -5,6 +5,18 @@
 }
 
 <h2>@Model.Class.Name Instructor Home</h2>
+<p>
+    <a href="#confirmModal" role="button" class="btn btn-danger" data-toggle="modal">Delete</a>
+</p>
+
+@using (Html.BeginConfirmModal("Delete Class?"))
+{
+    <p>
+        Are you sure you want to delete @Model.Class.Name? 
+        Doing so will also delete all problem sets, problems, and their associated student solutions.
+        This cannot be undone.
+    </p>
+}
 
 @Html.ActionLink("New Problem Set", "Edit", "ProblemSet")
 @Html.ActionLink("New Problem", "Edit", "Problem")
@@ -31,3 +43,24 @@
         </td></tr>
     }
 </table>
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(function () {
+            $('#confirmModalButton').click(function () {
+                $('#confirmModalButton').prop('disabled', true);
+                $.ajax({
+                    url: '@Url.Action("Delete")',
+                    type: 'POST',
+                    data: {
+                        id: @Model.Class.Id
+                    },
+                    success: function (response) {
+                        window.location.href = '@Url.Action("Home", "Home")';
+                    }
+                });
+            });
+        });
+    </script>
+}
