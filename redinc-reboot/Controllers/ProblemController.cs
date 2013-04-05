@@ -2,6 +2,7 @@
 using core.Modules.Class;
 using core.Modules.Problem;
 using core.Modules.ProblemSet;
+using core.Modules.User;
 using redinc_reboot.Filters;
 using redinc_reboot.Models;
 using System;
@@ -29,6 +30,7 @@ namespace redinc_reboot.Controllers
                 model.Problem = GlobalStaticVars.StaticCore.GetProblemById(id);
                 model.Sets = GlobalStaticVars.StaticCore.GetSetsForProblem(id);
             }
+            ViewBag.IsInstructor = ((UserType)Session["UserType"]) == UserType.Instructor;
             return View(model);
         }
 
