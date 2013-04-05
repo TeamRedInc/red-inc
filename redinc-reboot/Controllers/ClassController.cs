@@ -24,10 +24,10 @@ namespace redinc_reboot.Controllers
             return View("InstructorClassHome", model);
         }
 
-        public ActionResult JoinClass(int id)
+        public ActionResult Join(int id)
         {
             GlobalStaticVars.StaticCore.AddStudent(WebSecurity.CurrentUserId, id);
-            return RedirectToAction("Home");
+            return RedirectToAction("Home", new { id = id });
         }
 
         public ActionResult Home(int id)
