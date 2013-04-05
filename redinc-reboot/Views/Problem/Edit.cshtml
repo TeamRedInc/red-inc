@@ -31,18 +31,21 @@
         @Html.LabelFor(m => m.Problem.SolutionCode, "Solution Code")
         @Html.TextAreaFor(m => m.Problem.SolutionCode, new { id = "solutionArea" })
 
-        <table id="setTable">
-            <tr>
-                <th>Problem Set</th>
-                <th>Delete</th>
-            </tr>
-            @foreach (var prereq in Model.Sets)
-            {
-                Html.RenderPartial("EditorTemplates/ProblemSetRow", prereq);
-            }
-        </table>
-        <label for="addSet" style="display: inline-block">Add:</label>
-        <input type="text" id="addSet" />
+        @if (ViewBag.IsInstructor)
+        {
+            <table id="setTable">
+                <tr>
+                    <th>Problem Set</th>
+                    <th>Delete</th>
+                </tr>
+                @foreach (var prereq in Model.Sets)
+                {
+                    Html.RenderPartial("EditorTemplates/ProblemSetRow", prereq);
+                }
+            </table>
+            <label for="addSet" style="display: inline-block">Add:</label>
+            <input type="text" id="addSet" />
+        }
         
         <br />
         <input type="submit" value="Save" />
