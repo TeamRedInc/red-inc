@@ -79,5 +79,13 @@ namespace redinc_reboot.Controllers
             GlobalStaticVars.StaticCore.AddClass(newClass);
             return RedirectToAction("Home", "Home");
         }
+
+        [HttpPost]
+        public ActionResult Delete(int id)
+        {
+            GlobalStaticVars.StaticCore.DeleteClass(id);
+
+            return RedirectToAction("Home", "Home");
+        }
     }
 }

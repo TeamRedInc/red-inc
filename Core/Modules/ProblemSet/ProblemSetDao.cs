@@ -124,6 +124,36 @@ namespace core.Modules.ProblemSet
         }
 
         /// <summary>
+        /// Deletes all problem sets in the specified class.
+        /// </summary>
+        /// <param name="cls">The ClassData object with the class's id</param>
+        /// <returns>true if the delete was successful, false otherwise</returns>
+        public bool DeleteAllForClass(ClassData cls)
+        {
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                SqlCommand cmd = conn.CreateCommand();
+
+                cmd.CommandText = "Delete from dbo.[" + tableName + "] Where ClassId = @clsId;";
+
+                //Class
+                cmd.Parameters.AddWithValue("@clsId", cls.Id);
+
+                try
+                {
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
         /// Gets all problem sets in the specified class.
         /// </summary>
         /// <param name="cls">The ClassData object with the class' id</param>
@@ -488,6 +518,38 @@ namespace core.Modules.ProblemSet
                 cmd.Parameters.AddWithValue("@setId", set.Id);
 
                 cmd.CommandText = query.ToString();
+
+                try
+                {
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Removes all prerequisites for sets in the specified class.
+        /// </summary>
+        /// <param name="cls">The ClassData object with the class's id</param>
+        /// <returns>true if the remove was successful, false otherwise</returns>
+        public bool RemovePrereqsForClass(ClassData cls)
+        {
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                SqlCommand cmd = conn.CreateCommand();
+
+                cmd.CommandText = "Delete from dbo.[Prereq] p "
+                    + "Join dbo.[" + tableName + "] ps on ps.Id = p.ProblemSetId "
+                    + "Where ps.ClassId = @clsId;";
+
+                //Class
+                cmd.Parameters.AddWithValue("@clsId", cls.Id);
 
                 try
                 {
