@@ -480,7 +480,7 @@ namespace core.Modules.ProblemSet
         }
 
         /// <summary>
-        /// Removes the specified prerequisites. If the list of prereqs to remove is null or empty,
+        /// Removes the specified prerequisites. If the list of prereqs to remove is null,
         /// this method will instead remove all prerequisites for the parent set.
         /// </summary>
         /// <param name="set">The ProblemSetData object with the parent set's id</param>
@@ -488,6 +488,9 @@ namespace core.Modules.ProblemSet
         /// <returns>true if the remove was successful, false otherwise</returns>
         public bool RemovePrereqs(ProblemSetData set, IEnumerable<ProblemSetData> prereqs)
         {
+            if (prereqs != null && !prereqs.Any())
+                return true; //Nothing to remove
+
             using (SqlConnection conn = new SqlConnection(connStr))
             {
                 SqlCommand cmd = conn.CreateCommand();
@@ -495,7 +498,7 @@ namespace core.Modules.ProblemSet
                 StringBuilder query = new StringBuilder();
                 query.Append("Delete from dbo.[Prereq] Where ProblemSetId = @setId");
 
-                if (prereqs != null && prereqs.Any())
+                if (prereqs != null) //We've already checked to see if the list has data above, so if it's not null, it must have data
                 {
                     query.Append(" and RequiredSetId in (");
                     int i = 0;
