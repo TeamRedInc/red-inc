@@ -37,7 +37,7 @@ namespace redinc_reboot.Controllers
         {
             if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
             {
-                return RedirectToAction("Home", "Home");
+                return RedirectToLocal(returnUrl);
             }
 
             // If we got this far, something failed, redisplay form
@@ -54,7 +54,7 @@ namespace redinc_reboot.Controllers
         {
             WebSecurity.Logout();
 
-            return RedirectToAction("Home", "Home");
+            return RedirectToAction("Index", "Home");
         }
 
         //
@@ -82,7 +82,7 @@ namespace redinc_reboot.Controllers
                     WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
                     GlobalStaticVars.StaticCore.AddUser(WebSecurity.GetUserId(model.UserName), model.UserName);
                     WebSecurity.Login(model.UserName, model.Password);
-                    return RedirectToAction("Home", "Home");
+                    return RedirectToAction("Index", "Home");
                 }
                 catch (MembershipCreateUserException e)
                 {
