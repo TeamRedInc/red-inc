@@ -6040,3 +6040,14 @@ a.badge:hover {
 .affix {
   position: fixed;
 }
+
+
+
+
+
+/************* Below are our added classes for this project **************/
+
+.btn-text-left {
+    text-align:left;
+    padding-left:10px;
+}
