@@ -43,7 +43,7 @@ namespace core
         public string ExecutePythonCode(string code)
         {
             var py = new Modules.PyInterpret.PyInterpretUtility();
-            return py.FutureInterpret(code);
+            return py.Execute(code);
         }
 
         public ProblemSetData GetSetById(int setId)
@@ -172,6 +172,11 @@ namespace core
         public bool DeleteSet(int setId)
         {
             return setModel.Delete(new ProblemSetData(setId));
+        }
+
+        public bool DeleteClass(int classId)
+        {
+            return classModel.Delete(new ClassData(classId));
         }
     }
 }

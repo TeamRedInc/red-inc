@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using IronPython.Hosting;
 using Microsoft.Scripting;
@@ -17,6 +18,9 @@ namespace core.Modules.PyInterpret
         private MemoryStream _stdout;
         private Encoding _encoding = Encoding.UTF8;
 
+        private const int MAX_RECURSION_DEPTH = 100;
+        private const int MAX_OP_DURATION_IN_MS = 5000;
+
         public PyInterpretUtility()
         {
             _engine = Python.CreateEngine();
@@ -25,43 +29,103 @@ namespace core.Modules.PyInterpret
             _scope = null;
         }
 
-        public string Interpret(string code)
+        public string Test(string studentCode, string professorCode)
         {
-            _scope = _engine.CreateScope();
-            string output = "";
-            //_scope.SetVariable("output",output);
-            
-            _engine.Execute(code, _scope);
-            //return _scope.GetVariable("output");
-            StreamReader reader = new StreamReader(_stdout);
-            output = _encoding.GetString(_stdout.ToArray());
-            return output;
+            var studentCodeArray = studentCode.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+            for (var i = 0; i < studentCodeArray.Length; i++)
+            {
+                studentCodeArray[i] = studentCodeArray[i].Replace("\t", Indent(4));
+                //studentCodeArray[i] = Indent(1) + studentCodeArray[i];
+            }
+            var profCodeArray = professorCode.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+            for (var i = 0; i < profCodeArray.Length; i++)
+            {
+                profCodeArray[i] = profCodeArray[i].Replace("\t", Indent(4));
+                profCodeArray[i] = Indent(1) + profCodeArray[i];
+            }
+            var code = String.Join("\r\n", studentCodeArray) + @"
+
+def professorFunction():
+" + String.Join("\r\n", profCodeArray) + @"
+
+professorFunction()";
+
+            return Execute(code);
         }
 
-        public string FutureInterpret(string code)
+        public string Execute(string code)
         {
             _scope = _engine.CreateScope();
             string output = "";
-            //_scope.SetVariable("output",output);
 
             var paths = _engine.GetSearchPaths();
-            string dir = System.IO.Path.GetFullPath("../../../Core/Lib");
-            // Use Server.MapPath("../../../Core/Lib") for Azure compatibility
+            //string dir = System.IO.Path.GetFullPath("../../../Core/Lib");
+            string dir = Path.GetFullPath(Path.Combine(System.Web.HttpContext.Current.Server.MapPath("~"), "..\\Core\\Lib"));
+            
             paths.Add(dir);
             _engine.SetSearchPaths(paths);
 
+            code = @"from __future__ import division
+from __future__ import print_function
+from __future__ import unicode_literals
+
+import sys
+
+sys.setrecursionlimit("+MAX_RECURSION_DEPTH+@")
+
+" + code;
+
             try
             {
-                _engine.Execute(code, _scope);
-                //return _scope.GetVariable("output");
-                StreamReader reader = new StreamReader(_stdout);
-                output = _encoding.GetString(_stdout.ToArray());
+                output = CallWithTimeout(Run, code, _scope, MAX_OP_DURATION_IN_MS);
                 return output;
             }
             catch (Exception e)
             {
-                return "Shit's jank";
+                return e.Message;
             }
+        }
+
+        private string Run(string code, ScriptScope scope)
+        {
+            try
+            {
+                _engine.Execute(code, scope);
+                //return _scope.GetVariable("output");
+                StreamReader reader = new StreamReader(_stdout);
+                var output = _encoding.GetString(_stdout.ToArray());
+                return output;
+            }
+            catch (Exception e)
+            {
+                return e.Message;
+            }
+        }
+
+        private static string CallWithTimeout(Func<string, ScriptScope, string> action, string code, ScriptScope scope, int timeoutMilliseconds)
+        {
+            Thread threadToKill = null;
+            Func<string, ScriptScope, string> wrappedAction = (incode, inscope) =>
+            {
+                threadToKill = Thread.CurrentThread;
+                return action(incode, inscope);
+            };
+
+            IAsyncResult result = wrappedAction.BeginInvoke(code, scope, null, null);
+            if (result.AsyncWaitHandle.WaitOne(timeoutMilliseconds))
+            {
+                return wrappedAction.EndInvoke(result);
+            }
+            else
+            {
+                threadToKill.Abort();
+                throw new TimeoutException();
+            }
+        }
+
+        private string Indent(int count)
+        {
+            return "".PadLeft(count*4);
         }
     }
 }

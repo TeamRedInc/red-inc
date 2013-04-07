@@ -67,6 +67,8 @@ namespace redinc_reboot.Controllers
 
         public ActionResult Home()
         {
+            Session.Clear();
+
             var viewModel = new HomeClassListModel();
             viewModel.StudentClassList = GlobalStaticVars.StaticCore.GetStudentClasses(WebSecurity.CurrentUserId);
             viewModel.InstructorClassList = GlobalStaticVars.StaticCore.GetInstructorClasses(WebSecurity.CurrentUserId);

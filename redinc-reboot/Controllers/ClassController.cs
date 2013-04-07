@@ -24,10 +24,10 @@ namespace redinc_reboot.Controllers
             return View("InstructorClassHome", model);
         }
 
-        public ActionResult JoinClass(int id)
+        public ActionResult Join(int id)
         {
             GlobalStaticVars.StaticCore.AddStudent(WebSecurity.CurrentUserId, id);
-            return RedirectToAction("Home");
+            return RedirectToAction("Home", new { id = id });
         }
 
         public ActionResult Home(int id)
@@ -77,6 +77,14 @@ namespace redinc_reboot.Controllers
         {
             newClass.Instructor = new UserData(WebSecurity.CurrentUserId);
             GlobalStaticVars.StaticCore.AddClass(newClass);
+            return RedirectToAction("Home", "Home");
+        }
+
+        [HttpPost]
+        public ActionResult Delete(int id)
+        {
+            GlobalStaticVars.StaticCore.DeleteClass(id);
+
             return RedirectToAction("Home", "Home");
         }
     }
