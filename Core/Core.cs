@@ -43,7 +43,7 @@ namespace core
         public string ExecutePythonCode(string code)
         {
             var py = new Modules.PyInterpret.PyInterpretUtility();
-            return py.FutureInterpret(code);
+            return py.Execute(code);
         }
 
         public ProblemSetData GetSetById(int setId)

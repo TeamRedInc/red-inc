@@ -7,14 +7,27 @@ namespace core.Tests.Modules.PyInterpret
     [TestClass]
     public class PyInterpretUtilityTest
     {
-     
+        [TestMethod]
+        public void ProfessorCodeTesT()
+        {
+            PyInterpretUtility util = new PyInterpretUtility();
+            var studentCode = @"def myFunc():
+	return 1";
+            var profCode = @"output = myFunc()
+if(output == 1):
+	print(""Correct!"")
+else:
+	print(""You fail!"")";
+            var output = util.Test(studentCode, profCode);
+            Assert.AreEqual(output, "Correct!\r\n");
+        }
+
         [TestMethod]
         public void FutureTest()
         {
             PyInterpretUtility util = new PyInterpretUtility();
-            var output = util.FutureInterpret(@"from __future__ import division
-x = 3/2
-print x");
+            var output = util.Execute(@"x = 3/2
+print(x)");
             Assert.AreEqual(output, "1.5\r\n");
         }
 
@@ -22,7 +35,7 @@ print x");
         public void PrintTest()
         {
             PyInterpretUtility util = new PyInterpretUtility();
-            var output = util.Interpret("print \"TESTVALUE\"");
+            var output = util.Execute("print(\"TESTVALUE\")");
             Assert.AreEqual(output, "TESTVALUE\r\n");
         }
 
@@ -30,7 +43,7 @@ print x");
         public void ReturnTest()
         {
             PyInterpretUtility util = new PyInterpretUtility();
-            var output = util.Interpret(@"def myFunction(number):
+            var output = util.Execute(@"def myFunction(number):
     print(number)
 
 def professorFunction(num):
@@ -45,7 +58,7 @@ professorFunction(3)    "
         public void EncapsulatedTest()
         {
             PyInterpretUtility util = new PyInterpretUtility();
-            var output = util.Interpret(@"def encap():
+            var output = util.Execute(@"def encap():
     def myFunction(number):
         print(number)
 
