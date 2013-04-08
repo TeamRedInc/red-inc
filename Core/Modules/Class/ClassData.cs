@@ -11,6 +11,7 @@ namespace core.Modules.Class
     {
         private string name;
         private UserData instructor;
+        private string requiredDomain;
 
         public ClassData() : base(0) { }
 
@@ -31,6 +32,12 @@ namespace core.Modules.Class
         {
             get { return instructor; }
             set { instructor = value; }
+        }
+
+        public string RequiredDomain
+        {
+            get { return requiredDomain; }
+            set { requiredDomain = value; }
         }
 
         public override string ToString()

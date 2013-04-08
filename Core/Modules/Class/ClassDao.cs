@@ -27,15 +27,23 @@ namespace core.Modules.Class
                 //Name
                 if (!String.IsNullOrWhiteSpace(cls.Name))
                 {
-                    cmdStr += "Name";
-                    paramList += "@name";
+                    cmdStr += "Name, ";
+                    paramList += "@name, ";
                     cmd.Parameters.AddWithValue("@name", cls.Name);
                 }
 
                 //Instructor
-                cmdStr += ", InstructorId";
-                paramList += ", @instrId";
+                cmdStr += "InstructorId";
+                paramList += "@instrId";
                 cmd.Parameters.AddWithValue("@instrId", cls.Instructor.Id);
+
+                //Required Domain
+                if (!String.IsNullOrWhiteSpace(cls.Name))
+                {
+                    cmdStr += ", RequiredDomain";
+                    paramList += ", @domain";
+                    cmd.Parameters.AddWithValue("@domain", cls.RequiredDomain);
+                }
 
                 cmd.CommandText = cmdStr + paramList + ");";
 
@@ -190,6 +198,7 @@ namespace core.Modules.Class
             ClassData cls = new ClassData((int)reader["Id"]);
             cls.Name = reader["Name"] as string;
             cls.Instructor = new UserData((int)reader["InstructorId"]);
+            cls.RequiredDomain = reader["RequiredDomain"] as string;
             return cls;
         }
     }
