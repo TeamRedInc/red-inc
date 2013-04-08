@@ -5,6 +5,12 @@
 }
 
 <h2>Home</h2>
+@if (ViewBag.Error != null)
+{
+    <p>
+        @ViewBag.Error
+    </p>
+}
 <p>
     @Html.ActionLink("New Class", "NewClass", "Class", null, new { id = "newClass" })
 </p>
