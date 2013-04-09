@@ -56,32 +56,33 @@ namespace redinc_reboot.Controllers
         {
             List<ProblemData> problems = GlobalStaticVars.StaticCore.GetUnsolvedProblemsForSet(id, WebSecurity.CurrentUserId);
             ProblemData prob = problems[new Random().Next(problems.Count)];
-            ViewBag.Description = BBCode.ToHtml(prob.Description);
-            ViewBag.SubmitAction = "Solve";
-            return View();
+            prob.Description = BBCode.ToHtml(prob.Description);
+            prob.SolutionCode = null; //Do not send solution code to client so it can't be seen and used to cheat the problem
+
+            ViewBag.Record = true;
+
+            return View(prob);
         }
 
         [HttpPost]
-        public JsonResult Solve(string code)
+        public JsonResult Solve(string code, int id, bool record)
         {
-            string output = GlobalStaticVars.StaticCore.ExecutePythonCode(code);
-            return Json(new { success = true, output = output });
+            string output = GlobalStaticVars.StaticCore.SolveProblem(WebSecurity.CurrentUserId, code, id, record);
+            if (output == null)
+                return Json(new { success = true });
+            else
+                return Json(new { success = false, output = output });
         }
         
         [HttpPost]
         public ActionResult TestPage(ProblemData prob)
         {
-            ViewBag.Description = BBCode.ToHtml(prob.Description);
-            ViewBag.SubmitAction = "Test";
-            return View("Solve");
-        }
+            prob.Description = BBCode.ToHtml(prob.Description);
+            prob.SolutionCode = null; //Do not send solution code to client so it can't be seen and used to cheat the problem
 
-        [HttpPost]
-        public ActionResult Test(string code)
-        {
-            //TODO This could verify the code without recording the problem as solved
-            string output = GlobalStaticVars.StaticCore.ExecutePythonCode(code);
-            return Json(new { success = true, output = output + " (test)" });
+            ViewBag.Record = false;
+
+            return View("Solve", prob);
         }
 
         public ActionResult AddProblemSet(ProblemSetData model)

@@ -1,4 +1,5 @@
-﻿@{
+﻿@model core.Modules.Problem.ProblemData
+@{
     ViewBag.Title = "Solve Problem";
 }
 
@@ -6,7 +7,7 @@
 
 <br />
 <div>
-    @Html.Raw(ViewBag.Description)
+    @Html.Raw(Model.Description)
 </div>
 
 <hr />
@@ -31,17 +32,19 @@
 
             $('#submitButton').click(function () {
                 $.ajax({
-                    url: '@Url.Action(ViewBag.SubmitAction)',
+                    url: '@Url.Action("Solve")',
                     type: 'POST',
                     data: {
-                        code: editAreaLoader.getValue("codeArea")
+                        code: editAreaLoader.getValue("codeArea"),
+                        id: @Model.Id,
+                        record: @(ViewBag.Record ? "true" : "false" )
                     },
                     success: function (data) {
                         if (data.success) {
-                            alert("Correct!\nOutput: " + data.output);
-                            //TODO Go back to class home
+                            alert("Correct!");
+                            window.location.href = '@Url.Action("Home", "Class", new { id = @Model.Class.Id })';
                         } else {
-                            alert("Incorrect. Modify your code and try again.\nOutput: " + data.output);
+                            alert("Incorrect. Modify your code and try again.\r\nOutput: " + data.output);
                         }
                     }
                 });
