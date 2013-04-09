@@ -427,45 +427,7 @@ namespace core.Modules.Problem
         }
 
         /// <summary>
-        /// Record a user's first attempt at a problem.</summary>
-        /// <param name="user">The UserData object with the user's information</param>
-        /// <param name="problem">The ProblemData object with the problem's id</param>
-        /// <param name="correct">Whether or not the solution is correct</param>
-        /// <returns>
-        /// true if the operation was successful, false otherwise</returns>
-        public bool AddSolution(UserData user, ProblemData problem, bool correct)
-        {
-            using (SqlConnection conn = new SqlConnection(connStr))
-            {
-                SqlCommand cmd = conn.CreateCommand();
-
-                cmd.CommandText = "Insert into dbo.[Solution] (UserId, ProblemId, IsCorrect) values (@userId, @problemId, @correct);";
-
-                //User
-                cmd.Parameters.AddWithValue("@userId", user.Id);
-
-                //Problem
-                cmd.Parameters.AddWithValue("@problemId", problem.Id);
-
-                //Correct
-                cmd.Parameters.AddWithValue("@correct", correct);
-
-                try
-                {
-                    conn.Open();
-                    cmd.ExecuteNonQuery();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        /// <summary>
-        /// Record a user's attempt at a problem that they previously attempted.</summary>
+        /// Record a user's attempt to solve a problem.</summary>
         /// <param name="user">The UserData object with the user's information</param>
         /// <param name="problem">The ProblemData object with the problem's id</param>
         /// <param name="correct">Whether or not the solution is correct</param>
@@ -478,7 +440,9 @@ namespace core.Modules.Problem
                 SqlCommand cmd = conn.CreateCommand();
 
                 cmd.CommandText = "Update dbo.[Solution] Set NumAttempts = NumAttempts + 1, IsCorrect = @correct"
-                    + " Where UserId = @userId and ProblemId = @problemId;";
+                    + " Where UserId = @userId and ProblemId = @problemId"
+                    + " If @@ROWCOUNT = 0"
+                    + "     Insert into dbo.[Solution] (UserId, ProblemId, IsCorrect) values (@userId, @problemId, @correct)";
 
                 //User
                 cmd.Parameters.AddWithValue("@userId", user.Id);
