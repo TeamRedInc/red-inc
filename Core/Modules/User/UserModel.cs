@@ -44,7 +44,7 @@ namespace core.Modules.User
             cls = classModel.GetById(cls.Id);
 
             //Verify that the user requesting to join the class has an email with the required domain
-            if (!String.IsNullOrWhiteSpace(cls.RequiredDomain) && student.Email.EndsWith(cls.RequiredDomain))
+            if (String.IsNullOrWhiteSpace(cls.RequiredDomain) || student.Email.EndsWith(cls.RequiredDomain))
                 return userDao.AddStudent(student, cls);
             else
                 return false;
