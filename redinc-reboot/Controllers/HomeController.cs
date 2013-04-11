@@ -74,6 +74,9 @@ namespace redinc_reboot.Controllers
             viewModel.InstructorClassList = GlobalStaticVars.StaticCore.GetInstructorClasses(WebSecurity.CurrentUserId);
             var allClasses = GlobalStaticVars.StaticCore.GetAllClasses();
             viewModel.AllOtherClassesList = allClasses.Except(viewModel.StudentClassList).Except(viewModel.InstructorClassList);
+
+            if (TempData["Error"] != null)
+                ViewBag.Error = TempData["Error"];
             
             return View(viewModel);
         }

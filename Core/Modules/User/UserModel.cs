@@ -16,6 +16,11 @@ namespace core.Modules.User
             get { return (UserDao)dao; }
         }
 
+        private ClassModel classModel
+        {
+            get { return ModelFactory.ClassModel; }
+        }
+
         /// <summary>
         /// Add a new user to the database.</summary>
         /// <param name="user">The UserData object with the user's information</param>
@@ -34,7 +39,15 @@ namespace core.Modules.User
         /// true if the add was successful, false otherwise</returns>
         public bool AddStudent(UserData student, ClassData cls)
         {
-            return userDao.AddStudent(student, cls);
+            //Fill the data objects
+            student = this.GetById(student.Id);
+            cls = classModel.GetById(cls.Id);
+
+            //Verify that the user requesting to join the class has an email with the required domain
+            if (String.IsNullOrWhiteSpace(cls.RequiredDomain) || student.Email.EndsWith(cls.RequiredDomain))
+                return userDao.AddStudent(student, cls);
+            else
+                return false;
         }
         
         /// <summary>

@@ -2,12 +2,10 @@
 
 @using (Html.BeginForm("NewClass", "Class", FormMethod.Post, new { id = "newClassForm" })) {
     <fieldset>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Name)
-        </div>
-        <div class="editor-field">
-            @Html.TextBoxFor(model => model.Name)
-            @Html.ValidationMessageFor(model => model.Name)
-        </div>
+        @Html.LabelFor(model => model.Name)
+        @Html.TextBoxFor(model => model.Name)
+
+        @Html.LabelFor(m => m.RequiredDomain, "Required Domain (optional) (cannot be changed)")
+        @Html.TextBoxFor(m => m.RequiredDomain)
     </fieldset>
 }

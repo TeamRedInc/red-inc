@@ -26,8 +26,14 @@ namespace redinc_reboot.Controllers
 
         public ActionResult Join(int id)
         {
-            GlobalStaticVars.StaticCore.AddStudent(WebSecurity.CurrentUserId, id);
-            return RedirectToAction("Home", new { id = id });
+            if (GlobalStaticVars.StaticCore.AddStudent(WebSecurity.CurrentUserId, id))
+                return RedirectToAction("Home", new { id = id });
+            else
+            {
+                ClassData cls = GlobalStaticVars.StaticCore.GetClassById(id);
+                TempData["Error"] = "Your email address must end with " + cls.RequiredDomain + " to join " + cls.Name + ".";
+                return RedirectToAction("Home", "Home");
+            }
         }
 
         public ActionResult Home(int id)
