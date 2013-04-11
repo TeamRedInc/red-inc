@@ -27,11 +27,8 @@ namespace core
             classModel = ModelFactory.ClassModel;
         }
 
-        public bool AddUser(int id, string email)
+        public bool AddUser(UserData user)
         {
-            UserData user = new UserData(id);
-            user.Email = email;
-
             return userModel.Add(user);
         }
 
