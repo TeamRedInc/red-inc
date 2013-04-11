@@ -67,8 +67,8 @@ professorFunction()";
             string output = "";
 
             var paths = _engine.GetSearchPaths();
-            string dir = System.IO.Path.GetFullPath("../../../Core/Lib");
-            //string dir = Path.GetFullPath(Path.Combine(System.Web.HttpContext.Current.Server.MapPath("~"), "..\\Core\\Lib"));
+            //string dir = System.IO.Path.GetFullPath("../../../Core/Lib");
+            string dir = Path.GetFullPath(Path.Combine(System.Web.HttpContext.Current.Server.MapPath("~"), "..\\Core\\Lib"));
             
             paths.Add(dir);
             _engine.SetSearchPaths(paths);
