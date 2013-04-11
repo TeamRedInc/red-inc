@@ -98,19 +98,7 @@ namespace core.Modules.Problem
         }
 
         /// <summary>
-        /// Record a user's first attempt at a problem.</summary>
-        /// <param name="user">The UserData object with the user's information</param>
-        /// <param name="problem">The ProblemData object with the problem's id</param>
-        /// <param name="correct">Whether or not the solution is correct</param>
-        /// <returns>
-        /// true if the operation was successful, false otherwise</returns>
-        public bool AddSolution(UserData user, ProblemData problem, bool correct)
-        {
-            return problemDao.AddSolution(user, problem, correct);
-        }
-
-        /// <summary>
-        /// Record a user's attempt at a problem that they previously attempted.</summary>
+        /// Record a user's attempt to solve a problem.</summary>
         /// <param name="user">The UserData object with the user's information</param>
         /// <param name="problem">The ProblemData object with the problem's id</param>
         /// <param name="correct">Whether or not the solution is correct</param>
