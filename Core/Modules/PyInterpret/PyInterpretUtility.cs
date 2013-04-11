@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using IronPython.Hosting;
@@ -55,6 +56,13 @@ professorFunction()";
 
         public string Execute(string code)
         {
+            // Regex for security - this probably isn't enough for the long run
+            Match match = Regex.Match(code + " ", @"[\.\s()]*((os)|(exec)|(eval))[\.\s()]*");
+            if (match.Success)
+            {
+                return "Code not permitted: " + match.Groups[1].Value;
+            }
+
             _scope = _engine.CreateScope();
             string output = "";
 
