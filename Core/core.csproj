@@ -78,6 +78,11 @@
     <Compile Include="Modules\Problem\ProblemData.cs" />
     <Compile Include="Modules\Problem\ProblemModel.cs" />
     <Compile Include="Modules\Problem\TestCase.cs" />
+    <Compile Include="Modules\Progress\ProblemProgress.cs" />
+    <Compile Include="Modules\Progress\ProgressDao.cs" />
+    <Compile Include="Modules\Progress\ProgressModel.cs" />
+    <Compile Include="Modules\Progress\SetProgress.cs" />
+    <Compile Include="Modules\Progress\StudentProgress.cs" />
     <Compile Include="Modules\PyInterpret\PyInterpretUtility.cs" />
     <Compile Include="Modules\User\UserDao.cs" />
     <Compile Include="Modules\User\UserModel.cs" />
