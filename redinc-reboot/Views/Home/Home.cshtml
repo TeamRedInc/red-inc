@@ -21,50 +21,41 @@
     </div>
 </div>
 
-<h3>Instructor Classes</h3>
-<table>
+    <h3>Instructor Classes</h3>
+    <div class="container">
+		<div class="well">
 @foreach(var classItem in Model.InstructorClassList)
 {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => classItem.Name)
-        </td>
-        <td>
-            @Html.ActionLink("View", "Home", "Class", new { id=classItem.Id }, null)
-        </td>
-    </tr>
+		    @Html.ActionLink((classItem.Name), "Home", "Class", new { id = classItem.Id }, new { @class = "btn btn-large btn-block btn-text-left" })
 }
-</table>
+		</div>
+    </div> <!-- /container -->
 
 <h3>Student Classes</h3>
-<table>
+    <div class="container">
+		<div class="well">
 @foreach(var classItem in Model.StudentClassList)
 {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => classItem.Name)
-        </td>
-        <td>
-            @Html.ActionLink("View", "Home", "Class", new { id=classItem.Id }, null)
-        </td>
-    </tr>
+		    @Html.ActionLink((classItem.Name), "Home", "Class", new { id = classItem.Id }, new { @class = "btn btn-large btn-block btn-text-left" })
 }
-</table>
+        </div>
+    </div> <!-- /container -->
 
 <h3>More Classes</h3>
-<table>
+<div class="container">
+<div class="well">
 @foreach(var classItem in Model.AllOtherClassesList)
 {
-    <tr>
-        <td>
+    <div> 
             @Html.DisplayFor(modelItem => classItem.Name)
-        </td>
-        <td>
-            @Html.ActionLink("Join", "Join", "Class", new { id=classItem.Id }, null)
-        </td>
-    </tr>
+            @Html.ActionLink("Join", "Home", "Class", new { id = classItem.Id }, new { @class = "btn" })
+            
+    </div>
 }
-</table>
+</div>
+</div>
+
+<br /><br /><br /><br />
 
 @section scripts
 {
