@@ -71,6 +71,9 @@
     <Compile Include="Modules\BaseDao.cs" />
     <Compile Include="Modules\Class\ClassModel.cs" />
     <Compile Include="Modules\DaoFactory.cs" />
+    <Compile Include="Modules\Logging\LogData.cs" />
+    <Compile Include="Modules\Logging\LoggingDao.cs" />
+    <Compile Include="Modules\Logging\LoggingModel.cs" />
     <Compile Include="Modules\ModelFactory.cs" />
     <Compile Include="Modules\ProblemSet\ProblemSetDao.cs" />
     <Compile Include="Modules\ProblemSet\ProblemSetModel.cs" />
