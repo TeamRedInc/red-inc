@@ -41,6 +41,12 @@ namespace redinc_reboot
                         "~/Libs/markitup/skins/simple/style.css",
                         "~/Libs/markitup/sets/bbcode/style.css"));
 
+            bundles.Add(new StyleBundle("~/Libs/markitup/skins/simple/css").Include(
+                        "~/Libs/markitup/skins/simple/style.css"));
+
+            bundles.Add(new StyleBundle("~/Libs/markitup/sets/bbcode/css").Include(
+                        "~/Libs/markitup/sets/bbcode/style.css"));
+
         }
     }
 }
