@@ -207,5 +207,26 @@ namespace core
             else
                 return output;
         }
+
+        public List<ProblemProgress> ProblemProgress(int classId, int userId, int problemSetId)
+        {
+            ClassData currClass = new ClassData(classId);
+            UserData currUser = new UserData(userId);
+            ProblemSetData probSet = new ProblemSetData(problemSetId);
+            return progressModel.GetProblemProgress(currClass, currUser, probSet);
+        }
+
+        public List<SetProgress> SetProgress(int classId, int userId)
+        {
+            ClassData currClass = new ClassData(classId);
+            UserData currUser = new UserData(userId);
+            return progressModel.GetSetProgress(currClass, currUser);
+        }
+
+        public List<StudentProgress> StudentProgress(int classId)
+        {
+            ClassData currClass = new ClassData(classId);
+            return progressModel.GetStudentProgress(currClass);
+        }
     }
 }
