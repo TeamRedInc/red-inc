@@ -182,6 +182,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProblemController.cs" />
     <Compile Include="Controllers\ProblemSetController.cs" />
+    <Compile Include="Controllers\ProgressReportsController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -193,6 +194,7 @@
     <Compile Include="Models\HomeClassListModel.cs" />
     <Compile Include="Models\ProblemModels.cs" />
     <Compile Include="Models\ProblemSetModels.cs" />
+    <Compile Include="Models\ProgressReportModel.cs" />
     <Compile Include="Models\PythonTestModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -508,6 +510,9 @@
     <Content Include="Views\Error\Unauthorized.cshtml" />
     <Content Include="Views\Error\DoesNotExist.cshtml" />
     <Content Include="Views\Error\ServerError.cshtml" />
+    <Content Include="Views\Progress\SetProgressView.cshtml" />
+    <Content Include="Views\Progress\StudentProgressView.cshtml" />
+    <Content Include="Views\Progress\ClassProgressView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
