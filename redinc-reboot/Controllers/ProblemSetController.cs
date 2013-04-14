@@ -104,6 +104,21 @@ namespace redinc_reboot.Controllers
             }
         }
 
+        public JsonResult GetAllSetsInClass()
+        {
+            try
+            {
+                List<ProblemSetData> sets = GlobalStaticVars.StaticCore.GetSetsForClass((int)Session["ClassId"]);
+                return Json(sets.Select(s => new { Id = s.Id, label = s.Name, Name = s.Name }),
+                            JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                RedirectToAction("ServerError", "Error");
+                return new JsonResult();
+            }
+        }
+
         [Authorize]
         [HttpPost]
         public ActionResult Delete(int id)
