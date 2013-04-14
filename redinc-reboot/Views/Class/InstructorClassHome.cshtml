@@ -18,7 +18,7 @@
     </p>
 }
 
-@Html.ActionLink("New Problem Set", "Edit", "ProblemSet")
+@Html.ActionLink("New Problem Set", "Edit", "ProblemSet", new { classId = Model.Class.Id }, null)
 @Html.ActionLink("New Problem", "Edit", "Problem")
 <br /><br />
 
@@ -39,7 +39,7 @@
     @foreach (var set in Model.Sets)
     {
         <tr><td>
-        @Html.ActionLink(set.Name, "Edit", "ProblemSet", new { id = set.Id }, null)
+        @Html.ActionLink(set.Name, "Edit", "ProblemSet", new { classId = Model.Class.Id, problemSetId = set.Id }, null)
         </td></tr>
     }
 </table>
