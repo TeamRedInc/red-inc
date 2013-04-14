@@ -22,9 +22,6 @@ namespace redinc_reboot
                         "~/Libs/markitup/jquery.markitup.js",
                         "~/Libs/markitup/sets/bbcode/set.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/edit_area").Include(
-                        "~/Libs/edit_area/edit_area_full.js"));
-
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
