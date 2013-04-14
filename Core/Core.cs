@@ -2,6 +2,7 @@
 using core.Modules.Class;
 using core.Modules.Problem;
 using core.Modules.ProblemSet;
+using core.Modules.Progress;
 using core.Modules.User;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ namespace core
         private readonly ProblemSetModel setModel;
         private readonly ProblemModel problemModel;
         private readonly ClassModel classModel;
+        private readonly ProgressModel progressModel;
 
         /// <summary>
         /// Primary thread of execution
@@ -25,6 +27,7 @@ namespace core
             setModel = ModelFactory.ProblemSetModel;
             problemModel = ModelFactory.ProblemModel;
             classModel = ModelFactory.ClassModel;
+            progressModel = ModelFactory.ProgressModel;
         }
 
         public bool AddUser(UserData user)
