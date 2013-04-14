@@ -28,8 +28,9 @@
         @Html.LabelFor(m => m.Problem.Description)
         @Html.TextAreaFor(m => m.Problem.Description, new { id = "descriptionArea" })
 
-        @Html.LabelFor(m => m.Problem.SolutionCode, "Solution Code")
-        @Html.TextAreaFor(m => m.Problem.SolutionCode, new { id = "solutionArea" })
+        @Html.LabelFor(m => m.Problem.SolutionCode, "Solution Code")        
+        <div id="solutionArea" style="position:relative; height: 300px; width: 700px;">@Model.Problem.SolutionCode</div>
+        @Html.HiddenFor(m => m.Problem.SolutionCode, new { id = "hiddenSolution" })
 
         @if (ViewBag.IsInstructor)
         {
@@ -48,7 +49,7 @@
         }
         
         <br />
-        <input type="submit" value="Save" />
+        <input id="submitButton" type="submit" value="Save" />
         <input id="testButton" type="button" value="Test" />
     </fieldset>
 }
@@ -58,23 +59,22 @@
     @Styles.Render("~/Libs/markitup/skins/simple/css")
     @Styles.Render("~/Libs/markitup/sets/bbcode/css")
     <link href="~/Content/autocomplete.css" rel="stylesheet" />
+    <link href="~/Content/ace_editor.css" rel="stylesheet" />
 }
 
 @section scripts
 {
     @Scripts.Render("~/Libs/markitup/js")
-    @Scripts.Render("~/bundles/edit_area")
+    <script src="http://rawgithub.com/ajaxorg/ace-builds/master/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript">
         $(function () {
             $('#descriptionArea').markItUp(mySettings);
 
-            editAreaLoader.init({
-                id: "solutionArea",
-                syntax: "python",
-                start_highlight: true,
-                allow_toggle: false,
-                toolbar: "search, |, undo, redo, |, select_font,|, highlight, reset_highlight, word_wrap, |, help"
-            });
+            var editor = ace.edit("solutionArea");
+            editor.setTheme("ace/theme/textmate");
+            editor.getSession().setMode("ace/mode/python");
+            editor.setDisplayIndentGuides(false);
+            editor.setShowPrintMargin(false);
 
             $("#setTable").on("click", "button.deleteSet", function () {
                 $(this).parents("tr.setRow:first").remove();
@@ -98,6 +98,10 @@
                 }
             });
 
+            $('#submitButton').click(function () {
+                $('#hiddenSolution').val(editor.getValue());
+            });
+
             $('#testButton').click(function () {
                 $.ajax({
                     url: '@Url.Action("TestPage")',
@@ -106,7 +110,7 @@
                         Id: @Model.Problem.Id,
                         Name: $('#Problem_Name').val(),
                         Description: $('#descriptionArea').val(),
-                        SolutionCode: editAreaLoader.getValue('solutionArea'),
+                        SolutionCode: editor.getValue(),
                         'Class.Id': @Model.Problem.Class.Id
                     },
                     success: function (data) {
