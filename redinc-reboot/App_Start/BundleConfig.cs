@@ -18,7 +18,7 @@ namespace redinc_reboot
                         "~/Scripts/jquery.unobtrusive*",
                         "~/Scripts/jquery.validate*"));
 
-            bundles.Add(new ScriptBundle("~/bundles/jquery.markitup").Include(
+            bundles.Add(new ScriptBundle("~/Libs/markitup/js").Include(
                         "~/Libs/markitup/jquery.markitup.js",
                         "~/Libs/markitup/sets/bbcode/set.js"));
 
