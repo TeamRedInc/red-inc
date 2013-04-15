@@ -12,9 +12,9 @@ namespace redinc_reboot.Models
 {
     public class ProgressReportModel
     {
-        public IEnumerable<ProblemProgress> ProblemSetProgressList { get; set; }
-        public IEnumerable<SetProgress> StudentProgressList { get; set; }
-        public IEnumerable<StudentProgress> ClassProgressList { get; set; }
+        public IEnumerable<ProblemProgress> ProblemProgressList { get; set; }
+        public IEnumerable<SetProgress> SetProgressList { get; set; }
+        public IEnumerable<StudentProgress> StudentProgressList { get; set; }
         
         public ClassData Class { get; set; }
         public UserData User { get; set; }
