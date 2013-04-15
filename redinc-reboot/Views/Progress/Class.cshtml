@@ -35,7 +35,7 @@
             @Html.DisplayFor(modelItem => setItem.LastName)
         </td>
         <td>
-            @Html.ActionLink(setItem.Email, "StudentProgressView", "ProgressReports", new { userId = setItem.Id }, null)
+            @Html.ActionLink(setItem.Email, "Student", "Progress", new { id = setItem.Id }, null)
         </td>
         <td>
             @Html.DisplayFor(modelItem => setItem.AvgAttempts)

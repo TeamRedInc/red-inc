@@ -9,11 +9,11 @@ using WebMatrix.WebData;
 
 namespace redinc_reboot.Controllers
 {
-    public class ProgressReportsController : Controller
+    public class ProgressController : Controller
     {
         private static ProgressReportModel viewModel = new ProgressReportModel();
 
-        public ActionResult SetProgressView(int probSetId = 0)
+        public ActionResult Set(int id = 0)
         {
             try
             {
@@ -21,28 +21,28 @@ namespace redinc_reboot.Controllers
                 {
                     if (viewModel.User != null)
                     {
-                        if (probSetId == 0)
+                        if (id == 0)
                         {
-                            return RedirectToAction("StudentProgressView", "ProgressReports", new { viewModel.User.Id });
+                            return RedirectToAction("StudentProgressView", new { viewModel.User.Id });
                         }
                         else
                         {
                             viewModel.ProblemSetProgressList = GlobalStaticVars.StaticCore.ProblemProgress(viewModel.Class.Id,
-                                viewModel.User.Id, probSetId);
+                                viewModel.User.Id, id);
                         }
                     }
                     else
                     {
-                        if (probSetId != 0)
+                        if (id != 0)
                             viewModel.ProblemSetProgressList = GlobalStaticVars.StaticCore.ProblemProgress(viewModel.Class.Id,
-                                WebSecurity.CurrentUserId, probSetId);
+                                WebSecurity.CurrentUserId, id);
                     }
                 }
                 else
                 {
-                    if (probSetId != 0)
+                    if (id != 0)
                         viewModel.ProblemSetProgressList = GlobalStaticVars.StaticCore.ProblemProgress((int)Session["ClassId"],
-                            WebSecurity.CurrentUserId, probSetId);
+                            WebSecurity.CurrentUserId, id);
                 }
                 return View(viewModel);
             }
@@ -52,27 +52,27 @@ namespace redinc_reboot.Controllers
             }
         }
 
-        public ActionResult StudentProgressView(int userId = 0)
+        public ActionResult Student(int id = 0)
         {
             try{
                 if(viewModel.Class == null)
                 {
-                    if(userId == 0)
+                    if(id == 0)
                     {
                         viewModel.StudentProgressList = GlobalStaticVars.StaticCore.SetProgress((int)Session["ClassId"], WebSecurity.CurrentUserId);
                         return View(viewModel);
                     }
                     else
                     {
-                        viewModel.User = new UserData(userId);
-                        viewModel.StudentProgressList = GlobalStaticVars.StaticCore.SetProgress((int)Session["ClassId"], userId);
+                        viewModel.User = new UserData(id);
+                        viewModel.StudentProgressList = GlobalStaticVars.StaticCore.SetProgress((int)Session["ClassId"], id);
                         return View(viewModel);
                     }
                 }
                 else
                 {
-                    viewModel.User = new UserData(userId);
-                    viewModel.StudentProgressList = GlobalStaticVars.StaticCore.SetProgress(viewModel.Class.Id, userId);
+                    viewModel.User = new UserData(id);
+                    viewModel.StudentProgressList = GlobalStaticVars.StaticCore.SetProgress(viewModel.Class.Id, id);
                     return View(viewModel);
                 }
             }
@@ -83,23 +83,23 @@ namespace redinc_reboot.Controllers
         }
 
         
-        public ActionResult ClassProgressView(int classId = 0)
+        public ActionResult Class(int id = 0)
         {
             try
             {
-                if ((int) Session["ClassId"] != classId || (UserType) Session["UserType"] != UserType.Instructor)
+                if ((int) Session["ClassId"] != id || (UserType) Session["UserType"] != UserType.Instructor)
                 {
                     return RedirectToAction("Unauthorized", "Error");
                 }
-                if (classId == 0)
+                if (id == 0)
                 {
                     viewModel.Class = GlobalStaticVars.StaticCore.GetClassById((int)Session["ClassId"]);
                     viewModel.ClassProgressList = GlobalStaticVars.StaticCore.StudentProgress((int)Session["ClassId"]);
                 }
                 else
                 {
-                    viewModel.Class = GlobalStaticVars.StaticCore.GetClassById(classId);
-                    viewModel.ClassProgressList = GlobalStaticVars.StaticCore.StudentProgress(classId);
+                    viewModel.Class = GlobalStaticVars.StaticCore.GetClassById(id);
+                    viewModel.ClassProgressList = GlobalStaticVars.StaticCore.StudentProgress(id);
                 }
                 return View(viewModel);
             }

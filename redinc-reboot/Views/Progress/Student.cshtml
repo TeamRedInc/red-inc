@@ -23,7 +23,7 @@
 {
     <tr>
         <td>
-            @Html.ActionLink(setItem.Name, "SetProgressView", "ProgressReports", new { probSetId = setItem.Id }, null)
+            @Html.ActionLink(setItem.Name, "Set", "Progress", new { id = setItem.Id }, null)
         </td>
         <td>
             @Html.DisplayFor(modelItem => setItem.AvgAttempts)

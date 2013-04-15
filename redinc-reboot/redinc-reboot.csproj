@@ -182,7 +182,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProblemController.cs" />
     <Compile Include="Controllers\ProblemSetController.cs" />
-    <Compile Include="Controllers\ProgressReportsController.cs" />
+    <Compile Include="Controllers\ProgressController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -403,9 +403,9 @@
     <Content Include="Views\Error\Unauthorized.cshtml" />
     <Content Include="Views\Error\DoesNotExist.cshtml" />
     <Content Include="Views\Error\ServerError.cshtml" />
-    <Content Include="Views\ProgressReports\ClassProgressView.cshtml" />
-    <Content Include="Views\ProgressReports\SetProgressView.cshtml" />
-    <Content Include="Views\ProgressReports\StudentProgressView.cshtml" />
+    <Content Include="Views\Progress\Class.cshtml" />
+    <Content Include="Views\Progress\Set.cshtml" />
+    <Content Include="Views\Progress\Student.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -435,7 +435,7 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>19512</DevelopmentServerPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:13500/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
