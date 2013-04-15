@@ -59,7 +59,7 @@ namespace redinc_reboot.Controllers
                     //This is necessary in case bad prereqs (ex. duplicates) are removed by the backend
                     model.Sets = GlobalStaticVars.StaticCore.GetSetsForProblem(model.Problem.Id);
                 }
-
+                ViewBag.IsInstructor = ((UserType)Session["UserType"]) == UserType.Instructor;
                 return View(model);
             }
             catch (Exception e)
