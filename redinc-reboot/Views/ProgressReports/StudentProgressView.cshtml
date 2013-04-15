@@ -4,13 +4,26 @@
     ViewBag.Title = "StudentProgressView";
 }
 
+@Html.ActionLink("Home", "Home", "Home")
+
 <h2>Student Progress</h2>
 <table>
+    <tr>
+        <td>
+            @Html.DisplayName("Problem Set");
+        </td>
+        <td>
+            @Html.DisplayName("Average Number of Attempts");
+        </td>
+        <td>
+            @Html.DisplayName("Number Correct");
+        </td>
+    </tr>
 @foreach(var setItem in Model.StudentProgressList)
 {
     <tr>
         <td>
-            @Html.ActionLink(setItem.Name, "SetProgressView", "ProgressReports")
+            @Html.ActionLink(setItem.Name, "SetProgressView", "ProgressReports", new { probSetId = setItem.Id }, null)
         </td>
         <td>
             @Html.DisplayFor(modelItem => setItem.AvgAttempts)

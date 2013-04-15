@@ -4,8 +4,24 @@
     ViewBag.Title = "SetProgressView";
 }
 
+@Html.ActionLink("Home", "Home", "Home")
+
 <h2>Problem Set Progress</h2>
 <table>
+<tr>
+    <td>
+        @Html.DisplayName("Problem");
+    </td>
+    <td>
+        @Html.DisplayName("Solved?");
+    </td>
+    <td>
+        @Html.DisplayName("Average Number of Attempts");
+    </td>
+    <td>
+        @Html.DisplayName("Number Correct");
+    </td>
+</tr>
 @foreach(var setItem in Model.ProblemSetProgressList)
 {
     <tr>

@@ -18,6 +18,6 @@ namespace redinc_reboot.Models
         
         public ClassData Class { get; set; }
         public UserData User { get; set; }
-        public ProblemSetData Set { get; set; }
+        public ProblemSetData ProblemSet { get; set; }
     }
 }

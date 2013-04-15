@@ -403,9 +403,9 @@
     <Content Include="Views\Error\Unauthorized.cshtml" />
     <Content Include="Views\Error\DoesNotExist.cshtml" />
     <Content Include="Views\Error\ServerError.cshtml" />
-    <Content Include="Views\Progress\SetProgressView.cshtml" />
-    <Content Include="Views\Progress\StudentProgressView.cshtml" />
-    <Content Include="Views\Progress\ClassProgressView.cshtml" />
+    <Content Include="Views\ProgressReports\ClassProgressView.cshtml" />
+    <Content Include="Views\ProgressReports\SetProgressView.cshtml" />
+    <Content Include="Views\ProgressReports\StudentProgressView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -435,7 +435,7 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerPort>19512</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:13500/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
