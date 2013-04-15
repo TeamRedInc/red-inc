@@ -4,8 +4,27 @@
     ViewBag.Title = "ClassProgressView";
 }
 
-<h2>Class Progress</h2>
+@Html.ActionLink("Home", "Home", "Home")
+
+<h2>Class Progress for @Model.Class.Name</h2>
 <table>
+<tr>
+    <td>
+        @Html.DisplayName("First Name");
+    </td>
+    <td>
+        @Html.DisplayName("Last Name");
+    </td>
+    <td>
+        @Html.DisplayName("E-mail");
+    </td>
+    <td>
+        @Html.DisplayName("Average Number of Attempts");
+    </td>
+    <td>
+        @Html.DisplayName("Number Correct");
+    </td>
+</tr>
 @foreach(var setItem in Model.ClassProgressList)
 {
     <tr>

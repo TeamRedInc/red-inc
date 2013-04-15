@@ -210,22 +210,20 @@ namespace core
 
         public List<ProblemProgress> ProblemProgress(int classId, int userId, int problemSetId)
         {
-            ClassData currClass = new ClassData(classId);
-            UserData currUser = new UserData(userId);
-            ProblemSetData probSet = new ProblemSetData(problemSetId);
-            return progressModel.GetProblemProgress(currClass, currUser, probSet);
+            ClassData currClass = GetClassById(classId);
+            ProblemSetData probSet = GetSetById(problemSetId);
+            return progressModel.GetProblemProgress(currClass, new UserData(userId), probSet);
         }
 
         public List<SetProgress> SetProgress(int classId, int userId)
         {
-            ClassData currClass = new ClassData(classId);
-            UserData currUser = new UserData(userId);
-            return progressModel.GetSetProgress(currClass, currUser);
+            ClassData currClass = GetClassById(classId);
+            return progressModel.GetSetProgress(currClass, new UserData(userId));
         }
 
         public List<StudentProgress> StudentProgress(int classId)
         {
-            ClassData currClass = new ClassData(classId);
+            ClassData currClass = GetClassById(classId);
             return progressModel.GetStudentProgress(currClass);
         }
     }
