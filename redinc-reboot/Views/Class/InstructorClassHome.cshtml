@@ -20,6 +20,7 @@
 
 @Html.ActionLink("New Problem Set", "Edit", "ProblemSet", new { classId = Model.Class.Id }, null)
 @Html.ActionLink("New Problem", "Edit", "Problem")
+@Html.ActionLink("Class Progress Report", "ClassProgressView", "ProgressReports", new { classId = Model.Class.Id }, null)
 <br /><br />
 
 @using (Html.BeginForm("Edit", "Class"))

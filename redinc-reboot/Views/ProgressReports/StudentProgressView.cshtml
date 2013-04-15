@@ -1,19 +1,16 @@
 ﻿@model redinc_reboot.Models.ProgressReportModel
 
 @{
-    ViewBag.Title = "SetProgressView";
+    ViewBag.Title = "StudentProgressView";
 }
 
-<h2>Problem Set Progress</h2>
+<h2>Student Progress</h2>
 <table>
-@foreach(var setItem in Model.ProblemSetProgressList)
+@foreach(var setItem in Model.StudentProgressList)
 {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => setItem.Id)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => setItem.IsSolved)
+            @Html.ActionLink(setItem.Name, "SetProgressView", "ProgressReports")
         </td>
         <td>
             @Html.DisplayFor(modelItem => setItem.AvgAttempts)
