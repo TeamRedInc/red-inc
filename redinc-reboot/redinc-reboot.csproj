@@ -182,7 +182,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProblemController.cs" />
     <Compile Include="Controllers\ProblemSetController.cs" />
-    <Compile Include="Controllers\ProgressReportsController.cs" />
+    <Compile Include="Controllers\ProgressController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -325,6 +325,17 @@
     <Content Include="Libs\markitup\templates\preview.css" />
     <Content Include="Libs\markitup\templates\preview.html" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
+    <Content Include="Libs\tablesorter\addons\pager\jquery.tablesorter.pager.css" />
+    <Content Include="Libs\tablesorter\addons\pager\jquery.tablesorter.pager.js" />
+    <Content Include="Libs\tablesorter\jquery.tablesorter.min.js" />
+    <Content Include="Libs\tablesorter\themes\blue\asc.gif" />
+    <Content Include="Libs\tablesorter\themes\blue\bg.gif" />
+    <Content Include="Libs\tablesorter\themes\blue\desc.gif" />
+    <Content Include="Libs\tablesorter\themes\blue\style.css" />
+    <Content Include="Libs\tablesorter\themes\green\asc.png" />
+    <Content Include="Libs\tablesorter\themes\green\bg.png" />
+    <Content Include="Libs\tablesorter\themes\green\desc.png" />
+    <Content Include="Libs\tablesorter\themes\green\style.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />
@@ -403,9 +414,10 @@
     <Content Include="Views\Error\Unauthorized.cshtml" />
     <Content Include="Views\Error\DoesNotExist.cshtml" />
     <Content Include="Views\Error\ServerError.cshtml" />
-    <Content Include="Views\ProgressReports\ClassProgressView.cshtml" />
-    <Content Include="Views\ProgressReports\SetProgressView.cshtml" />
-    <Content Include="Views\ProgressReports\StudentProgressView.cshtml" />
+    <Content Include="Views\Progress\Class.cshtml" />
+    <Content Include="Views\Progress\Set.cshtml" />
+    <Content Include="Views\Progress\Student.cshtml" />
+    <Content Include="Views\Progress\StudentSet.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -435,7 +447,7 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>19512</DevelopmentServerPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:13500/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

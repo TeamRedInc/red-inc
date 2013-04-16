@@ -6,6 +6,7 @@ using core.Modules.Progress;
 using core.Modules.User;
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace core
 {
@@ -208,23 +209,45 @@ namespace core
                 return output;
         }
 
-        public List<ProblemProgress> ProblemProgress(int classId, int userId, int problemSetId)
+        public List<ProblemProgress> GetProblemProgress(int classId, int userId = 0, int setId = 0)
         {
-            ClassData currClass = GetClassById(classId);
-            ProblemSetData probSet = GetSetById(problemSetId);
-            return progressModel.GetProblemProgress(currClass, new UserData(userId), probSet);
+            UserData user = userId > 0 ? new UserData(userId) : null;
+            ProblemSetData set = setId > 0 ? new ProblemSetData(setId) : null;
+            return progressModel.GetProblemProgress(new ClassData(classId), user, set);
         }
 
-        public List<SetProgress> SetProgress(int classId, int userId)
+        public List<SetProgress> GetSetProgress(int classId, int userId = 0)
         {
-            ClassData currClass = GetClassById(classId);
-            return progressModel.GetSetProgress(currClass, new UserData(userId));
+            UserData user = userId > 0 ? new UserData(userId) : null;
+            return progressModel.GetSetProgress(new ClassData(classId), user);
         }
 
-        public List<StudentProgress> StudentProgress(int classId)
+        public List<StudentProgress> GetStudentProgress(int classId)
         {
-            ClassData currClass = GetClassById(classId);
-            return progressModel.GetStudentProgress(currClass);
+            return progressModel.GetStudentProgress(new ClassData(classId));
+        }
+
+        public UserData GetUserById(int userId)
+        {
+            return userModel.GetById(userId);
+        }
+
+        public string GetGradeCsv(int classId)
+        {
+            List<StudentProgress> list = progressModel.GetStudentProgress(new ClassData(classId));
+            
+            StringBuilder csv = new StringBuilder();
+            foreach (StudentProgress sp in list)
+            {
+                string username = sp.Email.Substring(0, sp.Email.IndexOf('@'));
+                csv.Append(username).Append(",")
+                    .Append(sp.Email).Append(",")
+                    .Append(sp.NumCorrect).Append(",")
+                    .Append(sp.AvgAttempts);
+                csv.AppendLine();
+            }
+
+            return csv.ToString();
         }
     }
 }

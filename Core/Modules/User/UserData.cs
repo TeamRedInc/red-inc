@@ -41,6 +41,23 @@ namespace core.Modules.User
             set { lastName = value; }
         }
 
+        public string DisplayName
+        {
+            get
+            {
+                bool fName = !String.IsNullOrWhiteSpace(firstName);
+                bool lName = !String.IsNullOrWhiteSpace(lastName);
+                if (fName && lName)
+                    return firstName + " " + lastName;
+                else if (fName)
+                    return firstName;
+                else if (lName)
+                    return lastName;
+                else
+                    return email;
+            }
+        }
+
         public bool IsAdmin
         {
             get { return isAdmin; }
