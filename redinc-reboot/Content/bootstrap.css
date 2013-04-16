@@ -6051,3 +6051,43 @@ a.badge:hover {
     text-align:left;
     padding-left:10px;
 }
+
+.set-table {
+    width:940px;
+
+}
+
+.prereq-table {
+    width:940px;
+    border:1px solid #eeeeee;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    border-radius:5px;
+    border-collapse:separate;
+}
+
+.set-row {
+    
+}
+
+.set-th {
+    text-align: left;
+    vertical-align: middle;
+    padding-left: 5px;
+    padding-top: 3px;
+    padding-right: 0px;
+    padding-bottom: 3px;
+    background-color: #eeeeee;
+}
+
+.set-td {
+    /*border: 1px solid #eeeeee;*/
+    border-top: 1px solid #eeeeee;
+    border-bottom: 1px solid #eeeeee;
+    text-align: left;
+    vertical-align: middle;
+    padding-left: 5px;
+    padding-top: 3px;
+    padding-right: 0px;
+    padding-bottom: 3px;
+}

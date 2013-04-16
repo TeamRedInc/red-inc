@@ -6,7 +6,7 @@
 
 <h2>@Model.Class.Name Instructor Home</h2>
 <p>
-    <a href="#confirmModal" role="button" class="btn btn-danger" data-toggle="modal">Delete</a>
+    <a href="#confirmModal" role="button" class="btn btn-danger" data-toggle="modal">Delete Class</a>
 </p>
 
 @using (Html.BeginConfirmModal("Delete Class?"))
@@ -18,8 +18,11 @@
     </p>
 }
 
-@Html.ActionLink("New Problem Set", "Edit", "ProblemSet")
-@Html.ActionLink("New Problem", "Edit", "Problem")
+<div class="btn-toolbar">
+    @Html.ActionLink("New Problem Set", "Edit", "ProblemSet", new { @class = "btn" })
+    @Html.ActionLink("New Problem", "Edit", "Problem", new { @class = "btn" })
+
+</div>
 <br /><br />
 
 @using (Html.BeginForm("Edit", "Class"))
@@ -35,14 +38,16 @@
     </fieldset>
 }
 
-<table>
-    @foreach (var set in Model.Sets)
-    {
-        <tr><td>
-        @Html.ActionLink(set.Name, "Edit", "ProblemSet", new { id = set.Id }, null)
-        </td></tr>
-    }
-</table>
+<h2>Problem Sets</h2>
+<div class="container">
+    <div class="well">
+        @foreach (var set in Model.Sets)
+        {
+            @Html.ActionLink(set.Name, "Edit", "ProblemSet", new { id = set.Id }, new { @class = "btn btn-block btn-large btn-text-left" })
+        }
+
+    </div>
+</div>
 
 @section scripts
 {

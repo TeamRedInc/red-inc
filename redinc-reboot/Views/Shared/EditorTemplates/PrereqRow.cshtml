@@ -1,16 +1,16 @@
 ﻿@model core.Modules.ProblemSet.ProblemSetData
-<tr class="prereqRow">
+<tr class="set-row">
     @using(Html.BeginCollectionItem("Prereqs"))
     {
         @Html.HiddenFor(m => m.Id)
         @Html.HiddenFor(m => m.Name);
-        <td>
+        <td class="set-td">
             @Html.ActionLink(Model.Name, "Edit", new { id = Model.Id })
         </td>
-        <td>
+        <td class="set-td">
             @Html.TextBoxFor(m => m.PrereqCount)
         </td>
-        <td>
+        <td class="set-td">
             <button class="deletePrereq">X</button>
         </td>
     }    
