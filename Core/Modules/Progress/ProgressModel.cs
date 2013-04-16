@@ -15,13 +15,15 @@ namespace core.Modules.Progress
         }
 
         /// <summary>
-        /// Calculates aggregated progress information for all students in the specified class.
+        /// Calculates aggregated progress data for all students in the specified class.
+        /// If a non-null set is passed in, then the data is limited to problems in that set.
         /// </summary>
         /// <param name="cls">The ClassData object with the class's id</param>
+        /// <param name="set">The ProblemSetData object with the set's id (optional)</param>
         /// <returns>A non-null, possibly empty list of StudentProgress objects</returns>
-        public List<StudentProgress> GetStudentProgress(ClassData cls)
+        public List<StudentProgress> GetStudentProgress(ClassData cls, ProblemSetData set = null)
         {
-            return progressDao.GetStudentProgress(cls);
+            return progressDao.GetStudentProgress(cls, set);
         }
 
         /// <summary>
