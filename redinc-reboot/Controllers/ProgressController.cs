@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using redinc_reboot.Models;
+﻿using core.Modules.Class;
 using core.Modules.User;
-using WebMatrix.WebData;
+using redinc_reboot.Models;
+using System;
+using System.Text;
+using System.Web.Mvc;
 
 namespace redinc_reboot.Controllers
 {
@@ -82,6 +80,27 @@ namespace redinc_reboot.Controllers
                 viewModel.ProblemProgressList = GlobalStaticVars.StaticCore.GetProblemProgress(id);
 
                 return View(viewModel);
+            }
+            catch
+            {
+                return RedirectToAction("ServerError", "Error");
+            }
+        }
+
+        public ActionResult Export(int id)
+        {
+            try
+            {
+                if ((int)Session["ClassId"] != id || (UserType)Session["UserType"] != UserType.Instructor)
+                {
+                    return RedirectToAction("Unauthorized", "Error");
+                }
+
+                ClassData cls = GlobalStaticVars.StaticCore.GetClassById(id);
+                string fileData = GlobalStaticVars.StaticCore.GetGradeCsv(id);
+                string fileName = cls.Name + "_Progress_" + DateTime.Now.ToString(@"yyyy-MM-dd") + ".csv";
+
+                return File(new UTF8Encoding().GetBytes(fileData), "text/csv", fileName);
             }
             catch
             {

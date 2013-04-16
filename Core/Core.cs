@@ -6,6 +6,7 @@ using core.Modules.Progress;
 using core.Modules.User;
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace core
 {
@@ -229,6 +230,24 @@ namespace core
         public UserData GetUserById(int userId)
         {
             return userModel.GetById(userId);
+        }
+
+        public string GetGradeCsv(int classId)
+        {
+            List<StudentProgress> list = progressModel.GetStudentProgress(new ClassData(classId));
+            
+            StringBuilder csv = new StringBuilder();
+            foreach (StudentProgress sp in list)
+            {
+                string username = sp.Email.Substring(0, sp.Email.IndexOf('@'));
+                csv.Append(username).Append(",")
+                    .Append(sp.Email).Append(",")
+                    .Append(sp.NumCorrect).Append(",")
+                    .Append(sp.AvgAttempts);
+                csv.AppendLine();
+            }
+
+            return csv.ToString();
         }
     }
 }
