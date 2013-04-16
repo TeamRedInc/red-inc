@@ -1,7 +1,10 @@
 ﻿using core.Modules.Class;
+using core.Modules.ProblemSet;
+using core.Modules.Progress;
 using core.Modules.User;
 using redinc_reboot.Models;
 using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Web.Mvc;
 
@@ -88,7 +91,7 @@ namespace redinc_reboot.Controllers
             }
         }
 
-        public ActionResult Export(int id)
+        public ActionResult ExportClass(int id)
         {
             try
             {
@@ -98,8 +101,26 @@ namespace redinc_reboot.Controllers
                 }
 
                 ClassData cls = GlobalStaticVars.StaticCore.GetClassById(id);
-                string fileData = GlobalStaticVars.StaticCore.GetGradeCsv(id);
+                List<StudentProgress> list = GlobalStaticVars.StaticCore.GetStudentProgress(id);
+                string fileData = GlobalStaticVars.StaticCore.GenerateCsv(list);
                 string fileName = cls.Name + "_Progress_" + DateTime.Now.ToString(@"yyyy-MM-dd") + ".csv";
+
+                return File(new UTF8Encoding().GetBytes(fileData), "text/csv", fileName);
+            }
+            catch
+            {
+                return RedirectToAction("ServerError", "Error");
+            }
+        }
+
+        public ActionResult ExportSet(int id)
+        {
+            try
+            {
+                ProblemSetData set = GlobalStaticVars.StaticCore.GetSetById(id);
+                List<StudentProgress> list = GlobalStaticVars.StaticCore.GetStudentProgress(set.Class.Id, id);
+                string fileData = GlobalStaticVars.StaticCore.GenerateCsv(list);
+                string fileName = set.Name + "_Progress_" + DateTime.Now.ToString(@"yyyy-MM-dd") + ".csv";
 
                 return File(new UTF8Encoding().GetBytes(fileData), "text/csv", fileName);
             }

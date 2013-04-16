@@ -5,6 +5,8 @@
 }
 
 <h2>Progress for Set @Model.ProblemSet.Name</h2>
+
+@Html.ActionLink("Download Student Progress", "ExportSet", new { id = Model.ProblemSet.Id })
 <br />
 
 <ul class="nav nav-tabs">

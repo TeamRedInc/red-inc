@@ -233,10 +233,8 @@ namespace core
             return userModel.GetById(userId);
         }
 
-        public string GetGradeCsv(int classId)
-        {
-            List<StudentProgress> list = progressModel.GetStudentProgress(new ClassData(classId));
-            
+        public string GenerateCsv(List<StudentProgress> list)
+        {            
             StringBuilder csv = new StringBuilder();
             foreach (StudentProgress sp in list)
             {
