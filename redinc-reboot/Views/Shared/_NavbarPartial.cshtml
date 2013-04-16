@@ -9,45 +9,46 @@
     @Html.AntiForgeryToken()
 }
     <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div>
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <div class="navbar-inner">
+            <div>
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
-          </a>
-          <a class="brand" href="~/Home/Home">Practice Makes Python</a>
-          <div class="nav-collapse">
-            <ul class="nav">
-              <li>@Html.ActionLink("CS 1301 (Change Class)", "PythonTestPage", "Home")</li>
-              <li>@Html.ActionLink("Problem Sets", "About", "Home")</li>
-              <li>@Html.ActionLink("My Progress", "About", "Home")</li>
-			</ul>
+
+            </a>
+            <a class="brand" href="~/Home/Home">Practice Makes Python</a>
+            <div class="nav-collapse">
+                <ul class="nav">
+                    <li>@Html.ActionLink("CS 1301 (Change Class)", "Home", "Home")</li>
+                    <li>@Html.ActionLink("Problem Sets", "About", "Home")</li>
+                    <li>@Html.ActionLink("My Progress", "About", "Home")</li>
+                </ul>
               
-			<div style="float:right;">
+		        <div style="float:right;">
                 
 
-				<ul class="nav">
-                    @if (Request.IsAuthenticated) {
-                        var name = "Hi," + User.Identity.Name + "!";
-                        var logoff = "Log off";
-                        <li><a>@name</a></li>
-                        <li><a href="javascript:document.getElementById('logoutForm').submit()">@logoff</a></li>
+			        <ul class="nav">
+                        @if (Request.IsAuthenticated) {
+                            var name = "Hi," + User.Identity.Name + "!";
+                            var logoff = "Log off";
+                            <li><a>@name</a></li>
+                            <li><a href="javascript:document.getElementById('logoutForm').submit()">@logoff</a></li>
                             
                     
-                    } else {
-                        <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-                        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
-                    }
-				    <li class="">
-					<a href="~/Account/Manage"><i class="icon-wrench"></i> Settings</a>
-				    </li>
-				</ul>
-			</div>
+                        } else {
+                            <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+                            <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+                        }
+				        <li class="">
+				        <a href="~/Account/Manage"><i class="icon-wrench"></i> Settings</a>
+				        </li>
+			        </ul>
+		        </div>
                   
-			<!--- <div style="float:right; color:#AAAAAA; padding:10px 0px">Hi, John Doe!</div> --->
+	        <!--- <div style="float:right; color:#AAAAAA; padding:10px 0px">Hi, John Doe!</div> --->
                   
-          </div>
+            </div>
         </div>
-      </div>
+        </div>
     </div>

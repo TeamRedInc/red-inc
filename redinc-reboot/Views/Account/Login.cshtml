@@ -16,22 +16,23 @@
 
     <fieldset>
         <legend>Log in Form</legend>
-        <ol>
-            <li>
+        <ul>
+            <li style="list-style-type:none">
                 @Html.LabelFor(m => m.UserName)
                 @Html.TextBoxFor(m => m.UserName)
                 @Html.ValidationMessageFor(m => m.UserName)
             </li>
-            <li>
+            <li style="list-style-type:none">
                 @Html.LabelFor(m => m.Password)
                 @Html.PasswordFor(m => m.Password)
                 @Html.ValidationMessageFor(m => m.Password)
             </li>
-            <li>
+            <li style="list-style-type:none">
                 @Html.CheckBoxFor(m => m.RememberMe)
                 @Html.LabelFor(m => m.RememberMe, new { @class = "checkbox" })
             </li>
-        </ol>
+        </ul>
+        
         <input type="submit" value="Log in" />
     </fieldset>
     <p>
