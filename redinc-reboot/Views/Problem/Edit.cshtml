@@ -34,7 +34,7 @@
 
         @if (ViewBag.IsInstructor)
         {
-            <table id="set-table">
+            <table id="setTable" class="set-table">
                 <tr>
                     <th>Problem Set</th>
                     <th>Delete</th>
@@ -77,7 +77,7 @@
             editor.setShowPrintMargin(false);
 
             $("#setTable").on("click", "button.deleteSet", function () {
-                $(this).parents("tr.setRow:first").remove();
+                $(this).parents("tr.set-row:first").remove();
                 return false;
             });
 
