@@ -1,0 +1,90 @@
+﻿@model redinc_reboot.Models.ProgressReportModel
+
+@{
+    ViewBag.Title = "Student Progress";
+}
+
+<h2>Progress for Student @Model.User.DisplayName</h2>
+<br />
+
+<ul class="nav nav-tabs">
+    <li class="active"><a href="#sets" data-toggle="tab">Sets</a></li>
+    <li><a href="#problems" data-toggle="tab">Problems</a></li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane active" id="sets">
+        <table class="tablesorter">
+        <thead>
+            <tr>
+                <th>Set Name</th>
+                <th># of Problems Solved</th>
+                <th>Average Attempts per Problem</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach(var item in Model.SetProgressList)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink(item.Name, "StudentSet", new { studentId = Model.User.Id, setId = item.Id })
+                </td>
+                <td>
+                    @item.NumCorrect
+                </td>
+                <td>
+                    @item.AvgAttempts
+                </td>
+            </tr>
+        }
+        </tbody>
+        </table>
+    </div>
+
+    <div class="tab-pane" id="problems">
+        <table class="tablesorter">
+        <thead>
+            <tr>
+                <th>Problem Name</th>
+                <th>Solved?</th>
+                <th># of Attempts</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach(var item in Model.ProblemProgressList)
+        {
+            <tr>
+                <td>
+                    @item.Name
+                </td>
+                <td>
+                    @( item.IsSolved ? "Yes" : "No" )
+                </td>
+                <td>
+                    @item.AvgAttempts
+                </td>
+            </tr>
+        }
+        </tbody>
+        </table>
+    </div>
+</div>
+
+@section styles
+{
+    @Styles.Render("~/Libs/tablesorter/themes/blue/css")
+}
+
+@section scripts
+{
+    <script type="text/javascript" src="~/Libs/tablesorter/jquery.tablesorter.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("table.tablesorter").tablesorter({
+                textExtraction: function (node) {
+                    return $(node).text();
+                }
+            });
+        });
+    </script>
+}

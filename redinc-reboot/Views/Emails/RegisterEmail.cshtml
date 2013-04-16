@@ -1,0 +1,17 @@
+﻿@{
+    Layout = null;
+}
+
+To: @ViewBag.To
+From: practice.makes.python@gmail.com
+Subject: Practice Makes Python - Complete Registration Process
+
+Hello @ViewBag.Name,
+
+You've registered an account at Practice Makes Python. To complete the registration process, click on this link:
+@Url.Action("RegisterConfirmation", "Account", new { id = ViewBag.ConfirmationToken }, Request.Url.Scheme)
+
+If you did not sign up for an account, please ignore this email.
+
+Keep coding,
+The Practice Makes Python Team

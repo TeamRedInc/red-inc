@@ -18,11 +18,13 @@
     </p>
 }
 
-<div class="btn-toolbar">
-    @Html.ActionLink("New Problem Set", "Edit", "ProblemSet", new { @class = "btn" })
-    @Html.ActionLink("New Problem", "Edit", "Problem", new { @class = "btn" })
 
+<div class="btn-toolbar">
+    @Html.ActionLink("New Problem Set", "Edit", "ProblemSet", new { classId = Model.Class.Id }, new { @class = "btn" })
+    @Html.ActionLink("New Problem", "Edit", "Problem", new { @class = "btn" })
+    @Html.ActionLink("Class Progress Report", "Class", "Progress", new { id = Model.Class.Id }, null)
 </div>
+
 <br /><br />
 
 @using (Html.BeginForm("Edit", "Class"))
@@ -38,6 +40,7 @@
     </fieldset>
 }
 
+<<<<<<< HEAD
 <h2>Problem Sets</h2>
 <div class="container">
     <div class="well">
@@ -48,6 +51,16 @@
 
     </div>
 </div>
+=======
+<table>
+    @foreach (var set in Model.Sets)
+    {
+        <tr><td>
+        @Html.ActionLink(set.Name, "Edit", "ProblemSet", new { classId = Model.Class.Id, problemSetId = set.Id }, null)
+        </td></tr>
+    }
+</table>
+>>>>>>> 626dc2292b33426279a6dd30c1c7d4bd17a33b05
 
 @section scripts
 {

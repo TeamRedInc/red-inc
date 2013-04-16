@@ -2,9 +2,11 @@
 using core.Modules.Class;
 using core.Modules.Problem;
 using core.Modules.ProblemSet;
+using core.Modules.Progress;
 using core.Modules.User;
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace core
 {
@@ -14,6 +16,7 @@ namespace core
         private readonly ProblemSetModel setModel;
         private readonly ProblemModel problemModel;
         private readonly ClassModel classModel;
+        private readonly ProgressModel progressModel;
 
         /// <summary>
         /// Primary thread of execution
@@ -25,13 +28,11 @@ namespace core
             setModel = ModelFactory.ProblemSetModel;
             problemModel = ModelFactory.ProblemModel;
             classModel = ModelFactory.ClassModel;
+            progressModel = ModelFactory.ProgressModel;
         }
 
-        public bool AddUser(int id, string email)
+        public bool AddUser(UserData user)
         {
-            UserData user = new UserData(id);
-            user.Email = email;
-
             return userModel.Add(user);
         }
 
@@ -206,6 +207,47 @@ namespace core
                 return null;
             else
                 return output;
+        }
+
+        public List<ProblemProgress> GetProblemProgress(int classId, int userId = 0, int setId = 0)
+        {
+            UserData user = userId > 0 ? new UserData(userId) : null;
+            ProblemSetData set = setId > 0 ? new ProblemSetData(setId) : null;
+            return progressModel.GetProblemProgress(new ClassData(classId), user, set);
+        }
+
+        public List<SetProgress> GetSetProgress(int classId, int userId = 0)
+        {
+            UserData user = userId > 0 ? new UserData(userId) : null;
+            return progressModel.GetSetProgress(new ClassData(classId), user);
+        }
+
+        public List<StudentProgress> GetStudentProgress(int classId)
+        {
+            return progressModel.GetStudentProgress(new ClassData(classId));
+        }
+
+        public UserData GetUserById(int userId)
+        {
+            return userModel.GetById(userId);
+        }
+
+        public string GetGradeCsv(int classId)
+        {
+            List<StudentProgress> list = progressModel.GetStudentProgress(new ClassData(classId));
+            
+            StringBuilder csv = new StringBuilder();
+            foreach (StudentProgress sp in list)
+            {
+                string username = sp.Email.Substring(0, sp.Email.IndexOf('@'));
+                csv.Append(username).Append(",")
+                    .Append(sp.Email).Append(",")
+                    .Append(sp.NumCorrect).Append(",")
+                    .Append(sp.AvgAttempts);
+                csv.AppendLine();
+            }
+
+            return csv.ToString();
         }
     }
 }

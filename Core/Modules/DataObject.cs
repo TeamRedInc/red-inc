@@ -23,7 +23,12 @@ namespace core.Modules
 
         public static bool operator ==(DataObject lhs, DataObject rhs)
         {
-            return lhs.Id == rhs.Id;
+            if (Object.ReferenceEquals(lhs, null) && Object.ReferenceEquals(rhs, null))
+                return true;
+            else if (!Object.ReferenceEquals(lhs, null) && !Object.ReferenceEquals(rhs, null))
+                return lhs.Id == rhs.Id;
+            else
+                return false;
         }
 
         public static bool operator !=(DataObject lhs, DataObject rhs)

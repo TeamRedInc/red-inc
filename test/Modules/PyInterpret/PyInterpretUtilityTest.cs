@@ -8,7 +8,52 @@ namespace core.Tests.Modules.PyInterpret
     public class PyInterpretUtilityTest
     {
         [TestMethod]
-        public void ProfessorCodeTesT()
+        public void UnallowedCodeTest1()
+        {
+            PyInterpretUtility util = new PyInterpretUtility();
+            var studentCode = @"import os";
+            var output = util.Execute(studentCode);
+            Assert.AreEqual(output, "Code not permitted: os");
+        }
+
+        [TestMethod]
+        public void UnallowedCodeTest2()
+        {
+            PyInterpretUtility util = new PyInterpretUtility();
+            var studentCode = @"from os import";
+            var output = util.Execute(studentCode);
+            Assert.AreEqual(output, "Code not permitted: os");
+        }
+
+        [TestMethod]
+        public void UnallowedCodeTest3()
+        {
+            PyInterpretUtility util = new PyInterpretUtility();
+            var studentCode = @"import os.path";
+            var output = util.Execute(studentCode);
+            Assert.AreEqual(output, "Code not permitted: os");
+        }
+
+        [TestMethod]
+        public void UnallowedCodeTest4()
+        {
+            PyInterpretUtility util = new PyInterpretUtility();
+            var studentCode = @"exec etc";
+            var output = util.Execute(studentCode);
+            Assert.AreEqual(output, "Code not permitted: exec");
+        }
+
+        [TestMethod]
+        public void UnallowedCodeTest5()
+        {
+            PyInterpretUtility util = new PyInterpretUtility();
+            var studentCode = @"eval(etc)";
+            var output = util.Execute(studentCode);
+            Assert.AreEqual(output, "Code not permitted: eval");
+        }
+
+        [TestMethod]
+        public void ProfessorCodeTest()
         {
             PyInterpretUtility util = new PyInterpretUtility();
             var studentCode = @"def myFunc():

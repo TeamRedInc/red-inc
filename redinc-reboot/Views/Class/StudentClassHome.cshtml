@@ -6,6 +6,7 @@
 <h2>@Model.Name Student Home</h2>
 
 @Html.ActionLink("New Problem", "Edit", "Problem")
+@Html.ActionLink("My Progress", "Student", "Progress", new { id = WebSecurity.CurrentUserId }, null)
 <br /><br />
 
 <h3>Unlocked Sets</h3>

@@ -1,0 +1,53 @@
+﻿@model redinc_reboot.Models.ProgressReportModel
+
+@{
+    ViewBag.Title = "Set Progress - " + @Model.ProblemSet.Name;
+}
+
+<h2>@Model.User.DisplayName - Progress for Set @Model.ProblemSet.Name</h2>
+<br />
+
+<table class="tablesorter">
+<thead>
+    <tr>
+        <th>Problem Name</th>
+        <th>Solved?</th>
+        <th># of Attempts</th>
+    </tr>
+</thead>
+<tbody>
+@foreach(var item in Model.ProblemProgressList)
+{
+    <tr>
+        <td>
+            @item.Name
+        </td>
+        <td>
+            @( item.IsSolved ? "Yes" : "No" )
+        </td>
+        <td>
+            @item.AvgAttempts
+        </td>
+    </tr>
+}
+</tbody>
+</table>
+
+@section styles
+{
+    @Styles.Render("~/Libs/tablesorter/themes/blue/css")
+}
+
+@section scripts
+{
+    <script type="text/javascript" src="~/Libs/tablesorter/jquery.tablesorter.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("table.tablesorter").tablesorter({
+                textExtraction: function (node) {
+                    return $(node).text();
+                }
+            });
+        });
+    </script>
+}

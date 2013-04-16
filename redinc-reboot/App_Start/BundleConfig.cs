@@ -18,12 +18,9 @@ namespace redinc_reboot
                         "~/Scripts/jquery.unobtrusive*",
                         "~/Scripts/jquery.validate*"));
 
-            bundles.Add(new ScriptBundle("~/bundles/jquery.markitup").Include(
+            bundles.Add(new ScriptBundle("~/Libs/markitup/js").Include(
                         "~/Libs/markitup/jquery.markitup.js",
                         "~/Libs/markitup/sets/bbcode/set.js"));
-
-            bundles.Add(new ScriptBundle("~/bundles/edit_area").Include(
-                        "~/Libs/edit_area/edit_area_full.js"));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
@@ -41,6 +38,14 @@ namespace redinc_reboot
                         "~/Libs/markitup/skins/simple/style.css",
                         "~/Libs/markitup/sets/bbcode/style.css"));
 
+            bundles.Add(new StyleBundle("~/Libs/markitup/skins/simple/css").Include(
+                        "~/Libs/markitup/skins/simple/style.css"));
+
+            bundles.Add(new StyleBundle("~/Libs/markitup/sets/bbcode/css").Include(
+                        "~/Libs/markitup/sets/bbcode/style.css"));
+
+            bundles.Add(new StyleBundle("~/Libs/tablesorter/themes/blue/css").Include(
+                        "~/Libs/tablesorter/themes/blue/style.css"));
         }
     }
 }

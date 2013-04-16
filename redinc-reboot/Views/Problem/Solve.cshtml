@@ -12,39 +12,42 @@
 
 <hr />
 
-<textarea id="codeArea"></textarea>
+<div id="codeArea"></div>
 
 <br />
 <button id="submitButton">Submit</button>
 
+@section styles
+{
+    <link href="~/Content/ace_editor.css" rel="stylesheet" />
+}
+
 @section scripts
 {    
-    @Scripts.Render("~/bundles/edit_area")
+    <script src="http://rawgithub.com/ajaxorg/ace-builds/master/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript">
         $(function () {
-            editAreaLoader.init({
-                id: "codeArea",
-                syntax: "python",
-                start_highlight: true,
-                allow_toggle: false,
-                toolbar: "search, |, undo, redo, |, select_font,|, highlight, reset_highlight, word_wrap, |, help"
-            });
+            var editor = ace.edit("codeArea");
+            editor.setTheme("ace/theme/textmate");
+            editor.getSession().setMode("ace/mode/python");
+            editor.setDisplayIndentGuides(false);
+            editor.setShowPrintMargin(false);
 
             $('#submitButton').click(function () {
                 $.ajax({
                     url: '@Url.Action("Solve")',
                     type: 'POST',
                     data: {
-                        code: editAreaLoader.getValue("codeArea"),
+                        code: editor.getValue(),
                         id: @Model.Id,
-                        record: @(ViewBag.Record ? "true" : "false" )
+                        record: @(ViewBag.Record ? "true" : "false")
                     },
                     success: function (data) {
                         if (data.success) {
                             alert("Correct!");
                             window.location.href = '@Url.Action("Home", "Class", new { id = @Model.Class.Id })';
                         } else {
-                            alert("Incorrect. Modify your code and try again.\r\nOutput: " + data.output);
+                            alert("Incorrect. Modify your code and try again.\r\n" + data.output);
                         }
                     }
                 });

@@ -1,4 +1,5 @@
 ﻿using core.Modules.Class;
+using core.Modules.Logging;
 using core.Modules.Problem;
 using core.Modules.ProblemSet;
 using core.Modules.Progress;
@@ -14,6 +15,7 @@ namespace core.Modules
         private static readonly Lazy<ProblemSetDao> problemSetDao = new Lazy<ProblemSetDao>();
         private static readonly Lazy<ProblemDao> problemDao = new Lazy<ProblemDao>();
         private static readonly Lazy<ProgressDao> progressDao = new Lazy<ProgressDao>();
+        private static readonly Lazy<LoggingDao> loggingDao = new Lazy<LoggingDao>();
 
         public static UserDao UserDao
         {
@@ -38,6 +40,11 @@ namespace core.Modules
         public static ProgressDao ProgressDao
         {
             get { return progressDao.Value; }
+        }
+
+        public static LoggingDao LoggingDao
+        {
+            get { return loggingDao.Value; }
         }
     }
 }

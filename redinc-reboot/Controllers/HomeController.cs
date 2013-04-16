@@ -55,30 +55,47 @@ namespace redinc_reboot.Controllers
         [AllowAnonymous]
         public ActionResult PythonTestPage(CodeModel model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                // Attempt to execute code
-                model.OutputCode = GlobalStaticVars.StaticCore.ExecutePythonCode(model.InputCode);
+                if (ModelState.IsValid)
+                {
+                    // Attempt to execute code
+                    model.OutputCode = GlobalStaticVars.StaticCore.ExecutePythonCode(model.InputCode);
+                }
+
+                // Redisplay form with output
+                return View(model);
             }
-            
-            // Redisplay form with output
-            return View(model);
+            catch (Exception e)
+            {
+                return RedirectToAction("ServerError", "Error");
+            }
         }
 
+        [Authorize]
         public ActionResult Home()
         {
-            Session.Clear();
+            try
+            {
+                Session.Clear();
 
-            var viewModel = new HomeClassListModel();
-            viewModel.StudentClassList = GlobalStaticVars.StaticCore.GetStudentClasses(WebSecurity.CurrentUserId);
-            viewModel.InstructorClassList = GlobalStaticVars.StaticCore.GetInstructorClasses(WebSecurity.CurrentUserId);
-            var allClasses = GlobalStaticVars.StaticCore.GetAllClasses();
-            viewModel.AllOtherClassesList = allClasses.Except(viewModel.StudentClassList).Except(viewModel.InstructorClassList);
+                var viewModel = new HomeClassListModel();
+                viewModel.StudentClassList = GlobalStaticVars.StaticCore.GetStudentClasses(WebSecurity.CurrentUserId);
+                viewModel.InstructorClassList =
+                    GlobalStaticVars.StaticCore.GetInstructorClasses(WebSecurity.CurrentUserId);
+                var allClasses = GlobalStaticVars.StaticCore.GetAllClasses();
+                viewModel.AllOtherClassesList =
+                    allClasses.Except(viewModel.StudentClassList).Except(viewModel.InstructorClassList);
 
-            if (TempData["Error"] != null)
-                ViewBag.Error = TempData["Error"];
-            
-            return View(viewModel);
+                if (TempData["Error"] != null)
+                    ViewBag.Error = TempData["Error"];
+
+                return View(viewModel);
+            }
+            catch (Exception e)
+            {
+                return RedirectToAction("ServerError", "Error");
+            }
         }
     }
 }

@@ -10,6 +10,8 @@ using Microsoft.Web.WebPages.OAuth;
 using WebMatrix.WebData;
 using redinc_reboot.Filters;
 using redinc_reboot.Models;
+using core.Modules.User;
+using Postal;
 
 namespace redinc_reboot.Controllers
 {
@@ -79,10 +81,21 @@ namespace redinc_reboot.Controllers
                 // Attempt to register the user
                 try
                 {
-                    WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
-                    GlobalStaticVars.StaticCore.AddUser(WebSecurity.GetUserId(model.UserName), model.UserName);
-                    WebSecurity.Login(model.UserName, model.Password);
-                    return RedirectToAction("Home", "Home");
+                    string confirmationToken = WebSecurity.CreateUserAndAccount(model.UserName, model.Password, null, true);
+
+                    UserData user = new UserData(WebSecurity.GetUserId(model.UserName));
+                    user.Email = model.UserName;
+                    user.FirstName = model.FirstName;
+                    user.LastName = model.LastName;
+                    GlobalStaticVars.StaticCore.AddUser(user);
+
+                    dynamic email = new Email("RegisterEmail");
+                    email.To = model.UserName;
+                    email.Name = model.FirstName ?? model.UserName;
+                    email.ConfirmationToken = confirmationToken;
+                    email.Send();
+
+                    return RedirectToAction("RegisterStepTwo");
                 }
                 catch (MembershipCreateUserException e)
                 {
@@ -92,6 +105,34 @@ namespace redinc_reboot.Controllers
 
             // If we got this far, something failed, redisplay form
             return View(model);
+        }
+
+        [AllowAnonymous]
+        public ActionResult RegisterStepTwo()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
+        public ActionResult RegisterConfirmation(string id)
+        {
+            if (WebSecurity.ConfirmAccount(id))
+            {
+                return RedirectToAction("ConfirmationSuccess");
+            }
+            return RedirectToAction("ConfirmationFailure");
+        }
+
+        [AllowAnonymous]
+        public ActionResult ConfirmationSuccess()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
+        public ActionResult ConfirmationFailure()
+        {
+            return View();
         }
 
         //
