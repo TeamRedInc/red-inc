@@ -83,7 +83,7 @@
 
             $('#addSet').autocomplete({
                 source: '@Url.Action("Search", "ProblemSet")',
-                minLength: 2,
+                minLength: 0,
                 select: function (e, ui) {
                     $.ajax({
                         url: '@Url.Action("AddProblemSet")',
