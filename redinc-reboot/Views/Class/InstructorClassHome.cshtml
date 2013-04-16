@@ -40,27 +40,16 @@
     </fieldset>
 }
 
-<<<<<<< HEAD
 <h2>Problem Sets</h2>
 <div class="container">
     <div class="well">
         @foreach (var set in Model.Sets)
         {
-            @Html.ActionLink(set.Name, "Edit", "ProblemSet", new { id = set.Id }, new { @class = "btn btn-block btn-large btn-text-left" })
+            @Html.ActionLink(set.Name, "Edit", "ProblemSet", new { classId = Model.Class.Id, problemSetId = set.Id }, new { @class = "btn btn-block btn-large btn-text-left" })
         }
 
     </div>
 </div>
-=======
-<table>
-    @foreach (var set in Model.Sets)
-    {
-        <tr><td>
-        @Html.ActionLink(set.Name, "Edit", "ProblemSet", new { classId = Model.Class.Id, problemSetId = set.Id }, null)
-        </td></tr>
-    }
-</table>
->>>>>>> 626dc2292b33426279a6dd30c1c7d4bd17a33b05
 
 @section scripts
 {
