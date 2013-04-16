@@ -4,15 +4,15 @@
     ViewBag.Title = "Set Progress - " + @Model.ProblemSet.Name;
 }
 
-<h2>Progress for Set @Model.ProblemSet.Name</h2>
+<h2>@Model.User.DisplayName - Progress for Set @Model.ProblemSet.Name</h2>
 <br />
 
 <table class="tablesorter">
 <thead>
     <tr>
         <th>Problem Name</th>
-        <th># of Students Solved</th>
-        <th>Average Attempts per Problem</th>
+        <th>Solved?</th>
+        <th># of Attempts</th>
     </tr>
 </thead>
 <tbody>
@@ -23,7 +23,7 @@
             @item.Name
         </td>
         <td>
-            @item.NumCorrect
+            @( item.IsSolved ? "Yes" : "No" )
         </td>
         <td>
             @item.AvgAttempts

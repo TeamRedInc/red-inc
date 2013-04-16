@@ -28,6 +28,24 @@ namespace redinc_reboot.Controllers
             }
         }
 
+        public ActionResult StudentSet(int studentId, int setId)
+        {
+            try
+            {
+                ProgressReportModel viewModel = new ProgressReportModel();
+
+                viewModel.User = GlobalStaticVars.StaticCore.GetUserById(studentId);
+                viewModel.ProblemSet = GlobalStaticVars.StaticCore.GetSetById(setId);
+                viewModel.ProblemProgressList = GlobalStaticVars.StaticCore.GetProblemProgress(viewModel.ProblemSet.Class.Id, studentId, setId);
+
+                return View(viewModel);
+            }
+            catch
+            {
+                return RedirectToAction("ServerError", "Error");
+            }
+        }
+
         public ActionResult Student(int id)
         {
             try

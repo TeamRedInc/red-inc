@@ -44,6 +44,8 @@ namespace redinc_reboot
             bundles.Add(new StyleBundle("~/Libs/markitup/sets/bbcode/css").Include(
                         "~/Libs/markitup/sets/bbcode/style.css"));
 
+            bundles.Add(new StyleBundle("~/Libs/tablesorter/themes/blue/css").Include(
+                        "~/Libs/tablesorter/themes/blue/style.css"));
         }
     }
 }

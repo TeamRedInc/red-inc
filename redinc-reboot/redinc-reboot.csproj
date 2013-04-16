@@ -325,6 +325,17 @@
     <Content Include="Libs\markitup\templates\preview.css" />
     <Content Include="Libs\markitup\templates\preview.html" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
+    <Content Include="Libs\tablesorter\addons\pager\jquery.tablesorter.pager.css" />
+    <Content Include="Libs\tablesorter\addons\pager\jquery.tablesorter.pager.js" />
+    <Content Include="Libs\tablesorter\jquery.tablesorter.min.js" />
+    <Content Include="Libs\tablesorter\themes\blue\asc.gif" />
+    <Content Include="Libs\tablesorter\themes\blue\bg.gif" />
+    <Content Include="Libs\tablesorter\themes\blue\desc.gif" />
+    <Content Include="Libs\tablesorter\themes\blue\style.css" />
+    <Content Include="Libs\tablesorter\themes\green\asc.png" />
+    <Content Include="Libs\tablesorter\themes\green\bg.png" />
+    <Content Include="Libs\tablesorter\themes\green\desc.png" />
+    <Content Include="Libs\tablesorter\themes\green\style.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />
@@ -406,6 +417,7 @@
     <Content Include="Views\Progress\Class.cshtml" />
     <Content Include="Views\Progress\Set.cshtml" />
     <Content Include="Views\Progress\Student.cshtml" />
+    <Content Include="Views\Progress\StudentSet.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
