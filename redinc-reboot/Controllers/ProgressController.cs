@@ -16,6 +16,7 @@ namespace redinc_reboot.Controllers
                 ProgressReportModel viewModel = new ProgressReportModel();
 
                 viewModel.ProblemSet = GlobalStaticVars.StaticCore.GetSetById(id);
+                viewModel.StudentProgressList = GlobalStaticVars.StaticCore.GetStudentProgress(viewModel.ProblemSet.Class.Id, id);
                 viewModel.ProblemProgressList = GlobalStaticVars.StaticCore.GetProblemProgress(viewModel.ProblemSet.Class.Id, 0, id);
 
                 return View(viewModel);

@@ -20,10 +20,12 @@ namespace core.Modules.Progress
 
         /// <summary>
         /// Calculates aggregated progress data for all students in the specified class.
+        /// If a non-null set is passed in, then the data is limited to problems in that set.
         /// </summary>
         /// <param name="cls">The ClassData object with the class's id</param>
+        /// <param name="set">The ProblemSetData object with the set's id (optional)</param>
         /// <returns>A non-null, possibly empty list of StudentProgress objects</returns>
-        public List<StudentProgress> GetStudentProgress(ClassData cls)
+        public List<StudentProgress> GetStudentProgress(ClassData cls, ProblemSetData set = null)
         {
             using (SqlConnection conn = new SqlConnection(connStr))
             {
@@ -39,6 +41,14 @@ namespace core.Modules.Progress
                 query.AppendLine("from dbo.[User] u ");
                 query.AppendLine("Join dbo.[Problem] p on p.ClassId = @clsId ");
                 query.AppendLine("Join dbo.[Solution] s on s.UserId = u.Id and s.ProblemId = p.Id ");
+                if (set != null)
+                {
+                    query.AppendLine("Where p.Id in ( ");
+                    query.AppendLine("  Select ProblemId from dbo.[ProblemSetProblem] ");
+                    query.AppendLine("  Where ProblemSetId = @setId ");
+                    query.AppendLine(") ");
+                    cmd.Parameters.AddWithValue("@setId", set.Id);
+                }
                 query.AppendLine("Group by " + selectCols);
 
                 //Class

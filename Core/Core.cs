@@ -222,9 +222,10 @@ namespace core
             return progressModel.GetSetProgress(new ClassData(classId), user);
         }
 
-        public List<StudentProgress> GetStudentProgress(int classId)
+        public List<StudentProgress> GetStudentProgress(int classId, int setId = 0)
         {
-            return progressModel.GetStudentProgress(new ClassData(classId));
+            ProblemSetData set = setId > 0 ? new ProblemSetData(setId) : null;
+            return progressModel.GetStudentProgress(new ClassData(classId), set);
         }
 
         public UserData GetUserById(int userId)
