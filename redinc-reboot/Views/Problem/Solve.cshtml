@@ -5,7 +5,9 @@
 
 <h2>Solve Problem</h2>
 
-<br />
+@Html.ActionLink("Read-only link", "ReadOnly", new { id = Model.Id })
+<br /><br />
+
 <div>
     @Html.Raw(Model.Description)
 </div>
