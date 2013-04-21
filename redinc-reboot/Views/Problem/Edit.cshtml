@@ -32,22 +32,24 @@
         <div id="solutionArea" style="position:relative; height: 300px; width: 700px;">@Model.Problem.SolutionCode</div>
         @Html.HiddenFor(m => m.Problem.SolutionCode, new { id = "hiddenSolution" })
 
+        <br /><br />
         @if (ViewBag.IsInstructor)
         {
-            <table id="setTable" class="set-table">
+            <table id="setTable" class="prereq-table">
                 <tr>
-                    <th>Problem Set</th>
-                    <th>Delete</th>
+                    <th class="set-th">Problem Set</th>
+                    <th class="set-th">Delete</th>
                 </tr>
                 @foreach (var prereq in Model.Sets)
                 {
                     Html.RenderPartial("EditorTemplates/ProblemSetRow", prereq);
                 }
             </table>
+            <br />
             <label for="addSet" style="display: inline-block">Add:</label>
             <input type="text" id="addSet" />
         }
-        
+        <br /><br />
         <br />
         <input id="submitButton" type="submit" value="Save" />
         <input id="testButton" type="button" value="Test" />

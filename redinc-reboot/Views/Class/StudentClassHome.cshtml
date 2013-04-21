@@ -5,36 +5,50 @@
 
 <h2>@Model.Name Student Home</h2>
 
-@Html.ActionLink("New Problem", "Edit", "Problem")
-@Html.ActionLink("My Progress", "Student", "Progress", new { id = WebSecurity.CurrentUserId }, null)
+<div class="btn-toolbar">
+    @Html.ActionLink("New Problem", "Edit", "Problem", new { @class = "btn" })
+    @Html.ActionLink("My Progress", "Student", "Progress", new { id = WebSecurity.CurrentUserId }, new { @class = "btn" })
+</div>
+
 <br /><br />
 
 <h3>Unlocked Sets</h3>
-<table>
+
+<div class="container">
+    <div class="well">
     @foreach (core.Modules.ProblemSet.ProblemSetData set in ViewBag.UnlockedSets)
     {
-        <tr><td>
-            @Html.ActionLink(set.Name, "Solve", "Problem", new { id = set.Id }, null)
-        </td></tr>
+        
+        @Html.ActionLink(set.Name, "Solve", "Problem", new { id = set.Id }, new { @class = "btn btn-block btn-large btn-text-left" })
+        
     }
-</table>
+    </div>
+</div>
+
 
 <h3>Locked Sets</h3>
-<table>
+<div class="container">
+    <div class="well">
+    
     @foreach (core.Modules.ProblemSet.ProblemSetData set in ViewBag.LockedSets)
     {
-        <tr><td>
-            @Html.DisplayTextFor(m => set.Name)
-        </td></tr>
+        <div class="btn btn-block disabled btn-large btn-text-left">
+        @Html.DisplayTextFor(m => set.Name)
+        </div>
     }
-</table>
+    </div>
+</div>
 
 <h3>Solved Sets</h3>
-<table>
+<div class="container">
+    <div class="well">
     @foreach (core.Modules.ProblemSet.ProblemSetData set in ViewBag.SolvedSets)
     {
-        <tr><td>
+        <div class="btn btn-block btn-large btn-text-left">
             @Html.DisplayTextFor(m => set.Name)
-        </td></tr>
+        </div>
     }
-</table>
+    </div>
+</div>
+
+<br /><br /><br />

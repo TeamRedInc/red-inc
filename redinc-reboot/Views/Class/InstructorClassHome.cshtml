@@ -22,7 +22,7 @@
 <div class="btn-toolbar">
     @Html.ActionLink("New Problem Set", "Edit", "ProblemSet", new { classId = Model.Class.Id }, new { @class = "btn" })
     @Html.ActionLink("New Problem", "Edit", "Problem", new { @class = "btn" })
-    @Html.ActionLink("Class Progress Report", "Class", "Progress", new { id = Model.Class.Id }, null)
+    @Html.ActionLink("Class Progress Report", "Class", "Progress", new { id = Model.Class.Id }, new { @class = "btn" })
 </div>
 
 <br /><br />
