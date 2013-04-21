@@ -38,7 +38,7 @@ namespace core.Modules.Class
                 cmd.Parameters.AddWithValue("@instrId", cls.Instructor.Id);
 
                 //Required Domain
-                if (!String.IsNullOrWhiteSpace(cls.Name))
+                if (!String.IsNullOrWhiteSpace(cls.RequiredDomain))
                 {
                     cmdStr += ", RequiredDomain";
                     paramList += ", @domain";
