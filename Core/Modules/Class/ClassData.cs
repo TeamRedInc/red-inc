@@ -1,4 +1,5 @@
-﻿using core.Modules.User;
+﻿using System.Runtime.Serialization;
+using core.Modules.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,11 +13,9 @@ namespace core.Modules.Class
         private string name;
         private UserData instructor;
         private string requiredDomain;
-
         public ClassData() : base(0) { }
-
         public ClassData(int id) : base(id) { }
-
+        
         public string Name
         {
             get
@@ -27,13 +26,13 @@ namespace core.Modules.Class
             }
             set { name = value; }
         }
-
+        
         public UserData Instructor
         {
             get { return instructor; }
             set { instructor = value; }
         }
-
+        
         public string RequiredDomain
         {
             get { return requiredDomain; }
