@@ -1,0 +1,11 @@
+﻿@model core.Modules.Problem.ProblemData
+@{
+    ViewBag.Title = "View Problem";
+}
+
+<h2>View @Model.Name</h2>
+<br />
+
+<div>
+    @Html.Raw(Model.Description)
+</div>

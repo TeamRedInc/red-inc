@@ -179,7 +179,9 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ClassController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\ExportController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ImportController.cs" />
     <Compile Include="Controllers\ProblemController.cs" />
     <Compile Include="Controllers\ProblemSetController.cs" />
     <Compile Include="Controllers\ProgressController.cs" />
@@ -418,6 +420,7 @@
     <Content Include="Views\Progress\Set.cshtml" />
     <Content Include="Views\Progress\Student.cshtml" />
     <Content Include="Views\Progress\StudentSet.cshtml" />
+    <Content Include="Views\Problem\ReadOnly.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

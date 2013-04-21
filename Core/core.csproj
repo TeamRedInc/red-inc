@@ -57,6 +57,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -71,6 +72,8 @@
     <Compile Include="Modules\BaseDao.cs" />
     <Compile Include="Modules\Class\ClassModel.cs" />
     <Compile Include="Modules\DaoFactory.cs" />
+    <Compile Include="Modules\DataPort\PortableClassData.cs" />
+    <Compile Include="Modules\DataPort\DataPortUtility.cs" />
     <Compile Include="Modules\Logging\LogData.cs" />
     <Compile Include="Modules\Logging\LoggingDao.cs" />
     <Compile Include="Modules\Logging\LoggingModel.cs" />
