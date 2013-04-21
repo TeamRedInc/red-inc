@@ -1,5 +1,6 @@
 ﻿using core.Modules;
 using core.Modules.Class;
+using core.Modules.DataPort;
 using core.Modules.Problem;
 using core.Modules.ProblemSet;
 using core.Modules.Progress;
@@ -29,6 +30,18 @@ namespace core
             problemModel = ModelFactory.ProblemModel;
             classModel = ModelFactory.ClassModel;
             progressModel = ModelFactory.ProgressModel;
+        }
+
+        public string ExportClassData(int id)
+        {
+            DataPortUtility util = new DataPortUtility();
+            return util.ExportFromClass(id);
+        }
+
+        public bool ImportClassData(int id, string data)
+        {
+            DataPortUtility util = new DataPortUtility();
+            return util.ImportToClass(id, data);
         }
 
         public bool AddUser(UserData user)

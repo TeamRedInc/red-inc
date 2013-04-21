@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace core.Modules
 {
+    [DataContract(IsReference=true)]
     public class DataObject : IEquatable<DataObject>
     {
         private int id;
@@ -14,7 +16,7 @@ namespace core.Modules
         {
             this.id = id;
         }
-
+        [DataMember]
         public int Id
         {
             get { return id; }
