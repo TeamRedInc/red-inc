@@ -90,6 +90,7 @@ else
                 source: '@Url.Action("Search", "ProblemSet")',
                 minLength: 0,
                 select: function (e, ui) {
+                    console.log(ui);
                     $.ajax({
                         url: '@Url.Action("AddPrereq")',
                         data: ui.item,

@@ -23,6 +23,13 @@
     @Html.ActionLink("New Problem Set", "Edit", "ProblemSet", new { classId = Model.Class.Id }, new { @class = "btn" })
     @Html.ActionLink("New Problem", "Edit", "Problem", null, new { @class = "btn" })
     @Html.ActionLink("Class Progress Report", "Class", "Progress", new { id = Model.Class.Id }, new { @class = "btn" })
+    @Html.ActionLink("Export", "ExportClassById", "Export", new { id = Model.Class.Id }, new { @class = "btn" })
+    <div id="fileChooser" class="btn">Import</div>
+    @using (Html.BeginForm("ImportClassById", "Import", FormMethod.Post, new { style="display:none", id="filesubmit", enctype = "multipart/form-data" }))
+    {
+        <input type="file" id="file" name="file" class="btn"/>
+        <input type="hidden" name="classId" value="@Model.Class.Id"/>
+    }
 </div>
 
 <br /><br />
@@ -69,5 +76,19 @@
                 });
             });
         });
+        document.getElementById("file").onchange = function() {
+            document.getElementById("filesubmit").submit();
+        }
+        var wrapper = $('<div/>').css({height:0,width:0,'overflow':'hidden'});
+        var fileInput = $(':file').wrap(wrapper);
+
+        fileInput.change(function(){
+            $this = $(this);
+            $('#fileChooser').text("Processing...");
+        })
+
+        $('#fileChooser').click(function(){
+            fileInput.click();
+        }).show();
     </script>
 }

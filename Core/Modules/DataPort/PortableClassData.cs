@@ -11,11 +11,11 @@ namespace core.Modules.DataPort
     public class PortableClassData
     {
         public Dictionary<ProblemSetData,List<ProblemSetData>> ProblemSets;
-        public List<ProblemData> Problems;
+        public Dictionary<ProblemData, List<ProblemSetData>> Problems;
 
         public PortableClassData()
         {
-            Problems = new List<ProblemData>();
+            Problems = new Dictionary<ProblemData, List<ProblemSetData>>();
             ProblemSets = new Dictionary<ProblemSetData, List<ProblemSetData>>();
         }
     }
