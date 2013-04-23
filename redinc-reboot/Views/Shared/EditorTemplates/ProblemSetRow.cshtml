@@ -5,7 +5,7 @@
         @Html.HiddenFor(m => m.Id)
         @Html.HiddenFor(m => m.Name);
         <td>
-            @Html.ActionLink(Model.Name, "Edit", "ProblemSet", new { classId = Model.Class.Id, id = Model.Id }, null)
+            @Html.ActionLink(Model.Name, "Edit", "ProblemSet", new { classId = Model.Class.Id, problemSetId = Model.Id }, null)
         </td>
         <td>
             <button class="deleteSet">X</button>
