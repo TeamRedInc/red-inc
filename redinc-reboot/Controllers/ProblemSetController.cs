@@ -67,7 +67,7 @@ namespace redinc_reboot.Controllers
                     //This is necessary in case bad prereqs (ex. duplicates) are removed by the backend
                     model.Prereqs = GlobalStaticVars.StaticCore.GetSetPrereqs(model.Set.Id);
                 }
-
+                ModelState.Clear();
                 return View(model);
             }
             catch (Exception e)
@@ -94,7 +94,7 @@ namespace redinc_reboot.Controllers
             try
             {
                 List<ProblemSetData> sets = GlobalStaticVars.StaticCore.SearchSetsInClass((int) Session["ClassId"], term);
-                return Json(sets.Select(s => new {Id = s.Id, label = s.Name, Name = s.Name}),
+                return Json(sets.Select(s => new { Id = s.Id, label = s.Name, Name = s.Name, Class = new { Id = s.Class.Id } }),
                             JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)

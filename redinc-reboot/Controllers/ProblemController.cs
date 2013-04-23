@@ -60,6 +60,7 @@ namespace redinc_reboot.Controllers
                     model.Sets = GlobalStaticVars.StaticCore.GetSetsForProblem(model.Problem.Id);
                 }
                 ViewBag.IsInstructor = ((UserType)Session["UserType"]) == UserType.Instructor;
+                ModelState.Clear();
                 return View(model);
             }
             catch (Exception e)
