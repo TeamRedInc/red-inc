@@ -210,7 +210,7 @@ namespace core
             string output = py.Test(studentCode, prob.SolutionCode);
             bool correct = false;
 
-            if (output == "Correct")
+            if (output == "Correct\r\n")
                 correct = true;
 
             if (record)

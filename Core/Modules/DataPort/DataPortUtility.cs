@@ -36,10 +36,34 @@ namespace core.Modules.DataPort
                     var problems = ModelFactory.ProblemModel.GetForSet(pset);
                     foreach (var problem in problems)
                     {
-                        if (!exportData.Problems.Contains(problem))
+                        if (!exportData.Problems.Keys.Contains(problem))
                         {
-                            exportData.Problems.Add(problem);
+                            var list = new List<ProblemSetData>();
+                            list.Add(pset);
+                            exportData.Problems.Add(problem, list);
                         }
+                        else
+                        {
+                            exportData.Problems[problem].Add(pset);
+                        }
+                    }
+                }
+
+                // Retrieve unassigned problems
+                var unassignedPset = new ProblemSetData(-1);
+                unassignedPset.Class = ModelFactory.ClassModel.GetById(classID);
+                var unassignedProblems = ModelFactory.ProblemModel.GetForSet(unassignedPset);
+                foreach (var problem in unassignedProblems)
+                {
+                    if (!exportData.Problems.Keys.Contains(problem))
+                    {
+                        var list = new List<ProblemSetData>();
+                        list.Add(unassignedPset);
+                        exportData.Problems.Add(problem, list);
+                    }
+                    else
+                    {
+                        exportData.Problems[problem].Add(unassignedPset);
                     }
                 }
 
@@ -74,52 +98,62 @@ namespace core.Modules.DataPort
                 }
 
                 // Then, construct our two ID maps
-                var problemIDMap = new Dictionary<int, int>();
-                var problemSetIDMap = new Dictionary<int, int>();
+                var problemMap = new Dictionary<ProblemData, ProblemData>();
+                var problemSetMap = new Dictionary<ProblemSetData, ProblemSetData>();
 
                 // Retrieve our class
-                var cls = ModelFactory.ClassModel.GetById(classID);
+                var newClass = ModelFactory.ClassModel.GetById(classID);
 
-                // Now, add all the problems and update our map
-                foreach (var problem in importData.Problems)
+                // Now, add all our problems
+                foreach (var problem in importData.Problems.Keys)
                 {
-                    var oldID = problem.Id;
-                    var newID = ModelFactory.ProblemModel.Add(problem);
-                    problemIDMap[oldID] = newID;
+                    var oldClass = problem.Class;
+                    problem.Class = newClass;
+                    var newProblemId = ModelFactory.ProblemModel.Add(problem);
+                    problem.Class = oldClass;
+                    problemMap[problem] = ModelFactory.ProblemModel.GetById(newProblemId);
                 }
 
-                // Now, update all problem set classes
-                foreach (var pset in importData.ProblemSets.Keys)
+                // Next, add all of our problem sets
+                foreach (var problemSet in importData.ProblemSets.Keys)
                 {
-                    pset.Class = cls;
-                    foreach (var prereq in importData.ProblemSets[pset])
+                    var oldClass = problemSet.Class;
+                    problemSet.Class = newClass;
+                    var newProblemSetId = ModelFactory.ProblemSetModel.Add(problemSet);
+                    problemSet.Class = oldClass;
+                    problemSetMap[problemSet] = ModelFactory.ProblemSetModel.GetById(newProblemSetId);
+                }
+
+                // Now hook up all our problem set prerequisites
+                foreach (var problemSet in importData.ProblemSets.Keys)
+                {
+                    var newProblemSet = problemSetMap[problemSet];
+                    var newPrereqs = new List<ProblemSetData>();
+                    foreach (var prereq in importData.ProblemSets[problemSet])
                     {
-                        prereq.Class = cls;
+                        problemSetMap[prereq].PrereqCount = prereq.PrereqCount;
+                        newPrereqs.Add(problemSetMap[prereq]);
                     }
+                    ModelFactory.ProblemSetModel.UpdatePrereqs(newProblemSet, newPrereqs);
                 }
 
-                // Now, add all the problem sets (only keys!) and update our map
-                foreach (var pset in importData.ProblemSets.Keys)
+                // Now update our problem set assignments
+                foreach (var problem in importData.Problems.Keys)
                 {
-                    var oldID = pset.Id;
-                    var newID = ModelFactory.ProblemSetModel.Add(pset);
-                    problemSetIDMap[oldID] = newID;
-                }
-
-                // Now, update all problem set IDs
-                foreach (var pset in importData.ProblemSets.Keys)
-                {
-                    foreach (var prereq in importData.ProblemSets[pset])
+                    var newProblem = problemMap[problem];
+                    var newProblemSets = new List<ProblemSetData>();
+                    foreach (var problemSet in importData.Problems[problem])
                     {
-                        prereq.Id = problemSetIDMap[prereq.Id];
+                        if (problemSet.Id == -1)
+                        {
+                            newProblemSets.Add(problemSet);
+                        }
+                        else
+                        {
+                            newProblemSets.Add(problemSetMap[problemSet]);
+                        }
                     }
-                    pset.Id = problemSetIDMap[pset.Id];
-                }
-
-                // Finally, add the prereqs
-                foreach (var pset in importData.ProblemSets)
-                {
-                    ModelFactory.ProblemSetModel.UpdatePrereqs(pset.Key, pset.Value);
+                    ModelFactory.ProblemModel.UpdateSets(newProblem, newProblemSets);
                 }
 
                 // Return true if we got to this point
