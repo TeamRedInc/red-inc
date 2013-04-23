@@ -95,8 +95,6 @@ namespace redinc_reboot.Controllers
                 prob.Description = BBCode.ToHtml(prob.Description ?? "");
                 prob.SolutionCode = null; //Do not send solution code to client so it can't be seen and used to cheat the problem
 
-                ViewBag.Record = true;
-
                 return View(prob);
             }
             catch (Exception e)
@@ -107,11 +105,12 @@ namespace redinc_reboot.Controllers
 
         [Authorize]
         [HttpPost]
-        public JsonResult Solve(string code, int id, bool record)
+        public JsonResult Solve(string code, int id)
         {
             try
             {
-                string output = GlobalStaticVars.StaticCore.SolveProblem(WebSecurity.CurrentUserId, code, id, record);
+                ProblemData prob = GlobalStaticVars.StaticCore.GetProblemById(id);
+                string output = GlobalStaticVars.StaticCore.SolveProblem(WebSecurity.CurrentUserId, prob, code);
                 if (output == null)
                     return Json(new {success = true});
                 else
@@ -126,20 +125,22 @@ namespace redinc_reboot.Controllers
 
         [Authorize]
         [HttpPost]
-        public ActionResult TestPage(ProblemData prob)
+        public JsonResult Test(int id, string instructorCode, string studentCode)
         {
             try
             {
-                prob.Description = BBCode.ToHtml(prob.Description ?? "");
-                prob.SolutionCode = null; //Do not send solution code to client so it can't be seen and used to cheat the problem
-
-                ViewBag.Record = false;
-
-                return View("Solve", prob);
+                ProblemData prob = new ProblemData(id);
+                prob.SolutionCode = instructorCode;
+                string output = GlobalStaticVars.StaticCore.SolveProblem(WebSecurity.CurrentUserId, prob, studentCode, false);
+                if (output == null)
+                    return Json(new { success = true });
+                else
+                    return Json(new { success = false, output = output });
             }
             catch (Exception e)
             {
-                return RedirectToAction("ServerError", "Error");
+                RedirectToAction("ServerError", "Error");
+                return new JsonResult();
             }
         }
 
