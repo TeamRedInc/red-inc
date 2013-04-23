@@ -74,7 +74,7 @@ namespace redinc_reboot.Controllers
             try
             {
                 ProblemData prob = GlobalStaticVars.StaticCore.GetProblemById(id);
-                prob.Description = BBCode.ToHtml(prob.Description);
+                prob.Description = BBCode.ToHtml(prob.Description ?? "");
                 prob.SolutionCode = null;
 
                 return View(prob);
@@ -92,7 +92,7 @@ namespace redinc_reboot.Controllers
             {
                 List<ProblemData> problems = GlobalStaticVars.StaticCore.GetUnsolvedProblemsForSet(id, WebSecurity.CurrentUserId);
                 ProblemData prob = problems[new Random().Next(problems.Count)];
-                prob.Description = BBCode.ToHtml(prob.Description);
+                prob.Description = BBCode.ToHtml(prob.Description ?? "");
                 prob.SolutionCode = null; //Do not send solution code to client so it can't be seen and used to cheat the problem
 
                 ViewBag.Record = true;
@@ -130,7 +130,7 @@ namespace redinc_reboot.Controllers
         {
             try
             {
-                prob.Description = BBCode.ToHtml(prob.Description);
+                prob.Description = BBCode.ToHtml(prob.Description ?? "");
                 prob.SolutionCode = null; //Do not send solution code to client so it can't be seen and used to cheat the problem
 
                 ViewBag.Record = false;
