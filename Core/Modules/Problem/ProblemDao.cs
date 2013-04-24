@@ -103,24 +103,31 @@ namespace core.Modules.Problem
             using (SqlConnection conn = new SqlConnection(connStr))
             {
                 SqlCommand cmd = conn.CreateCommand();
-
-                cmd.CommandText = "Update dbo.[" + tableName + "]"
-                    + " Set Name = @name,"
-                    + " Description = @description,"
-                    + " SolutionCode = @slnCode"
-                    + " Where Id = @id;";
+                string cmdStr = "Update dbo.[" + tableName + "] Set ";
 
                 //Name
-                cmd.Parameters.AddWithValue("@name", problem.Name);
+                if (!String.IsNullOrWhiteSpace(problem.Name))
+                {
+                    cmdStr += "Name = @name, ";
+                    cmd.Parameters.AddWithValue("@name", problem.Name);
+                }
 
                 //Description
-                cmd.Parameters.AddWithValue("@description", problem.Description);
+                if (!String.IsNullOrWhiteSpace(problem.Description))
+                {
+                    cmdStr += " Description = @description, ";
+                    cmd.Parameters.AddWithValue("@description", problem.Description);
+                }
 
                 //Solution Code
+                cmdStr += "SolutionCode = @slnCode ";
                 cmd.Parameters.AddWithValue("@slnCode", problem.SolutionCode);
 
                 //Id
+                cmdStr += "Where Id = @id;";
                 cmd.Parameters.AddWithValue("@id", problem.Id);
+
+                cmd.CommandText = cmdStr;
 
                 try
                 {

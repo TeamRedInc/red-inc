@@ -5,7 +5,7 @@
         @Html.HiddenFor(m => m.Id)
         @Html.HiddenFor(m => m.Name);
         <td class="set-td">
-            @Html.ActionLink(Model.Name, "Edit", new { id = Model.Id })
+            @Html.ActionLink(Model.Name, "Edit", new { classId = Model.Class.Id, problemSetId = Model.Id })
         </td>
         <td class="set-td">
             @Html.TextBoxFor(m => m.PrereqCount)

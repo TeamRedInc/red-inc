@@ -41,8 +41,7 @@
                     type: 'POST',
                     data: {
                         code: editor.getValue(),
-                        id: @Model.Id,
-                        record: @(ViewBag.Record ? "true" : "false")
+                        id: @Model.Id
                     },
                     success: function (data) {
                         if (data.success) {

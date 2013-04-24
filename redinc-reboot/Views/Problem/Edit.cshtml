@@ -28,9 +28,23 @@
         @Html.LabelFor(m => m.Problem.Description)
         @Html.TextAreaFor(m => m.Problem.Description, new { id = "descriptionArea" })
 
-        @Html.LabelFor(m => m.Problem.SolutionCode, "Solution Code")        
+        @Html.LabelFor(m => m.Problem.SolutionCode, "Solution Code")
         <div id="solutionArea" style="position:relative; height: 300px; width: 700px;">@Model.Problem.SolutionCode</div>
         @Html.HiddenFor(m => m.Problem.SolutionCode, new { id = "hiddenSolution" })
+
+        <br />
+        <button type="button" class="btn" data-toggle="collapse" data-target="#testDiv">
+          Show/Hide Test code area
+        </button>
+
+        <div id="testDiv" class="collapse">
+            <br /><br />
+            @Html.Label("Test Code")
+            <div id="testArea" style="position:relative; height: 300px; width: 700px;"></div>
+            
+            <br />
+            <input id="testButton" type="button" value="Test" />
+        </div>
 
         <br /><br />
         @if (ViewBag.IsInstructor)
@@ -50,9 +64,8 @@
             <input type="text" id="addSet" />
         }
         <br /><br />
-        <br />
+
         <input id="submitButton" type="submit" value="Save" />
-        <input id="testButton" type="button" value="Test" />
     </fieldset>
 }
 
@@ -77,6 +90,12 @@
             editor.getSession().setMode("ace/mode/python");
             editor.setDisplayIndentGuides(false);
             editor.setShowPrintMargin(false);
+            
+            var testEditor = ace.edit("testArea");
+            testEditor.setTheme("ace/theme/textmate");
+            testEditor.getSession().setMode("ace/mode/python");
+            testEditor.setDisplayIndentGuides(false);
+            testEditor.setShowPrintMargin(false);
 
             $("#setTable").on("click", "button.deleteSet", function () {
                 $(this).parents("tr.set-row:first").remove();
@@ -106,22 +125,18 @@
 
             $('#testButton').click(function () {
                 $.ajax({
-                    url: '@Url.Action("TestPage")',
+                    url: '@Url.Action("Test")',
                     type: 'POST',
                     data: {
-                        Id: @Model.Problem.Id,
-                        Name: $('#Problem_Name').val(),
-                        Description: $('#descriptionArea').val(),
-                        SolutionCode: editor.getValue(),
-                        'Class.Id': @Model.Problem.Class.Id
+                        id: @Model.Problem.Id,
+                        instructorCode: editor.getValue(),
+                        studentCode: testEditor.getValue()
                     },
                     success: function (data) {
-                        var win=window.open('about:blank');
-                        with(win.document)
-                        {
-                            open();
-                            write(data);
-                            close();
+                        if (data.success) {
+                            alert("Correct!");
+                        } else {
+                            alert("Incorrect. Modify your code and try again.\r\n" + data.output);
                         }
                     }
                 });

@@ -198,19 +198,18 @@ namespace core
         /// and records the result in the database if desired.
         /// </summary>
         /// <param name="userId">The currently logged in user solving the problem</param>
+        /// <param name="prob">The problem being solved</param>
         /// <param name="studentCode">The student solution code</param>
-        /// <param name="problemId">The problem being solved</param>
         /// <param name="record">true to record this attempt in the database, false otherwise (optional, defaults to true)</param>
         /// <returns>null if the solution is correct, otherwise an error message</returns>
-        public string SolveProblem(int userId, string studentCode, int problemId, bool record = true)
-        {
-            ProblemData prob = problemModel.GetById(problemId);
+        public string SolveProblem(int userId, ProblemData prob, string studentCode, bool record = true)
+        {            
             var py = new Modules.PyInterpret.PyInterpretUtility();
 
             string output = py.Test(studentCode, prob.SolutionCode);
             bool correct = false;
 
-            if (output == "Correct")
+            if (output == "Correct\r\n" || output == "Correct")
                 correct = true;
 
             if (record)
