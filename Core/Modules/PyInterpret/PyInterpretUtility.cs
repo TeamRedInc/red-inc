@@ -52,7 +52,7 @@ professorFunction()";
         public string Execute(string code)
         {
             // Regex for security - this probably isn't enough for the long run
-            Match match = Regex.Match(code + " ", @"[\.\s()]*((os)|(exec)|(eval))[\.\s()]*");
+            Match match = Regex.Match(code + " ", @"((os)|(exec)|(eval))[\.\s()]+");
             if (match.Success)
             {
                 return "Code not permitted: " + match.Groups[1].Value;
