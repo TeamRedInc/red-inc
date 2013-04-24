@@ -6091,3 +6091,10 @@ a.badge:hover {
     padding-right: 0px;
     padding-bottom: 3px;
 }
+
+hr {
+    height: 7px;
+    background-color:#eeeeee; 
+    margin: 3em 0; 
+    border: 0;
+}
