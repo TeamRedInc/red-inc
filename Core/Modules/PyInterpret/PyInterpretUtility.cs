@@ -33,16 +33,10 @@ namespace core.Modules.PyInterpret
 
         public string Test(string studentCode, string professorCode)
         {
-            var studentCodeArray = studentCode.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
-            for (var i = 0; i < studentCodeArray.Length; i++)
-            {
-                studentCodeArray[i] = studentCodeArray[i].Replace("\t", Indent(4));
-                //studentCodeArray[i] = Indent(1) + studentCodeArray[i];
-            }
-            var profCodeArray = professorCode.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+            var studentCodeArray = studentCode.Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
+            var profCodeArray = professorCode.Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
             for (var i = 0; i < profCodeArray.Length; i++)
             {
-                profCodeArray[i] = profCodeArray[i].Replace("\t", Indent(4));
                 profCodeArray[i] = Indent(1) + profCodeArray[i];
             }
             var code = String.Join("\r\n", studentCodeArray) + @"
