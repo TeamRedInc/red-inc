@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web;
 using IronPython.Hosting;
 using Microsoft.Scripting;
 using Microsoft.Scripting.Hosting;
@@ -68,7 +69,8 @@ professorFunction()";
 
             var paths = _engine.GetSearchPaths();
             //string dir = System.IO.Path.GetFullPath("../../../Core/Lib");
-            string dir = Path.GetFullPath(Path.Combine(System.Web.HttpContext.Current.Server.MapPath("~"), "..\\Core\\Lib"));
+            //string dir = Path.GetFullPath(Path.Combine(System.Web.HttpContext.Current.Server.MapPath("~"), "..\\Core\\Lib"));
+            string dir = HttpContext.Current.Server.MapPath("~/Libs/python");
             
             paths.Add(dir);
             _engine.SetSearchPaths(paths);
