@@ -5,11 +5,11 @@
 }
 
 <hgroup class="title">
-    <h1>@ViewBag.Title.</h1>
+    <h1>@ViewBag.Title</h1>
 </hgroup>
 
 <section id="loginForm">
-<h2>Use a local account to log in.</h2>
+<h2>Log in to an existing account</h2>
 @using (Html.BeginForm(new { ReturnUrl = "/Home/Home" })) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
@@ -29,21 +29,17 @@
             </li>
             <li style="list-style-type:none">
                 @Html.CheckBoxFor(m => m.RememberMe)
-                @Html.LabelFor(m => m.RememberMe, new { @class = "checkbox" })
+                @Html.LabelFor(m => m.RememberMe, new { @class = "checkbox", @style = "display: inline-block" })
             </li>
         </ul>
         
         <input type="submit" value="Log in" />
     </fieldset>
+    <br />
     <p>
         @Html.ActionLink("Register", "Register") if you don't have an account.
     </p>
 }
-</section>
-
-<section class="social" id="socialLoginForm">
-    <h2>Use another service to log in.</h2>
-    @Html.Action("ExternalLoginsList", new { ReturnUrl = ViewBag.ReturnUrl })
 </section>
 
 @section Scripts {
