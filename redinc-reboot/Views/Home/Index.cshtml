@@ -8,19 +8,30 @@
                 <h1>@ViewBag.Title.</h1>
                 <h2>@ViewBag.Message</h2>
             </hgroup>
-            <p>
-                Until the entire site is up and running, here are some links to functioning pages:
-                <ul>
-                    <li>@Html.ActionLink("Logged-in Home", "Home", "Home")</li>
-                    <li>@Html.ActionLink("Python Test", "PythonTestPage", "Home")</li>
-                    <li>@Html.ActionLink("Edit Problem Set", "Edit", "ProblemSet")</li>
-                    <li>@Html.ActionLink("Edit Problem", "Edit", "Problem")</li>
-                    <li>@Html.ActionLink("Solve Problem", "Solve", "Problem")</li>
-                    <li>@Html.ActionLink("Manage Account", "Manage", "Account")</li>
+            <hr />
 
-                </ul>
+            <div style="float:left; width:400px;">
+                <h3>For Instructors</h3>
+                <p>
+                    Assign your students programming problems and download their progress.  Easy assignment, easy grading!
+                </p>
+                <p>
+                    Group problems by difficulty, subject, or both.  Automate when students are allowed to progress to the next level.
+                </p>
+            </div>
 
-            </p>
+            <div style="float:right; width:400px;">
+                <h3>For Students</h3>
+                <p>
+                    Work practice problems straight from your browser.
+                </p>
+                <p>
+                    Build up your aptitude and progress to higher levels.
+                </p>
+                <p>
+                    Stuck?  Get help!  With Practice Makes Python, it's easy to link your question directly to a helper.
+                </p>
+            </div>
         </div>
     </section>
 }
