@@ -85,12 +85,14 @@ else
                 $(this).parents("tr.set-row:first").remove();
                 return false;
             });
-
+            
+            //Turn the addPrereq input into a jQuery autocomplete widget
             $('#addPrereq').autocomplete({
                 source: '@Url.Action("Search", "ProblemSet")',
                 minLength: 0,
                 select: function (e, ui) {
                     console.log(ui);
+                    //Gets a partial view containing a row for the prereqTable and appends it
                     $.ajax({
                         url: '@Url.Action("AddPrereq")',
                         data: ui.item,

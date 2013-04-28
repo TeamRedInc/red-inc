@@ -80,12 +80,15 @@ namespace redinc_reboot.Controllers
                 Session.Clear();
 
                 var viewModel = new HomeClassListModel();
+                //All classes the current user is a student in
                 viewModel.StudentClassList = GlobalStaticVars.StaticCore.GetStudentClasses(WebSecurity.CurrentUserId);
-                viewModel.InstructorClassList =
-                    GlobalStaticVars.StaticCore.GetInstructorClasses(WebSecurity.CurrentUserId);
+
+                //All classes the current user is an instructor of
+                viewModel.InstructorClassList = GlobalStaticVars.StaticCore.GetInstructorClasses(WebSecurity.CurrentUserId);
+
+                //All the other classes that the current user can join
                 var allClasses = GlobalStaticVars.StaticCore.GetAllClasses();
-                viewModel.AllOtherClassesList =
-                    allClasses.Except(viewModel.StudentClassList).Except(viewModel.InstructorClassList);
+                viewModel.AllOtherClassesList = allClasses.Except(viewModel.StudentClassList).Except(viewModel.InstructorClassList);
 
                 if (TempData["Error"] != null)
                     ViewBag.Error = TempData["Error"];

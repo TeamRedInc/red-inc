@@ -23,11 +23,13 @@ namespace redinc_reboot.Controllers
             try
             {
                 ProblemViewModel model = new ProblemViewModel();
+                //If the id is 0, we're creating a new problem
                 if (id == 0)
                 {
                     model.Problem = new ProblemData();
                     model.Problem.Class = new ClassData((int) Session["ClassId"]);
                 }
+                //Otherwise we're editing an existing problem
                 else
                 {
                     model.Problem = GlobalStaticVars.StaticCore.GetProblemById(id);
@@ -50,10 +52,13 @@ namespace redinc_reboot.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    //If the id is 0, we're creating a new problem
                     if (model.Problem.Id == 0)
                         model.Problem.Id = GlobalStaticVars.StaticCore.AddProblem(model.Problem);
+                    //Otherwise we're editing an existing problem
                     else
                         GlobalStaticVars.StaticCore.ModifyProblem(model.Problem);
+
                     GlobalStaticVars.StaticCore.UpdateProblemSets(model.Problem.Id, model.Sets);
 
                     //This is necessary in case bad prereqs (ex. duplicates) are removed by the backend
@@ -75,7 +80,7 @@ namespace redinc_reboot.Controllers
             {
                 ProblemData prob = GlobalStaticVars.StaticCore.GetProblemById(id);
                 prob.Description = BBCode.ToHtml(prob.Description ?? "");
-                prob.SolutionCode = null;
+                prob.SolutionCode = null; //Do not send solution code to client so it can't be seen and used to cheat the problem
 
                 return View(prob);
             }
@@ -91,6 +96,7 @@ namespace redinc_reboot.Controllers
             try
             {
                 List<ProblemData> problems = GlobalStaticVars.StaticCore.GetUnsolvedProblemsForSet(id, WebSecurity.CurrentUserId);
+                //Randomly choose a problem for the user to solve
                 ProblemData prob = problems[new Random().Next(problems.Count)];
                 prob.Description = BBCode.ToHtml(prob.Description ?? "");
                 prob.SolutionCode = null; //Do not send solution code to client so it can't be seen and used to cheat the problem
@@ -149,6 +155,7 @@ namespace redinc_reboot.Controllers
         {
             try
             {
+                //Return the partial view to for a problem set table row
                 return PartialView("EditorTemplates/ProblemSetRow", model);
             }
             catch (Exception e)

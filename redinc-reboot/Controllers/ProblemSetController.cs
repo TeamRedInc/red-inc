@@ -58,10 +58,13 @@ namespace redinc_reboot.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    //If the id is 0, we're creating a new set
                     if (model.Set.Id == 0)
                         model.Set.Id = GlobalStaticVars.StaticCore.AddSet(model.Set);
+                    //Otherwise we're editing an existing set
                     else
                         GlobalStaticVars.StaticCore.ModifySet(model.Set);
+
                     GlobalStaticVars.StaticCore.UpdateSetPrereqs(model.Set.Id, model.Prereqs);
 
                     //This is necessary in case bad prereqs (ex. duplicates) are removed by the backend
@@ -81,6 +84,7 @@ namespace redinc_reboot.Controllers
         {
             try
             {
+                //Return the partial view to for a prereq table row
                 return PartialView("EditorTemplates/PrereqRow", model);
             }
             catch (Exception e)
@@ -94,6 +98,7 @@ namespace redinc_reboot.Controllers
             try
             {
                 List<ProblemSetData> sets = GlobalStaticVars.StaticCore.SearchSetsInClass((int) Session["ClassId"], term);
+                //Build the Json object to be sent back to the client
                 return Json(sets.Select(s => new { Id = s.Id, label = s.Name, Name = s.Name, Class = new { Id = s.Class.Id } }),
                             JsonRequestBehavior.AllowGet);
             }
@@ -109,6 +114,7 @@ namespace redinc_reboot.Controllers
             try
             {
                 List<ProblemSetData> sets = GlobalStaticVars.StaticCore.GetSetsForClass((int)Session["ClassId"]);
+                //Build the Json object to be sent back to the client
                 return Json(sets.Select(s => new { Id = s.Id, label = s.Name, Name = s.Name }),
                             JsonRequestBehavior.AllowGet);
             }
