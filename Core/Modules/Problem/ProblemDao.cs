@@ -77,6 +77,7 @@ namespace core.Modules.Problem
                 paramList += "@clsId";
                 cmd.Parameters.AddWithValue("@clsId", problem.Class.Id);
 
+                //Select the auto-generated id for the new problem
                 cmd.CommandText = cmdStr + paramList + "); Select SCOPE_IDENTITY()";
 
                 try
@@ -448,6 +449,7 @@ namespace core.Modules.Problem
 
                 cmd.CommandText = "Update dbo.[Solution] Set NumAttempts = NumAttempts + 1, IsCorrect = @correct"
                     + " Where UserId = @userId and ProblemId = @problemId"
+                    //If no rows were updated, then this solution doesn't already exist, so add a new one
                     + " If @@ROWCOUNT = 0"
                     + "     Insert into dbo.[Solution] (UserId, ProblemId, IsCorrect) values (@userId, @problemId, @correct)";
 

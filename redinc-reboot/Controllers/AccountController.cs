@@ -83,12 +83,14 @@ namespace redinc_reboot.Controllers
                 {
                     string confirmationToken = WebSecurity.CreateUserAndAccount(model.UserName, model.Password, null, true);
 
+                    //Add the new user to our own User database table
                     UserData user = new UserData(WebSecurity.GetUserId(model.UserName));
                     user.Email = model.UserName;
                     user.FirstName = model.FirstName;
                     user.LastName = model.LastName;
                     GlobalStaticVars.StaticCore.AddUser(user);
 
+                    //Send a confirmation email to the user's email address
                     dynamic email = new Email("RegisterEmail");
                     email.To = model.UserName;
                     email.Name = model.FirstName ?? model.UserName;

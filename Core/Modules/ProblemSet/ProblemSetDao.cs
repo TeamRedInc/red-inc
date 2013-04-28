@@ -42,6 +42,7 @@ namespace core.Modules.ProblemSet
                 paramList += ", @classId";
                 cmd.Parameters.AddWithValue("@classId", set.Class.Id);
 
+                //Select the auto-generated id for the new set
                 cmd.CommandText = cmdStr + paramList + "); Select SCOPE_IDENTITY()";
 
                 try
@@ -177,6 +178,7 @@ namespace core.Modules.ProblemSet
                 SqlCommand cmd = conn.CreateCommand();
 
                 StringBuilder query = new StringBuilder();
+                //Priority: Exact match > Prefix match > Wildcard match
                 query.AppendLine("Select ps.*, Case ");
                 query.AppendLine("  When ps.Name Like @search Then 1 ");
                 query.AppendLine("  When ps.Name Like Concat(@search, '%') Then 2 ");
@@ -295,6 +297,7 @@ namespace core.Modules.ProblemSet
 
                 StringBuilder query = new StringBuilder();
                 query.AppendLine("Select distinct ps.*, Case ");
+                //When a set has 0 problems that are incorrect or unsolved, then the set is Solved
                 query.AppendLine("  When 0 = ( ");
                 query.AppendLine("      Select count(*) from dbo.[Problem] p ");
                 query.AppendLine("      Join dbo.[ProblemSetProblem] psp on psp.ProblemId = p.Id ");
@@ -302,6 +305,7 @@ namespace core.Modules.ProblemSet
                 query.AppendLine("      Where psp.ProblemSetId = ps.Id ");
                 query.AppendLine("      and (s.IsCorrect = 0 or s.IsCorrect is null) ");
                 query.AppendLine("  ) Then 'Solved' ");
+                //When a set has at least 1 prerequisite set that has less solved problems than the required number, then the set is Locked
                 query.AppendLine("  When 0 != ( ");
                 query.AppendLine("      Select count(*) from dbo.[Prereq] prereq ");
                 query.AppendLine("      Where prereq.ProblemSetId = ps.Id ");
@@ -313,6 +317,7 @@ namespace core.Modules.ProblemSet
                 query.AppendLine("          and s.UserId = @userId and s.IsCorrect = 1 ");
                 query.AppendLine("      ) ");
                 query.AppendLine("  ) Then 'Locked' ");
+                //If a set is neither Solved or Locked, it means all of its prequisites are satisfied and there are still problems to solve, so it is Unlocked
                 query.AppendLine("  Else 'Unlocked' ");
                 query.AppendLine("End as 'Status' ");
                 query.AppendLine("from dbo.[" + tableName + "] ps ");

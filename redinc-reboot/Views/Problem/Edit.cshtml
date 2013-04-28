@@ -47,6 +47,8 @@
         </div>
 
         <br /><br />
+        <!-- Only display this section if the user is an instructor.
+            Students are allowed to create problems, but not assign them to sets. -->
         @if (ViewBag.IsInstructor)
         {
             <table id="setTable" class="prereq-table">
@@ -83,14 +85,17 @@
     <script src="http://rawgithub.com/ajaxorg/ace-builds/master/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript">
         $(function () {
+            //Set up the description rich text editor
             $('#descriptionArea').markItUp(mySettings);
 
+            //Set up the solution code editor
             var editor = ace.edit("solutionArea");
             editor.setTheme("ace/theme/textmate");
             editor.getSession().setMode("ace/mode/python");
             editor.setDisplayIndentGuides(false);
             editor.setShowPrintMargin(false);
             
+            //Set up the test code editor
             var testEditor = ace.edit("testArea");
             testEditor.setTheme("ace/theme/textmate");
             testEditor.getSession().setMode("ace/mode/python");
@@ -102,10 +107,12 @@
                 return false;
             });
 
+            //Turn the addSet input into a jQuery autocomplete widget
             $('#addSet').autocomplete({
                 source: '@Url.Action("Search", "ProblemSet")',
                 minLength: 0,
                 select: function (e, ui) {
+                    //Gets a partial view containing a row for the setTable and appends it
                     $.ajax({
                         url: '@Url.Action("AddProblemSet")',
                         data: ui.item,
@@ -119,6 +126,10 @@
                 }
             });
 
+            // submitButton will submit the form created with Html.BeginForm.
+            // However, when the form submits, it will not pull the solution code contents
+            // out of the editor. To get around this, we copy the editor's contents into
+            // a hidden element with the correct id that will be included in the form submit.
             $('#submitButton').click(function () {
                 $('#hiddenSolution').val(editor.getValue());
             });

@@ -41,6 +41,7 @@ namespace redinc_reboot.Controllers
                     return RedirectToAction("Home", new {id = id});
                 else
                 {
+                    //The user's email does not end with the class's required domain, so report this error to the student
                     ClassData cls = GlobalStaticVars.StaticCore.GetClassById(id);
                     TempData["Error"] = "Your email address must end with " + cls.RequiredDomain + " to join " +
                                         cls.Name + ".";
@@ -59,6 +60,7 @@ namespace redinc_reboot.Controllers
             try
             {
                 ClassData cls = GlobalStaticVars.StaticCore.GetClassById(id);
+                //If the current user is the instructor for the class...
                 if (WebSecurity.CurrentUserId == cls.Instructor.Id)
                 {
                     Session["ClassId"] = id;
@@ -76,10 +78,12 @@ namespace redinc_reboot.Controllers
 
                     return View("InstructorClassHome", model);
                 }
+                //If the current user is a student in the class...
                 else if (GlobalStaticVars.StaticCore.IsStudent(WebSecurity.CurrentUserId, id))
                 {
                     Session["ClassId"] = id;
                     Session["UserType"] = UserType.Student;
+
                     Tuple<List<ProblemSetData>, List<ProblemSetData>, List<ProblemSetData>> sets =
                         GlobalStaticVars.StaticCore.GetSetsForStudent(WebSecurity.CurrentUserId, id);
                     ViewBag.UnlockedSets = sets.Item1;
@@ -102,6 +106,7 @@ namespace redinc_reboot.Controllers
         {
             try
             {
+                //Return the partial view to be displayed in the new class dialog
                 return PartialView("NewClassDialog", new ClassData());
             }
             catch (Exception e)
